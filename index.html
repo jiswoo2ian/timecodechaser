@@ -368,6 +368,14 @@ body.full .toast{position:fixed;bottom:calc(90px + env(safe-area-inset-bottom,0p
 .endv .lost div.on{animation:lost 1.8s steps(1) infinite}
 @keyframes lost{0%{opacity:.75}8%{opacity:.15}12%{opacity:.6}50%{opacity:.5}53%{opacity:0}57%{opacity:.55}100%{opacity:.5}}
 </style>
+<style>
+.endv .say .x{color:#d9483c;text-shadow:0 0 8px rgba(224,60,45,.7);font-family:ui-monospace,Menlo,Consolas,monospace}
+.endv .say.jam{animation:sjit .09s steps(2) infinite}
+@keyframes sjit{0%{transform:translate(0,-50%)}50%{transform:translate(-2px,-50%)}100%{transform:translate(2px,-50%)}}
+.endv .say.dim{opacity:.55}
+.endv .nz{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.endv .nz b{position:absolute;left:0;right:0;background:rgba(214,52,40,.55);mix-blend-mode:screen}
+</style>
 </head>
 <body>
 
@@ -1329,7 +1337,7 @@ function finish(p,i,minute){
 }
 /* 답글 들여쓰기: '원댓글번호.답글번호': 단계 (앞 답글에 대답하는 답글은 한 칸 더) */
 const NEST={"니네 발현자 되면 어떡할거임?": {"0.2": 2, "0.3": 3, "0.5": 2, "4.1": 2, "9.1": 2, "9.2": 3, "10.1": 2, "11.2": 3, "13.2": 2}, "곧 삭제될 글": {"0.1": 2, "0.2": 2, "0.3": 2, "0.4": 2, "0.5": 3, "0.6": 3, "0.7": 3, "0.8": 4, "2.2": 2, "2.4": 2, "2.5": 3, "2.6": 4, "3.2": 2, "3.3": 3, "3.4": 4, "3.5": 4, "4.2": 2, "4.3": 3, "7.1": 2, "7.2": 3, "7.3": 4}, "니네 그거 아냐?:금수저": {"0.1": 2, "0.2": 3, "0.3": 4}, "근데 배급으로 먹고살면 사실상 센터캥 아니냐": {"4.1": 2, "4.2": 3, "4.3": 4, "5.2": 2}, "개집 vs 개구멍": {"0.2": 2}, "우리 동네 ㅈ됨 ㅋㅋ": {"2.2": 3}, "다음 달 뽑기하러감": {"0.2": 2, "1.2": 2, "2.2": 2, "2.3": 3, "2.4": 3}, "대기실에서 수능 금지곡 틀어 준다던데 진짜임?": {"0.1": 2, "0.2": 3}, "미발갤충들아": {"0.3": 2, "0.4": 3, "0.5": 3, "0.6": 3, "0.7": 4, "0.9": 2, "0.10": 2, "0.11": 3}, "니네 발현되면 뭔 능력이었으면 좋겠음?": {"0.1": 2, "0.2": 3}, "궁금한거 있는 게이들": {"0.1": 2, "0.2": 3}, "치유계<<이새끼 개꿀 아님?": {"0.1": 2, "0.2": 2, "0.3": 3, "1.2": 2, "1.3": 3, "1.4": 4, "2.1": 2, "2.2": 3}, "시간 되감는 애 썰 본 사람": {"1.1": 2, "2.1": 2}, "페어<<이새끼 뭐임?": {"1.1": 2}, "어항이 뭐임?": {"0.1": 2, "0.2": 2, "1.1": 2, "1.2": 3, "1.3": 4, "1.4": 4, "1.5": 1}, "이거 맞음?": {"1.1": 2, "1.2": 3}, "발현되면 다 어항감?": {"1.1": 2, "1.2": 3, "1.3": 4, "1.5": 2}, "어항 ㅉㄹㅅ": {"1.2": 2}, "니네 어항 한번 깨졌었던거 아냐?": {"2.3": 2, "2.4": 3, "3.2": 2, "3.3": 2, "3.4": 3, "3.5": 4}, "근데 붕어빵되면 사육사들 어캄?": {"0.1": 2, "1.1": 2, "2.1": 2, "2.2": 3}, "횟집 사장": {"0.2": 2, "0.3": 3}, "니네 만약 충전기면 뭐 선택함?": {"1.1": 2, "2.3": 2}, "코마 관련해서 아는 사람?": {"0.1": 2, "1.2": 2, "4.1": 2, "4.2": 3, "4.3": 4}, "코마 관련 썰": {"2.1": 2, "2.2": 3}, "오랜만에 불판 ㄱ?": {"0.2": 3, "0.3": 3, "1.2": 3, "1.7": 3, "1.8": 4, "1.9": 4, "2.1": 2, "2.2": 3, "2.3": 4, "2.4": 4, "4.2": 2, "5.2": 2, "5.3": 3, "5.4": 4, "6.2": 2, "6.3": 3, "6.4": 4, "7.2": 2, "7.3": 3, "8.3": 2}};
-function applyNest(){POSTS.forEach(p=>{const k=p.title==='니네 그거 아냐?'?p.title+(p.body.includes('금수저')?':금수저':':기계'):p.title;const m=NEST[k];if(!m)return;Object.entries(m).forEach(([ij,lv])=>{const [i,j]=ij.split('.').map(Number);const r=p.comments[i]&&p.comments[i].replies[j];if(r)r.level=lv})})}
+function applyNest(){POSTS.forEach(p=>{const k=p.title==='니네 그거 아냐?'?p.title+(p.body.includes('기계')?':기계':':금수저'):p.title;const m=NEST[k];if(!m)return;Object.entries(m).forEach(([ij,lv])=>{const [i,j]=ij.split('.').map(Number);const r=p.comments[i]&&p.comments[i].replies[j];if(r)r.level=lv})})}
 /* 새로 불러오기: 모든 글·댓글을 처음 상태로 다시 만듦 */
 function build(){
   seed=20261117;
@@ -1337,6 +1345,7 @@ function build(){
   let minute=1440+150; // 맨 위 글: 11.19 02:30
   const GAP={'이거 맞음?':16}; // '어항이 뭐임?'의 "어항이 뭔데" 댓글보다 늦게 올라오도록
   POSTS.forEach((p,i)=>{p.id='p'+(i+1);const h=finish(p,i,minute);minute-=GAP[p.title]||4+(h%7)});
+  applyDates();
   GLOSSARY.id='glossary';finish(GLOSSARY,99,1440*0+20*60+9-1440);GLOSSARY.views=40221;GLOSSARY.up=1203;GLOSSARY.down=8;GLOSSARY.no=10907;GLOSSARY.hidden=true;GLOSSARY.yr='2021.06.03';
   // Milo 공지는 모든 글·댓글보다 늦게
   let mx=0;POSTS.forEach(p=>{mx=Math.max(mx,p.min);p.comments.forEach(c=>{mx=Math.max(mx,c.t||0);c.replies.forEach(r=>mx=Math.max(mx,r.t||0))})});
@@ -1345,7 +1354,19 @@ function build(){
 build();
 const hm=m=>{const mm=((m%1440)+1440)%1440;return String(Math.floor(mm/60)).padStart(2,'0')+':'+String(mm%60).padStart(2,'0')};
 const dayOf=m=>18+Math.floor(m/1440);
-const fullDate=(m,p)=>p&&p.yr?`${p.yr} ${hm(m)}`:`2026.11.${String(dayOf(m)).padStart(2,'0')} ${hm(m)}`;
+/* 게시물 날짜: 8월부터 주제별로 띄엄띄엄 (시각은 그대로, 날짜만) */
+var DATE={'니네 발현자 되면 어떡할거임?':'08.14','곧 삭제될 글':'08.14','니네 그거 아냐?:금수저':'08.14','근데 배급으로 먹고살면 사실상 센터캥 아니냐':'08.14','개집 vs 개구멍':'08.14','우리 동네 ㅈ됨 ㅋㅋ':'08.14','여기 글 왜 아직도 안 썰림?':'08.14',
+ '여기서 감정적으로 싸워 봤자 바뀌는 거 없음.':'08.15','노발게이들아':'08.22','ㅅㅈㅎ 니네 발현될 것 같냐?':'08.29',
+ '담달 검진':'09.05','다음 달 뽑기하러감':'09.06','대기실에서 수능 금지곡 틀어 준다던데 진짜임?':'09.12','은둔 있냐? 아님 은둔할 예정이거나':'09.18','미발갤충들아':'09.19','니네 발현되면 뭔 능력이었으면 좋겠음?':'09.24','궁금한거 있는 게이들':'09.26','공간계 나오면 나만의 방 만들어서 평생 숨을 거임':'09.26',
+ '형 발현함':'09.30','치유계<<이새끼 개꿀 아님?':'10.02','시간 되감는 애 썰 본 사람':'10.04','페어<<이새끼 뭐임?':'10.07','탄피 펑 확률 어떻게 됨?':'10.09',
+ 'ㅇㅎ 검진 장소 근처임?':'10.16','어항이 뭐임?':'10.21','이거 맞음?':'10.21','발현되면 다 어항감?':'10.24','어항 ㅉㄹㅅ':'10.27','니네 어항 한번 깨졌었던거 아냐?':'10.31','근데 붕어빵되면 사육사들 어캄?':'10.31','횟집 사장':'10.31','냉탕에 상어가 살거라 믿었지':'11.03','어항에도 충전기 있음?':'11.05','니네 만약 충전기면 뭐 선택함?':'11.05',
+ '센티 죽이는 법':'11.10','코마 관련해서 아는 사람?':'11.11','니네 그거 아냐?:기계':'11.12','코마 관련 썰':'11.13'};
+const pad2=n=>String(n).padStart(2,'0');
+const ymd=(m,p)=>{if(p&&p.date){const [mo,d]=p.date.split('.').map(Number);const off=Math.floor(m/1440)-Math.floor(p.min/1440);const dt=new Date(2026,mo-1,d+off);return [dt.getMonth()+1,dt.getDate()]}return [11,dayOf(m)]};
+const fullDate=(m,p)=>p&&p.yr?`${p.yr} ${hm(m)}`:(([mo,d])=>`2026.${pad2(mo)}.${pad2(d)} ${hm(m)}`)(ymd(m,p));
+function applyDates(){if(!DATE)return;POSTS.forEach(p=>{const k=p.title==='니네 그거 아냐?'?p.title+(p.body.includes('기계')?':기계':':금수저'):p.title;if(DATE[k])p.date=DATE[k]})}
+applyDates();
+const listTime=p=>{const [mo,d]=ymd(p.min,p);return mo===11&&d===19?hm(p.min):`${pad2(mo)}.${pad2(d)}`};
 
 /* ---------- helpers ---------- */
 const app=document.getElementById('app');
@@ -1445,7 +1466,7 @@ function postRow(p,q){
   const tt=el('span','tt');tt.append(hl(p.title,q&&(state.qmode==='all'||state.qmode==='title')?q:''));
   tl.append(ic.firstChild,tt);
   const meta=el('span','meta');
-  [headLabel(p.head),null,`ㅇㅇ(${p.ip})`,null,hm(p.min),null,'조회 '+fmt(p.views),null,'추천 '+p.up].forEach(x=>{if(x===null)meta.append(el('i',null,'|'));else meta.append(typeof x==='string'?el('span',null,x):x)});
+  [headLabel(p.head),null,`ㅇㅇ(${p.ip})`,null,listTime(p),null,'조회 '+fmt(p.views),null,'추천 '+p.up].forEach(x=>{if(x===null)meta.append(el('i',null,'|'));else meta.append(typeof x==='string'?el('span',null,x):x)});
   main.append(tl,meta);r.append(main,el('span','cc',String(p.n)));
   r.onclick=()=>go(p.id);return r;
 }
@@ -1861,29 +1882,66 @@ function startError(){
 }
 
 /* ---------- 엔딩 뒤: 검은 화면에서 당겨서 새로고침(또는 브라우저 새로고침)할 때마다 Milo의 한마디 ----------
-   기억은 이 탭에만 남음(sessionStorage): 새로고침해도 이어지고, 탭/창을 닫았다 다시 열면 처음부터 */
-const END_MSGS=['HAHA :)','꺼내주지 못했나?','어항에 갇히면 이런 기분이겠네 :)','아직 못 나갔나?','안타깝네 :)','🐠','내 금붕어는 잘 있나? :)','안부 전해줘 :)','이제 나가 :)'];
+   기억은 이 탭에만 남음(sessionStorage): 새로고침해도 이어지고, 탭/창을 닫았다 다시 열면 처음부터
+   mode: 기본 / cut = 끝에서 하람의 신호가 끼어들어 끊김 / jam = 처음부터 방해받아 겨우 읽힘 */
+const END_MSGS=[ // '§' = 1초 뜸
+  ['다시 오셨네요.'],
+  ['그런 행위만으로는 아무것도 돌아오지 않습니다.'],
+  ['아직 꺼내 주지 못했나 보네요.'],
+  ['숨은 잘 쉬어지고 있나요?'],
+  ['어제 일은 기억나세요? §아, 기억 안 나시겠구나.'],
+  ['몸 상태는 좀 괜찮나요?'],
+  ['집 나가면 개고생이죠?'],
+  ['불쌍한 내 금붕어'],
+  ['168번째는 누가 부쉈더라.'],
+  ['후방 숙소 침대에는 누가 있나요?'],
+  ['녹화, 잘 되고 있나요? :)'],
+  ['금붕어가 붕어빵이 되면 큰일납니다.'],
+  ['아, 무슨 말인지 모르시려나.','cut'],
+  ['이제 그만 가 보세요.','jam']];
 const END_LOST='끊긴 신호입니다.';
 const endGet=k=>{try{return sessionStorage.getItem(k)}catch(e){return null}};
 const endSet=(k,v)=>{try{sessionStorage.setItem(k,v)}catch(e){}};
-let endN=+(endGet('mibal_end_n')||0),endBusy=false,endTypeId=0;
+let endN=+(endGet('mibal_end_n')||0),endBusy=false,endTypeId=0,endNzT=null;
 function endScreen(fromReload){
   endSet('mibal_end','1');
   const scr=document.querySelector('.screen');let v=scr.querySelector('.endv');
-  if(!v){v=document.createElement('div');v.className='endv';v.innerHTML='<div class="pull"></div><div class="say"></div>';scr.append(v);bindEndPull(v)}
+  if(!v){v=document.createElement('div');v.className='endv';v.innerHTML='<div class="nz"></div><div class="pull"></div><div class="say"></div>';scr.append(v);bindEndPull(v)}
   if(fromReload)setTimeout(endNext,700);
 }
+/* 하람의 빨간 방해 신호: 가로 띠가 번쩍 */
+function endNoise(on,level){const nz=document.querySelector('.endv .nz');clearInterval(endNzT);nz.innerHTML='';if(!on)return;
+  endNzT=setInterval(()=>{nz.innerHTML='';const n=Math.random()<level?Math.ceil(Math.random()*5*level+1):0;
+    for(let i=0;i<n;i++){const b=document.createElement('b');b.style.top=(Math.random()*100)+'%';b.style.height=(1+Math.random()*7)+'px';b.style.opacity=.25+Math.random()*.6;nz.append(b)}},70)}
+const endBit=c=>c===' '?' ':(Math.random()<.5?'0':'1');
+const endEsc=s=>s.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]);
 async function endNext(){
   if(endBusy)return;endBusy=true;const v=document.querySelector('.endv');const say=v.querySelector('.say');
-  endN++;endSet('mibal_end_n',String(endN));const my=++endTypeId;const wait=ms=>new Promise(r=>setTimeout(r,ms));
-  const old=v.querySelector('.lost');if(old)old.remove();
+  endN=Math.max(1,endN+1);endSet('mibal_end_n',String(endN));const my=++endTypeId;const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  const old=v.querySelector('.lost');if(old)old.remove();endNoise(false);say.classList.remove('jam','dim');
   if(say.textContent){say.classList.add('fade');await wait(260)}
   say.classList.remove('fade');say.textContent='';
+  const cur=()=>{const i=document.createElement('i');return i};
   if(endN<=END_MSGS.length){
-    const t=[...END_MSGS[endN-1]];endBusy=false;
-    for(let i=1;i<=t.length;i++){if(my!==endTypeId)return;say.textContent=t.slice(0,i).join('');say.append(document.createElement('i'));await wait(t[i-1]===' '?45:95)}
+    const [msg,mode]=END_MSGS[endN-1];const t=[...(mode?msg.replace(/§/g,''):msg)];endBusy=false;
+    if(mode==='jam'){ // 처음부터 방해받으며 겨우 써짐
+      endNoise(true,.8);say.classList.add('jam','dim');
+      for(let i=1;i<=t.length;i++){if(my!==endTypeId)return;
+        for(let k=0;k<2;k++){say.innerHTML=t.slice(0,i).map(c=>Math.random()<.42?`<span class="x">${endBit(c)}</span>`:endEsc(c)).join('');await wait(70)}}
+      // 다 써진 뒤에도 계속 깨졌다 돌아왔다
+      const keep=setInterval(()=>{if(my!==endTypeId){clearInterval(keep);return}say.innerHTML=t.map(c=>Math.random()<.3?`<span class="x">${endBit(c)}</span>`:endEsc(c)).join('')},120);
+      return}
+    for(let i=1;i<=t.length;i++){if(my!==endTypeId)return;if(t[i-1]==='§'){await wait(1000);continue}say.textContent=t.slice(0,i).join('').replace(/§/g,'');say.append(cur());
+      if(mode==='cut'&&i>=t.length-6){endNoise(true,.6);say.classList.add('jam')}
+      await wait(t[i-1]===' '?45:95)}
+    if(mode==='cut'){ // 문장 끝에서 하람의 신호가 덮쳐 끊김
+      await wait(250);endNoise(true,1);
+      for(let s=0;s<14;s++){if(my!==endTypeId)return;const keepN=Math.max(0,t.length-Math.round(t.length*s/10));
+        say.innerHTML=t.map((c,i)=>i<keepN&&Math.random()>.25?endEsc(c):`<span class="x">${endBit(c)}</span>`).join('');await wait(60)}
+      say.innerHTML=t.slice(0,Math.round(t.length*.45)).map(endEsc).join('')+`<span class="x">${t.slice(Math.round(t.length*.45)).map(endBit).join('')}</span>`;
+      say.classList.remove('jam');endNoise(true,.25);await wait(500);endNoise(false)}
   }else{
-    const box=document.createElement('div');box.className='lost';v.append(box);endBusy=false;
+    const box=document.createElement('div');box.className='lost';v.append(box);endBusy=false;endNoise(true,.35);
     for(let i=0;i<7;i++){if(my!==endTypeId)return;const d=document.createElement('div');d.textContent=END_LOST;d.style.animationDelay=(-Math.random()*1.8)+'s';box.append(d);d.classList.add('on');await wait(220)}
   }
 }
