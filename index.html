@@ -25,6 +25,7 @@ html,body{height:100%}
 body{background:var(--desk);color:var(--fg);font-family:var(--font)}
 *{box-sizing:border-box}
 button,select,input{font:inherit;color:inherit}
+form{margin:0}
 button{background:none;border:0;padding:0;cursor:pointer}
 button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--navy);outline-offset:-2px}
 mark{background:#fff0a0;color:inherit;border-radius:2px}
@@ -64,46 +65,46 @@ body.full .app,body.full .dock{zoom:.95}
 body.full .status,body.full .island,body.full .homebar,body.full .caption,body.full .urlbar,body.full .btool{display:none}
 
 /* site header */
-.site{background:var(--navy);padding:9px 10px 9px 6px;display:flex;align-items:center;gap:6px}
-.logo{flex:none;width:46px;height:40px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:24px;letter-spacing:-1.5px;font-style:italic}
-.sbox{flex:1;min-width:0;display:flex;align-items:center;background:#fff;border:2px solid var(--navy-deep);height:40px}
-.sbox .ham{flex:none;width:40px;height:100%;display:grid;place-items:center;border-right:1px solid #e3e3e8;color:#888}
-.sbox input{flex:1;min-width:0;border:0;outline:0;padding:0 8px;font-size:15px;background:transparent;color:#222}
+.site{background:var(--navy);padding:7px 8px 7px 4px;display:flex;align-items:center;gap:6px}
+.logo{flex:none;width:42px;height:34px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:21px;letter-spacing:-1.5px;font-style:italic}
+.sbox{flex:1;min-width:0;display:flex;align-items:center;background:#fff;border:2px solid var(--navy-deep);height:34px}
+.sbox .ham{flex:none;width:34px;height:100%;display:grid;place-items:center;border-right:1px solid #e3e3e8;color:#888}
+.sbox input{flex:1;min-width:0;border:0;outline:0;padding:0 8px;font-size:13.5px;background:transparent;color:#222}
 .sbox input::placeholder{color:#aaa}
 .sbox .go{flex:none;width:36px;height:100%;display:grid;place-items:center;color:var(--navy)}
-.sbox .recent{flex:none;padding:0 10px;border-left:1px solid #e3e3e8;font-size:14px;font-weight:700;color:#333;height:60%;display:flex;align-items:center}
-.gnav{background:var(--navy2);display:flex;gap:22px;overflow-x:auto;padding:0 14px;height:44px;align-items:center;scrollbar-width:none}
+.sbox .recent{flex:none;padding:0 10px;border-left:1px solid #e3e3e8;font-size:12.5px;font-weight:700;color:#333;height:60%;display:flex;align-items:center}
+.gnav{background:var(--navy2);display:flex;gap:22px;overflow-x:auto;padding:0 12px;height:38px;align-items:center;scrollbar-width:none}
 .gnav::-webkit-scrollbar{display:none}
-.gnav button{color:#fff;font-weight:700;font-size:16.5px;white-space:nowrap}
+.gnav button{color:#fff;font-weight:700;font-size:15px;white-space:nowrap}
 .gnav button.on{color:var(--yellow)}
 
-.gtitle{display:flex;align-items:center;gap:6px;padding:14px 12px 12px 14px;border-bottom:1px solid var(--line)}
-.gtitle .nm{font-size:20px;font-weight:900;letter-spacing:-.04em;white-space:nowrap}
+.gtitle{display:flex;align-items:center;gap:5px;padding:10px 10px 9px 12px;border-bottom:1px solid var(--line)}
+.gtitle .nm{font-size:18px;font-weight:900;letter-spacing:-.04em;white-space:nowrap}
 .gtitle .m{flex:none;width:21px;height:21px;border:2px solid #111;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:900;line-height:1}
 .gtitle .cnt{font-size:12px;color:var(--muted)}
 .gtitle .sp{flex:1}
-.gtitle .ln{display:flex;align-items:center;gap:6px;font-size:13.5px;color:#333;white-space:nowrap}
+.gtitle .ln{display:flex;align-items:center;gap:5px;font-size:12.5px;color:#333;white-space:nowrap}
 .gtitle .ln i{font-style:normal;color:#ddd}
 .gtitle .ln .info{width:17px;height:17px;border:1.3px solid #999;border-radius:50%;display:grid;place-items:center;font-size:11px;color:#999;font-weight:700}
 .gtitle .ln .n{display:inline-grid;place-items:center;width:15px;height:15px;border-radius:50%;background:#e1251b;color:#fff;font-size:9px;font-weight:700;margin-left:1px;vertical-align:2px}
-.wbtn{flex:none;border:1.5px solid var(--navy);color:var(--navy);padding:6px 9px;font-size:14.5px;font-weight:700;white-space:nowrap}
-.adline{padding:11px 14px 12px;border-bottom:1px solid var(--line)}
-.adline b{font-size:15.5px;font-weight:700;display:flex;gap:6px;align-items:center}
+.wbtn{flex:none;border:1.5px solid var(--navy);color:var(--navy);padding:4px 8px;font-size:13px;font-weight:700;white-space:nowrap}
+.adline{padding:8px 12px 9px;border-bottom:1px solid var(--line)}
+.adline b{font-size:14px;font-weight:700;display:flex;gap:6px;align-items:center}
 .adtag{font-size:11px;color:#999;border:1px solid #d5d5dc;border-radius:10px;padding:0 6px;font-weight:500}
-.adline p{margin:4px 0 0;font-size:12.5px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.adline p{margin:3px 0 0;font-size:11.5px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 .tabs{display:flex;align-items:stretch;border-bottom:1px solid var(--line);background:var(--bg);position:sticky;top:0;z-index:3}
-.tabs button.t{flex:1;padding:12px 0 10px;font-size:16px;font-weight:700;color:#111;border-bottom:3px solid transparent;position:relative}
+.tabs button.t{flex:1;padding:9px 0 7px;font-size:14.5px;font-weight:700;color:#111;border-bottom:3px solid transparent;position:relative}
 .tabs button.t+button.t::before{content:"";position:absolute;left:0;top:16px;bottom:14px;width:1px;background:#e3e3e8}
 .tabs button.t[aria-selected="true"]{color:var(--navy);border-bottom-color:var(--navy)}
-.tabs .per{flex:.9;font-size:14px;color:#444;display:flex;align-items:center;justify-content:center;gap:4px}
-.heads{display:flex;gap:16px;overflow-x:auto;padding:11px 14px;border-bottom:1px solid var(--line);scrollbar-width:none;background:var(--bg)}
+.tabs .per{flex:.9;font-size:13px;color:#444;display:flex;align-items:center;justify-content:center;gap:4px}
+.heads{display:flex;gap:14px;overflow-x:auto;padding:8px 12px;border-bottom:1px solid var(--line);scrollbar-width:none;background:var(--bg)}
 .heads::-webkit-scrollbar{display:none}
-.heads button{font-size:15px;color:#333;white-space:nowrap;display:flex;align-items:center;gap:2px}
+.heads button{font-size:13.5px;color:#333;white-space:nowrap;display:flex;align-items:center;gap:2px}
 .heads button[aria-pressed="true"]{color:#111;font-weight:900}
 .ic{font-size:15px;line-height:1}
 
-.lsearch{display:flex;gap:6px;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--soft)}
+.lsearch{display:flex;gap:6px;padding:7px 12px;border-bottom:1px solid var(--line);background:var(--soft)}
 .lsearch select{flex:none;border:1px solid var(--line2);background:#fff;padding:5px 4px;font-size:12.5px;color:#333}
 .lsearch input{flex:1;min-width:0;border:1px solid var(--line2);background:#fff;padding:5px 8px;font-size:14px}
 .lsearch button{flex:none;background:var(--navy);color:#fff;padding:0 12px;font-size:13px;font-weight:700}
@@ -115,21 +116,21 @@ body.full .status,body.full .island,body.full .homebar,body.full .caption,body.f
 /* list rows */
 .lrow{display:flex;width:100%;text-align:left;border-bottom:1px solid var(--line);background:var(--bg)}
 .lrow:active{background:var(--soft)}
-.lrow .main{flex:1;min-width:0;padding:12px 8px 11px 14px}
-.lrow .cc{flex:none;width:52px;background:var(--countcol);color:var(--red);display:grid;place-items:center;font-size:14.5px;font-variant-numeric:tabular-nums}
-.lrow .tl{display:flex;align-items:flex-start;gap:6px;font-size:16px;line-height:1.38}
+.lrow .main{flex:1;min-width:0;padding:9px 6px 8px 12px}
+.lrow .cc{flex:none;width:42px;background:var(--countcol);color:var(--red);display:grid;place-items:center;font-size:13px;font-variant-numeric:tabular-nums}
+.lrow .tl{display:flex;align-items:flex-start;gap:5px;font-size:14.5px;line-height:1.38}
 .lrow .tl .tt{min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere}
-.lrow .meta{margin-top:6px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;font-variant-numeric:tabular-nums}
+.lrow .meta{margin-top:4px;font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;font-variant-numeric:tabular-nums}
 .lrow .meta i{font-style:normal;color:#e0e0e6}
 .lrow .meta .hd{display:flex;align-items:center;gap:2px;color:#555}
-.bub{flex:none;width:19px;height:19px;margin-top:1px}
+.bub{flex:none;width:17px;height:17px;margin-top:1px}
 .pill{flex:none;font-size:13px;border:1.5px solid;border-radius:14px;padding:1px 9px;font-weight:700;margin-top:-1px}
 .pill.survey{border-color:var(--orange);color:var(--orange)}
 .pill.ad{border-color:#222;color:#222;font-weight:500}
 .pill.notice{border-color:var(--notice);color:var(--notice)}
 .pill.best{border-color:var(--blue);color:var(--blue)}
-.srow .main{display:flex;align-items:center;gap:8px;padding:12px 8px 12px 14px}
-.srow .tt1{min-width:0;font-size:15.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.srow .main{display:flex;align-items:center;gap:7px;padding:9px 6px 9px 12px}
+.srow .tt1{min-width:0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .srow .tt1.survey{color:var(--orange);font-weight:700}
 .pager{display:flex;justify-content:center;gap:4px;padding:18px 16px 6px}
 .pager button{min-width:32px;height:32px;font-size:14px;color:#666}
@@ -152,8 +153,8 @@ body.full .dock{position:fixed;bottom:0;padding-bottom:env(safe-area-inset-botto
 .backbar{position:sticky;top:0;z-index:4;display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid var(--line);padding:6px 10px 6px 6px}
 .backbar .bk{display:flex;align-items:center;gap:2px;font-size:15px;font-weight:700;color:#222;padding:6px 8px}
 .backbar .ls{font-size:14px;color:var(--navy);font-weight:700;border:1.5px solid var(--navy);padding:4px 12px}
-.pbody .gh{font-size:18.5px;font-weight:900;margin:18px 0 4px;line-height:1.4}
-.pbody .gh.red{font-size:20.5px;color:var(--red)}
+.pbody .gh{font-size:17px;font-weight:900;margin:18px 0 4px;line-height:1.4}
+.pbody .gh.red{font-size:19px;color:var(--red)}
 .nick{display:inline-flex;align-items:center;gap:3px}
 .badge{width:15px;height:15px;flex:none}
 .ginfo{display:flex;gap:12px;padding:8px 14px;font-size:12.5px;color:var(--muted);border-bottom:1px solid var(--line);background:var(--soft);white-space:nowrap;overflow:hidden}
@@ -175,14 +176,14 @@ body.full .dock{position:fixed;bottom:0;padding-bottom:env(safe-area-inset-botto
 .closed b{font-size:19px;color:#222}
 .closed p{margin:0;font-size:14px;color:#888;line-height:1.6}
 .closed button{margin-top:10px;border:1.5px solid var(--navy);color:var(--navy);background:#fff;padding:8px 22px;font-weight:700;font-size:14px}
-.ptitle{padding:16px 14px 10px}
-.ptitle h1{margin:0;font-size:20px;line-height:1.38;font-weight:900;letter-spacing:-.02em;overflow-wrap:anywhere}
-.pwho{display:flex;align-items:center;gap:8px;padding:2px 14px 13px;border-bottom:1px solid var(--line);font-size:14px;color:#333}
+.ptitle{padding:12px 12px 8px}
+.ptitle h1{margin:0;font-size:17.5px;line-height:1.38;font-weight:900;letter-spacing:-.02em;overflow-wrap:anywhere}
+.pwho{display:flex;align-items:center;gap:7px;padding:2px 12px 10px;border-bottom:1px solid var(--line);font-size:13px;color:#333}
 .pwho i{font-style:normal;color:#ddd}
 .pwho .dt{color:var(--muted);font-variant-numeric:tabular-nums}
 .pwho .sp{flex:1}
 .pwho .fold{width:26px;height:22px;background:#c8cad3;border-radius:3px;display:grid;place-items:center;color:#fff;font-weight:900}
-.pstat{display:flex;align-items:center;gap:10px;padding:13px 14px;font-size:14px;color:#555;font-variant-numeric:tabular-nums}
+.pstat{display:flex;align-items:center;gap:8px;padding:10px 12px;font-size:12.5px;color:#555;font-variant-numeric:tabular-nums}
 .pstat i{font-style:normal;color:#ddd}
 .pstat .r{color:var(--red)}
 .pstat .cpill{border:1px solid #d9dbe5;background:#f3f4f8;border-radius:16px;padding:2px 12px}
@@ -196,7 +197,7 @@ body.full .dock{position:fixed;bottom:0;padding-bottom:env(safe-area-inset-botto
 .adcard .txt b{display:block;font-size:16px}
 .adcard .txt span{font-size:13px;color:#555}
 .adcard .txt button{flex:none;background:#b9846a;color:#fff;border-radius:20px;padding:8px 14px;font-weight:700;font-size:14px}
-.pbody{padding:6px 14px 28px;font-size:16.5px;line-height:1.75;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}
+.pbody{padding:4px 12px 24px;font-size:15px;line-height:1.7;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}
 .votes{display:flex;justify-content:center;gap:12px;padding:0 14px 24px;border-bottom:8px solid var(--soft)}
 .vote{min-width:104px;border:1.5px solid var(--line2);border-radius:6px;padding:9px 12px;display:flex;flex-direction:column;align-items:center;gap:1px;font-size:12.5px;color:#666;background:#fff}
 .vote b{font-size:19px;color:var(--red);font-variant-numeric:tabular-nums}
@@ -209,19 +210,23 @@ body.full .dock{position:fixed;bottom:0;padding-bottom:env(safe-area-inset-botto
 .chead .sort button[aria-pressed="true"]{color:#111;font-weight:700}
 .nocmt{padding:30px 16px;text-align:center;color:var(--faint);font-size:14px}
 
-.cmt{padding:13px 14px 12px;border-bottom:1px solid var(--line);position:relative;background:#fff}
-.cmt.r{background:var(--reply);padding-left:34px}
-.cmt.r::before{content:"ㄴ";position:absolute;left:15px;top:13px;color:#aaa;font-size:13px}
-.cmt.r2{padding-left:50px}
-.cmt.r2::before{left:32px}
-.chd{display:flex;align-items:center;gap:2px;font-size:15px}
-.chd .ip{color:var(--muted);font-size:14px}
+.cmt{padding:9px 12px 8px;border-bottom:1px solid var(--line);position:relative;background:#fff}
+.cmt.r{background:var(--reply);padding-left:30px}
+.cmt.r::before{content:"ㄴ";position:absolute;left:13px;top:9px;color:#aaa;font-size:12px}
+.cmt.r2{padding-left:44px}
+.cmt.r2::before{left:28px}
+.cmt.r3{padding-left:58px}
+.cmt.r3::before{left:42px}
+.cmt.r4{padding-left:72px}
+.cmt.r4::before{left:56px}
+.chd{display:flex;align-items:center;gap:2px;font-size:13.5px}
+.chd .ip{color:var(--muted);font-size:12.5px}
 .chd .atag{margin-left:6px;font-size:11px;color:var(--navy);border:1px solid var(--navy);border-radius:9px;padding:0 6px;line-height:16px}
 .cmt.mine{box-shadow:inset 3px 0 0 var(--navy)}
-.ctx{margin-top:5px;font-size:15.5px;line-height:1.55;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}
+.ctx{margin-top:3px;font-size:14px;line-height:1.5;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}
 .ctx a{color:var(--link);text-decoration:underline;word-break:break-all;cursor:pointer}
-.cdt{margin-top:5px;font-size:13px;color:var(--faint);font-variant-numeric:tabular-nums}
-.cmt.del .ctx{color:var(--faint);margin:0;font-size:14px}
+.cdt{margin-top:3px;font-size:11.5px;color:var(--faint);font-variant-numeric:tabular-nums}
+.cmt.del .ctx{color:var(--faint);margin:0;font-size:13px}
 .cmt.live .ctx,.cmt.live .chd,.cmt.live .cdt{transition:opacity .35s}
 .cmt.fading .ctx,.cmt.fading .chd,.cmt.fading .cdt{opacity:0}
 .stk{margin-top:6px;width:110px;height:110px;display:grid;place-items:center}
@@ -373,140 +378,238 @@ const RAW = `
 ㅇㅇ(1.229)
 [[late:27]]아 ㅅㅂ 늦었네
 
-제목: 니네 발현자 되면 어떡할거임?
+제목: 코마 관련 썰
+내용: 코마 센티넬 깨우려고 의식에 몇백 번 들어간 사람 있다더라
+지인피셜임
+댓글:
+ㅇㅇ(61.203)
+구라 즐
+ㅇㅇ()
+실제로 그게 가능함?
+└ 센티넬이 좆으로 보이냐?
+ㅇㅇ(1.97)
+의식 들어갔다가 같이 갇혀서 못 나온 사람도 있다는 썰 있음 ㅋㅋ
+└ 그럼 그 썰은 누가 푸는건데
+ㄴ 지인
+ㄴ ㅂㅅ
+ㅇㅇ()
+뭔씨발놈의 지인들은 다 신이냐? ㅋㅋㅋ
+
+제목: 니네 그거 아냐?
+내용:
+카더라인데 코마 빠진 사람 의식에 직접 들어가서 끌고 나오는 기계 있다더라 정부 거 아니고 어디서 몰래 만든 거
+댓글:
+ㅇㅇ(106.243)
+ㅈㄹ 판타지 소설 쓰냐ㅋㅋㅋ
+ㅇㅇ()
+기계 정보
+ㄴ() 나는 위치 정보도 같이 주셈
+
+제목: 코마 관련해서 아는 사람?
+내용:
+코마 빠진 센티넬은 원래 못 깨움?
+우리 사촌 형 폭주하고 반년째 누워 있는데 센터에서 포기하래
+댓글:
+ㅇㅇ(21.33)
+갓티넬뿐만 아니라 좆반인도 코마 상태에 빠지면 일어나기 힘들다는 거임 ㅇㅇ
+ㄴ (작성자) 센티넬이랑 일반인이랑 다르잖아...
+ㄴ (21.33) 그니까 느그형도 결국 인간이라고 ㅇㅇ
+ㅇㅇ(223.15)
+코마 걸리면 머릿속에서 특정 날이 무한반복된다던데
+└ 나 왜 이 하루가 영원할 거 같지?
+└ 그럼 본인은 매일 첫날인 줄 아는 거임?
+└ 언제부터 오늘이 처음이라고 착각하고 있었지?
+└ 아 이건 좀 소름이다
+ㄴ(작성자)아니 ㅅㅂ 진짜 궁금하다고...
+ㄴㄴ 그걸 왜 여기에 처물어봐
+ㅇㅇ(118.92)
+코마는 본인이 깨어나려는 의지가 있어야 깬대 밖에서 아무리 불러도 본인이 살고 싶어 해야 된다고 치타 누님의 코마라는 노래가 괜히 나온게 아님
+ㅇㅇ()
+나 같으면 안 깨어남 깨어나면 전선임
+└ 맞말추
+ㅇㅇ(175.113)
+코마 회복률 공식 통계상 1% 미만임. 골든 타임 지나면 사실상 불가능하고, 의식 개입은 센티 능력 생각하면 이론상 가능해도 개입하는 쪽 게이지가 먼저 터짐. 그런 썰은 희망 고문임
+└ ㅇㅇ(61.203) 1% 미만? 0.01%의 확률을 뚫은 나는 가능하겠군
+ㄴ ㅇㅇ(70.89) 뭐 뚫음?
+ㄴ ㅇㅇ(61.203) 에공삼 ㅋㅋ
+ㄴ ㅇㅇ(70.89) ㅆㅂ 부럽노...
+
+제목: 센티 죽이는 법
+내용: 코마 상태 만들면 됨 ㅇㅇ
+댓글:
+ㅇㅇ()
+(덜덜 떠는 디씨콘)
+ㅇㅇ()
+그냥 충전기 없으면 아무것도 못함ㅋㅋ
+ㄴ ㄹㅇ 전자기기가 따로 없노
+
+제목: 니네 만약 충전기면 뭐 선택함?
+내용: 공용 충전기 되느니 기포기가 낫지 않냐 거긴 안 돌려쓰잖아
+댓글:
+ㅇㅇ()
+어항은 가고 싶다고 갈 수 있는 곳이 아님
+ㅇㅇ()
+정보) 기포기는 어항 밖으로 못 나온다
+└ 금붕어 하나 펑하면 기포기도 같이 터진다는 거임 그래서 기포기 성능이 ㅈㄴ 좋아야 함
+└ ㅇㅇ(작성자) 아 그럼 취소
+ㅇㅇ(118.92) 어항 깨진 날 기포기 하나가 금붕어 막으려고 유리 너머에 서 있었다는 썰
+└ 기포기가 금붕어를 막음?
+└ 유리 너머에서 어떻게 막아
+└ 삭제된 댓글입니다.
+└ 아 또
+ㅇㅇ()
+문득 든 생각인데 충전기가 박을 수도 있지 않음?
+ㄴ 그렇긴 해 충전기를 꽂는 거잖아
+ㄴㄴ 어흐...
+
+제목: 어항에도 충전기 있음?
+내용: ㅈㄱㄴ
+ㅇㅇ(211.178) 없으면 금붕어만 죽는게 아니라 사장까지 다 ㅈ됨
+ㅇㅇ()
+어항에선 기포기라고 부름
+└ 기포기가 뭐임?
+ㄴㄴ 충전기 어항 버전이 기포기임 ㅇㅇ 금붕어 안 죽게 숨만 붙여 놓는 용도
+└ 기포기 끄면 금붕어 펑함
+
+제목: 냉탕에 상어가 살거라 믿었지
+내용:
+나도 알아 색기야 그딴 건 없지~
+내가 노발인 것도 안 믿겨 병신
+어항보다 내 상황이 더 무섭지~
+댓글:
+ㅇㅇ()
+ㅂㅅ
+
+제목: 횟집 사장
+내용:
+실종됐다는 얘기도 있던데 진짜임? 어벤져스 좋아한다고 유명했잖아
+댓글:
+ㅇㅇ(113.51)
+어항 주인 말고 횟집 사장이라고 해주세요~
+ㄴ(작성자) 수정함
+ㄴ 뭔 차이임?
+ㄴ (113.51)어항 주인 꼽줄때 횟집 사장이라고 부름 정부 센티넬 센터견이라고 부르는 것처럼 ㅇㅇ
+ㄴ 와 은어의 은어..
+└ 나도 어벤져스 좋아하는데 왜 안 유명함?
+└ 금붕어한테 먹혔나 봄
+└ 삭제된 댓글입니다.
+└ 어벤져스를 안 좋아할 수 있나?
+
+제목: 근데 붕어빵되면 사육사들 어캄?
 내용: ㅇㅇ?
 댓글:
-ㅇㅇ(211.36)
-일단 검진 문자 오면 폰 바꾸고 이사감
-└ 탈주닌자 ㄷㄷ
-└ 그거 다 추적됨 ㅇㅇ
-└ 옆집 형 그렇게 숨었다가 3일만에 차 와서 데려감
-└ 느리구나 도망치는 것조차
-└ 언제부터 숨었다고 착각하고 있었지?
-ㄴ 그게 뭔데 씹덕들아
-ㅇㅇ(118.235)
-아직도 센터견 자처하는 호구 있음? 코마 상태에서 깨어나라...
-└ 신호 끊기면 회수도 안 해준다는데 ㅈㅉㅇㅇ?
-└ 그래도 밥은 줌 ㅅㄱ
-└ 밥 주면 목줄 차는 거 개웃기네 센터견 대단하다!
-ㅇㅇ(39.115)
-반정부군 감 최소한 거긴 안 버림
-└ ㅅㄱ 반동 새끼 신고함
-└ ㅇㅇ 니는 평생 개밥 먹어라
-ㅇㅇ(106.243)
-다들 발현될 줄 아네ㅋㅋ 니넨 평생 노발임
-└ 개추 ㅋㅋ
-└ 아 ㅋㅋ 발현자들이 방구석에서 키보드를 왜 두드리고 있냐고
-ㅇㅇ(223.62)
-노발들은 왜 자꾸 끼냐 발현도 못 한 게
-└ 개밥은 공짜로 나오냐?
-└ (223.62) 센가 없으면 바로 죽을 새끼 ㅋㅋ
-└ 방구석 노발들끼리 사이좋게 지내요~
-ㅇㅇ(39.118)
-노발 ㅈㄴ 불쌍함 끌려 가면 후방 노역이라던데
-└ 구라 ㄴ
-└ (39.118) 우리 형이 거기 있음 ㅇㅇ
-└ 아니 노발이 왜 끌려감? 민간인한테 총 쥐어주노;
-└ 이걸 믿냐 딱 봐도 구라자나 ㅂㅅ아
-ㄴ ㅋㅋ
-ㅇㅇ(223.33)
-이 글 지금 센터 직원이 보고 있음 ㄹㅇ
-└ ㅎㅇ
-└ 실시간으로 아이피 따이는중
-└ 센터 직원 : 체포하겠어~ 검거하겠어~ 어항 보내겠어~
-└ 대충 다음 주에 검진 문자 받을 놈들 모임
-ㅇㅇ(121.131)
-우리 아빠는 나 발현되면 숨겨 준대
-└ 너 불속성 센임?
-└ ㄷㄷ 유동앱 의문의 감옥행
-└ 그거 은닉죄로 처벌받음. 부모님 생각하면 그런 말 하지 말자
-└ 근데 진심 애 뺏기는 것보단 그게 낫지 나 초딩 때 내 친구 발현 ㅈㄴ 일찍 돼서 어항 끌려갔는데 그때 친구 부모님 애 죽은 것마냥 우심 ㄹㅇ
-└ 어항 끌려간 건 죽은 거 맞잖아......
-ㅇㅇ(223.39)
-솔직히 능력 생기면 센터 가는 게 맞지 않냐. 다들 웃으면서 얘기하는데 지금 전쟁 중인 거 잊은 듯. 뉴스 안 봄? 지난달에만 전선에서 일반인 피해 몇 명 났는지 앎? 그거 막는 게 센티넬들임. 반정부 애들이 도시 하나 날려도 그거 수습하는 것도 센터고. 우리가 지금 여기서 커뮤 하면서 키보드 두드릴 수 있는 것도 누군가 전선에서 버텨 주니까 가능한 거임. 근데 능력 생기면 도망가겠다, 숨겠다, 반정부 가겠다 이런 말이 너무 쉽게 나옴. 그럼 그 자리 누가 채움? 결국 다른 발현자가 대신 가는 거고, 그 사람도 누군가의 형이고 친구임. 센터가 완벽하다는 거 아님. 소모품 취급하는 거 나도 앎. 근데 능력은 선택 못 해도 그걸 어떻게 쓸지는 선택할 수 있잖아. 나는 발현하면 갈 거임. 무섭긴 한데 그게 맞다고 생각함.
-└ 세줄요약좀
-└ ㅇㅇ(223.39) 1. 전쟁 중이다 2. 누군가는 가야 한다 3. 나는 간다
-└ 니나 가
-└ 막상 문자 오면 제일 먼저 폰 바꿀 듯
-└ ㅇㅇ(223.39) 안 바꿈
-└ 국뽕도 아니고 센뽕은 또 무슨 초식이냐 ㅋㅋ
-└ ㅇㅇ(223.39) 팩트임
-└ ???:이것은 내가 센터견이 되기까지의 이야기다
-ㅇㅇ(118.41)
-실제로 요즘 우리 동네 쉬었음 청년보다 숨었음 청년이 더 많음
-└ 숨었음 청년 3일 뒤면 잡혔음 청년됨
-└ 바~로 연락없음 청년
-ㄴ 야 이 나쁜새끼들아
-ㅇㅇ(175.198)
-난 센티보단 가이드였으면 좋겠음 전선 안 나가도 된다며
-└ 그럼 전선 나가있는 센티넬은 누가 물빨해주는데
-ㄴ 너 혹시 성향이 그쪽임?
-└ 페어 못 하면 이 사람 저 사람 돌려쓰기 당하는데도? ㅋㅋ
-└ 와 ㄹㅇ임?
-ㄴ씹ㅋㅋ 그냥 공공재네
-└ 와...이 글 보고 센터견 하기로 했다 ㅇㅇ
-ㄴ근데 진짜 잘 몰라서 그러는데 센티가 박는 거임? 능력도 있는데 박기까지? 씹알파자너
-ㄴ정보) 미발갤은 노발만 있는 곳이다
-ㅇㅇ(61.84)
-발현하면 학교부터 안 감 개꿀
-└ 학교 안 가면 바로 센터행인데 ㅂㅅ아
-└ (61.84)그게 개꿀이라고 학교보다 나음
-└ 얘는 진짜 불쌍하네
-ㅇㅇ(106.77)
-반정부 애들 하는 짓 보면 센터가 낫다 진짜로
-└ (112.169)니 센터 직원이지
-└ (223.38)시급 얼마임? 센터 직원도 센티임?
-ㄴ (112.169)센터 직원은 입만 무거우면 다 들어감 ㅇㅇ
-ㄴ (223.38)그럼 이 새낀 왜 있음?
-ㄴ (106.77) 센터 직원 아니라고 ㅆㅂ들아
-ㅇㅇ(110.70)
-공부나 해라 정치충들아
-└ 공부해봤자 발현되면 다 소용없음
-└ 이게 맞말이라 슬프네
-└ 걍 다 같이 망하자
-ㅇㅇ(1.229)
-결론: 센터 가면 소모품, 반정부 가면 반동분자, 숨으면 범죄자, 노발이면 부러워서 우울하고 후방 차출됨
-노발은 그냥 목매달고 자살 ㄱㄱ
-ㄴ박쥐는 뭐임?
-ㄴ(1.229) 취급 안함
-└ 정리 개 잘하네
+ㅇㅇ()
+어항 깨지면 사육사는 거의 확정킬 난다고 보면 됨
+└ ㅁㅊ 붕어빵이 그렇게 쎔?
+└ () [[kill:10]]ㅇㅇ 그리고 사육사들 다쳐도 뉴스엔 가스 사고로 나옴
+└ 어항 주인 실종도 그날 아님?
+└ 삭제된 댓글입니다.
+ㅇㅇ(14.37) 사육사라고 부르는 것도 웃김 걔네가 하는 짓이 사육이냐
+└ 그럼 뭐라 부름
+└ 횟집 사장이라는 좋은 표현 있잖아
+ㅇㅇ(61.203) 사육사 중에도 금붕어 빼돌린 사람 있다는 카더라 있음
+└ 그 사육사 지금 어디 있음?
+└ 동굴?
+└ 박쥐 얘기 또 나오네
+└ 삭제된 댓글입니다.
 
-제목: 미발갤충들아
-내용: 이몸 심심하구나
-썰 좀 싸보거라 ㅇㅇ
+제목: 니네 어항 한번 깨졌었던거 아냐?
+내용: 가스 폭발이라고 뉴스 나왔는데 그거 금붕어가 붕어빵된거라는 썰이 있음
+ㅇㅇ(118.92)
+한번이 아니라 몇번 깨졌을걸
+ㅇㅇ(175.113) 공식 발표로 가스 누출 사고 맞음. 근거 없는 썰 퍼뜨리지 마라
+└ ㅇㅇ() 가스 누출로 철문이 종잇장처럼 구겨지냐?
+└ ㅇㅇ() 금붕어에 붕어빵 ㅆㅂㅋㅋ 지랄을 해라
+└ 금붕어가 어항 깨고 나온거라고 기정사실화됨.
+└ 솔직히 무슨 말인지 모르겠고 은어 웃기면 개추
+ㄴㄴ 개추
+ㄴㄴ 개추ㅋㅋㅋㅋㅋ 웃음타율 ㅈㄴ 높음
+ㅇㅇ()
+그럼 어항에서 탈출한 금붕어 있다는게 진짜임?
+ㄴ붕어빵이라고 했지 탈출했다고 하진 않았다
+└ ㄴ언제부터 탈출했다고 착각하고 있었지?
+└ 하나 있긴 하다던데
+└ ㅇㅇ(175.113) 어항에서 나온 개체는 없음. 있었으면 공식 수배 떴음.
+└ 이새낀 어딜 가나 있네 현실 좀 살아라
+ㅇㅇ()
+어항 관련 ㅈㄴ 유명한 사건 있음. 불붕이었는데 소화기 없어서 그때도 어항에 불 ㅈㄴ 크게 나고 난리 났었음 좀만 늦었으면 근처 산 다 탔다했음 ㅇㅇ
+ㄴ 진짜 씹...어항주들은 뇌가 없나? 무슨 정신머리로 금붕어 혼자만 둠?
+ㄴ 그럼 붕어빵이 슈붕된거임?
+ㄴ 그런 은어는 없어요 어머님.
+ㄴ 슈붕이 뭔데 ㅅㅂ아 ㅋㅋ
+ㄴㄴ 불속이라매 ㅋㅋ 그럼 붕어빵돼서 녹았으니까 슈붕 ㅋㅋ
+ㄴ ㅂㅅㅋㅋㅋㅋ
+
+제목: 어항 ㅉㄹㅅ
+내용: 7년된 금붕어 있었다고 함
 댓글:
-ㅇㅇ(61.84)
-어제 밤에 집 앞 골목에 검은 차 세 대 서 있었음. 창문 다 썬팅이고 번호판도 가려져 있었는데 그중 한 대에서 사람 내리더니 우리 집 쪽으로 걸어옴. 심장 터지는 줄 알았음.
-└ 냐냐냥
-└ 냐냐냥!!냐냐냥!!!!!
-└ 그래서 어케 됨?
-└ ㅇㅇ(61.84) 걍 옆집 지인이었음 ㅋㅋ
-└ ㅅㅂㄹ아
-ㄴ아이씨발 별거아니면 폼 좀 잡지마라
-ㄴㄹㅇ 옆집 지인 맞음?
-└ ㅇㅇ(61.84) ㅇㅇ 나머지 두 대는 그냥 주차된 거였음 별거 없음 ㅋㅋ
-ㄴ 경찰견인듯
-ㄴ 경찰견 맞는듯
-ㄴ 경찰견 근처에 사람 있으면 끌고갈 때 지인인 척 끌고 간다는 썰도 있음 ㅇㅇ
-ㄴ 와 ㅅㅂ 존나 무섭네...
+ㅇㅇ(211.178)
+ㄹㅇ? 이걸 보고도 센터견인 새끼들은 사람새끼냐?
+ㄴ () 그래서 센터견이라고 하는 거임
+ㅇㅇ()
+어항 들어간 사람들은 평생 금붕어임? 어렸을때부터 금붕어된 애들은 걍 답도 없는 거임?
+└ 어항이 싫으면 금붕어가 떠나야지
+└ 횟집에서 초밥이 탈출하는거 본 적 있음?
+└ 이렇게 말하니까 ㅈㄴ 무섭긴 하네
 
-제목: 담달 검진
-내용: 다음 달 검진인데 여태 감기 한 번 안 걸렸던 사람임. 근데 귀신같이 검진 날짜 다가오니까 열 남. 솔직히 좀 무섭다 ㅇㅇ;
+제목: 발현되면 다 어항감?
+내용: 어항 기준이 뭐임?
+좆반인으로 치면 서울대 가는 수준이냐?
 댓글:
 ㅇㅇ()
-살면서 감기 한 번 안 걸린게 더 무서운데
-ㅇㅇ()
-끌려가기 전에 썰 풀고 가셈
-ㄴ 경찰견들 차 타기 0.1초 전에 글 싸도 빛삭돼서 어차피 못 봄 ㅇㅇ
+서울대를 어따 비교해 ㅋㅋ 어항은 지옥이다...
+ㅇㅇ(211.52)
+내 친구 작년에 발현했는데 그 뒤로 연락 끊김
+└(113.21) 센터 들어가면 폰 뺏어서 그럼
+└ (211.52) 내가 알기론 금붕어들만 뺏김
+└ ()왜? 폰 놔둔 곳을 까먹나?
+└ ()유동유동아...
+└ ()니 친구 어항 간 거야
+└ ()이 글 곧 삭제되면 ㄹㅇ이라는 거임
+>>>13초 후, 삭제된 게시물입니다 처리, 뒤로갔을 때도 게시글 목록에 없도록.<<
 
-제목: 대기실에서 수능 금지곡 틀어 준다던데 진짜임?
-내용: ㅈㄱㄴ
+제목: 이거 맞음?
+내용:
+센티 - 금붕어
+불속성 금붕어 - 불속붕/불붕
+불붕을 위한 충전기 - 소화기
+물속성 금붕어 - 물속붕/물붕
+물붕을 위한 충전기 - 여과기
+그럼 다른 속성은 뭐라고 함? 다른 충전기는? ㅆㅂ 공부하는데 대가리 터질 거 같다......
 댓글:
-ㅇㅇ(223.15)
-ㅇㅇ 그거 일부러 거슬리게 해서 게이지 반응 보는 거래
-└ (작성자) ㅅㅂ 그럼 이왕 틀어줄거면 레몬탱으로 틀어달라해야지
-ㄴ (233.15) 좋아하는 곡은 안 틀어준대 게이지에 영향 갈 수 있어서
-ㄴ () 존나 빡빡하네 ㅋㅋ
+ㅇㅇ()
+굳이 이렇게까지 할 필요없고 대충 아다리 맞게 얘기하면 다 알아들음 ㅇㅇ
+ㅇㅇ()
+이렇게 모아보니까 다시 봐도 ㅈㄴ 웃기네 이거 만든 새끼는 뭐하는 놈이냐? ㅋㅋ
+ㄴ 어항 끌려갔다 나온 사람이래
+ㄴ ㄹㅇ이가...
+ㄴ 겠냐?
+ㄴ 실제로 어항이라 붙여진 이유는 그곳이 유리벽으로 이루어져서라고 합니다~
+ㅇㅇ()
+[[link:glossary]]https://m.h2hside.com/board/jiswoo2ian/10907
+
+제목: 어항이 뭐임?
+내용:
+어항 어항 거리는데 새로운 신음소리냐?
+ㅇㅇ
+댓글:
+삭제된 댓글입니다.{{어항 말고 그냥 실험실이라고 해 ㅋㅋ 우리 사촌이 거기서 일했었는데}}
+└ 이거 파딱이 지운거임? 뭐라 했길래 지워짐?
+└ 어항 얘기했음
+└ 그거 하면 바로 지워지더라
+└ 무섭게 왜 이럼
+ㄴ 그니까 어항이 뭔데
+삭제된 댓글입니다.
+└ 아 ㅂㅅ아 그 단어 쓰면 바로 지워진다고
+ㄴ 단어가 기억 안 남; 뭐였지?
+ㄴ 어항 씨발아
+ㄴ 아니 그니까 어항이 뭘 지칭했지?
+ㄴ삭제된 댓글입니다.
+ㄴㄴ ㅂㅅ들 ㅋㅋㅋ
+ㅇㅇ(189.27)
+어항은 물고기를 기르거나 잡는 데 사용하는 용기를 의미하며, 법률적으로는 어업 근거지로서의 항구를 지칭하기도 합니다.
+ㅇㅇ(61.74)
+핑프련 니는 어항 가라 ㅋㅋ
 
 제목: ㅇㅎ 검진 장소 근처임?
 내용: 검진 받으러 갔는데 건물 뒤쪽에 창문 없는 동 있었음
@@ -517,19 +620,81 @@ const RAW = `
 └ (작성자) ㅇㅎ
 └ () 어항이 민간인도 드나드는 곳에 왜 있음. 뭐 수족관이냐?
 
-제목: 니네 발현되면 뭔 능력이었으면 좋겠음?
-내용: 아무리 생각해도 딸깍충이 씹GOAT인데
+제목: 탄피 펑 확률 어떻게 됨?
+내용: 오죽 잘 터지면 탄피라고 하나 싶어서
 댓글:
-ㅇㅇ(56.14)
-그건 니가 게을러서 그럼
-ㄴ(작성자) 닌 뭐하고 싶은데
-ㄴ(56.14) 당연히 투명인간이지 으흐흐
-ㄴ(작성자) ㅂㅅㅋㅋ
-ㅇㅇ(1.97)
-염력 나오면 침대에서 리모컨 딸깍해야지 ㅋㅋ 아
-ㄴ(작성자) 개추 ㅋㅋ
-└ 그 염력으로 전선에서 탱크 딸깍해야 됨
-└ 딸깍 인생 끝
+ㅇㅇ(175.113) 펑 확률은 충전 주기만 지키면 현저히 낮아짐. 개집에서 충전기 배정 기다리는 게 제일 안전함
+└ 그 배정 기다리다 펑한 애들이 더 많음
+└ 이새끼 또 개집 영업하네
+
+제목: 페어<<이새끼 뭐임?
+내용: ㅈㄱㄴ
+댓글:
+ㅇㅇ(106.77)
+페어 맺으면 서로 살리는 공생이라던데 아님?
+└ 언제부터 공생이라고 착각하고 있었지?
+└ 어느 한쪽만 갈리는 것도 공생이라고 할 수 있음?
+ㅇㅇ(14.37)
+말 그대로 한 몸 되는 거임 자세한 건 나도 발현자가 아니라서 모름 듣기로는 페어 하나가 폭주하면 남은 쪽은 신호 소실 처리된다는 얘기 있음 죽은 것도 산 것도 아닌 상태로 서류에서만 지워진다고
+ㄴ 모르면 아가리 싸물어 그럼
+ㄴ (14.37) 이건 뭐야 ㅋㅋ
+
+제목: 시간 되감는 애 썰 본 사람
+내용: 롤로 치면 소라카 같던데 맞음?
+댓글:
+ㅇㅇ(61.203)
+소라카는 힐싸갠데요
+ㅇㅇ()
+니 롤 안 하지
+└ (작성자)ㄴㄴ 질리언 ㅈㅅ 내가 요새 소라카만 해서 헷갈림
+└ () 할배랑 유니콘이 헷갈릴 수가 있나;
+ㅇㅇ(61.203)
+지인피셜 실제로 시간 만지는 능력자 있다더라 근데 쓸 때마다 무드 씹창 난다고 함 정부도 함부로 못 굴린대
+└ ㅇㅇ(110.9) 시간 능력이면 시험 딸깍 아님? 시험 전날로 무한 회귀 ㅆㄱㄴ
+└ ㅇㅇ(59.144) 딸깍 한 번에 무드 씹창 난다는데?
+└ 시간 능력자 처음 들어봄 ㄷㄷ;
+ㄴ 김하온 아님?
+
+제목: 치유계<<이새끼 개꿀 아님?
+내용: 후방에서 힐만 싸면 되잖아
+댓글:
+ㅇㅇ(59.27)
+ㄴㄴ 치유력 있으면 거의 가이드로 발현됨
+└ ? 센티넬도 됨 치유계 센티넬은 최전방 직행이고 ㅋㅋ 귀해서 쓰다 버리지도 못하고 끝까지 굴린다더라
+└ ??? : 문도! 가고 싶은 데로 간다
+└ 센터장 씹련...그럼 나도 그렇게 되는 거임?
+└ ?
+ㅇㅇ(59.27)
+치유계 센티넬이면 그냥 현실 모이라 아님?
+└ 노란 구슬은 센터견한테 날리고 보라 구슬은 들개한테 날리고 강형욱이노 ㄹㅇ;;
+└ 아나 아님? 한 방에 힐이랑 딜 다 되는 거면
+└ 중요한 건 최전방 소모품이라는 거임 ㅋㅋ
+└ 아나가 왜 최전방에 있음?
+└ 아나가 아니라 문도입니다~
+ㅇㅇ(121.88)
+치유계 센티넬은 쓰러져도 몸이 계속 뜨겁다던데 자기 열로 게이지 식히던 게 안 멈춰서
+└ 그 사람 이모지 🥵
+└ 이거 제 이모지야~ 🫠
+ㄴ 어흐 ㅋㅋ
+
+제목: 형 발현함
+내용: 폭주하면 학교 반 날아가는 초고교급 센티넬로 발현했다~ 이거야 ㅇㅇ
+댓글:
+ㅇㅇ(175.211)
+넌 폭주해도 연필 하나 굴러감
+└ 연필 ㅅㅂㅋㅋ
+
+제목: 공간계 나오면 나만의 방 만들어서 평생 숨을 거임
+내용: ㅇㅇ
+댓글:
+ㅇㅇ()
+너 지금 공간계 센티도 아니면서 왜 평생 숨어있음?
+ㄴ(작성자) ㅅㅂ아
+ㅇㅇ(118.41)
+공간계 뜰 확률 거의 이로치 수준임
+└ 이로치 흔한데?
+└└ 밥똥포 하는 사람인데 이거 맞습니다
+ㄴㄴ 씹...밥똥포 처하니까 흔하지...
 
 제목: 궁금한거 있는 게이들
 내용:
@@ -567,74 +732,81 @@ const RAW = `
 ㄴ 정보) 병원 관계자들도 전부 정부 소속이다. 이말은 작성자 구씹이라는 뜻 ㅇㅇ
 ㄴㄴ 오늘의정보추
 
-제목: 공간계 나오면 나만의 방 만들어서 평생 숨을 거임
-내용: ㅇㅇ
+제목: 니네 발현되면 뭔 능력이었으면 좋겠음?
+내용: 아무리 생각해도 딸깍충이 씹GOAT인데
+댓글:
+ㅇㅇ(56.14)
+그건 니가 게을러서 그럼
+ㄴ(작성자) 닌 뭐하고 싶은데
+ㄴ(56.14) 당연히 투명인간이지 으흐흐
+ㄴ(작성자) ㅂㅅㅋㅋ
+ㅇㅇ(1.97)
+염력 나오면 침대에서 리모컨 딸깍해야지 ㅋㅋ 아
+ㄴ(작성자) 개추 ㅋㅋ
+└ 그 염력으로 전선에서 탱크 딸깍해야 됨
+└ 딸깍 인생 끝
+
+제목: 미발갤충들아
+내용: 이몸 심심하구나
+썰 좀 싸보거라 ㅇㅇ
+댓글:
+ㅇㅇ(61.84)
+어제 밤에 집 앞 골목에 검은 차 세 대 서 있었음. 창문 다 썬팅이고 번호판도 가려져 있었는데 그중 한 대에서 사람 내리더니 우리 집 쪽으로 걸어옴. 심장 터지는 줄 알았음.
+└ 냐냐냥
+└ 냐냐냥!!냐냐냥!!!!!
+└ 그래서 어케 됨?
+└ ㅇㅇ(61.84) 걍 옆집 지인이었음 ㅋㅋ
+└ ㅅㅂㄹ아
+ㄴ아이씨발 별거아니면 폼 좀 잡지마라
+ㄴㄹㅇ 옆집 지인 맞음?
+└ ㅇㅇ(61.84) ㅇㅇ 나머지 두 대는 그냥 주차된 거였음 별거 없음 ㅋㅋ
+ㄴ 경찰견인듯
+ㄴ 경찰견 맞는듯
+ㄴ 경찰견 근처에 사람 있으면 끌고갈 때 지인인 척 끌고 간다는 썰도 있음 ㅇㅇ
+ㄴ 와 ㅅㅂ 존나 무섭네...
+
+제목: 은둔 있냐? 아님 은둔할 예정이거나
+내용: 경찰견들 누가 봐도 ㅈㄴ 수상한 검은차 타고 다닌다니까 그거 보면 무조건 피해라
 댓글:
 ㅇㅇ()
-너 지금 공간계 센티도 아니면서 왜 평생 숨어있음?
-ㄴ(작성자) ㅅㅂ아
-ㅇㅇ(118.41)
-공간계 뜰 확률 거의 이로치 수준임
-└ 이로치 흔한데?
-└└ 밥똥포 하는 사람인데 이거 맞습니다
-ㄴㄴ 씹...밥똥포 처하니까 흔하지...
+조용히 올라가는 추신수
 
-제목: 치유계<<이새끼 개꿀 아님?
-내용: 후방에서 힐만 싸면 되잖아
-댓글:
-ㅇㅇ(59.27)
-ㄴㄴ 치유력 있으면 거의 가이드로 발현됨
-└ ? 센티넬도 됨 치유계 센티넬은 최전방 직행이고 ㅋㅋ 귀해서 쓰다 버리지도 못하고 끝까지 굴린다더라
-└ ??? : 문도! 가고 싶은 데로 간다
-└ 센터장 씹련...그럼 나도 그렇게 되는 거임?
-└ ?
-ㅇㅇ(59.27)
-치유계 센티넬이면 그냥 현실 모이라 아님?
-└ 노란 구슬은 센터견한테 날리고 보라 구슬은 들개한테 날리고 강형욱이노 ㄹㅇ;;
-└ 아나 아님? 한 방에 힐이랑 딜 다 되는 거면
-└ 중요한 건 최전방 소모품이라는 거임 ㅋㅋ
-└ 아나가 왜 최전방에 있음?
-└ 아나가 아니라 문도입니다~
-ㅇㅇ(121.88)
-치유계 센티넬은 쓰러져도 몸이 계속 뜨겁다던데 자기 열로 게이지 식히던 게 안 멈춰서
-└ 그 사람 이모지 🥵
-└ 이거 제 이모지야~ 🫠
-ㄴ 어흐 ㅋㅋ
-
-제목: 형 발현함
-내용: 폭주하면 학교 반 날아가는 초고교급 센티넬로 발현했다~ 이거야 ㅇㅇ
-댓글:
-ㅇㅇ(175.211)
-넌 폭주해도 연필 하나 굴러감
-└ 연필 ㅅㅂㅋㅋ
-
-제목: 시간 되감는 애 썰 본 사람
-내용: 롤로 치면 소라카 같던데 맞음?
-댓글:
-ㅇㅇ(61.203)
-소라카는 힐싸갠데요
-ㅇㅇ()
-니 롤 안 하지
-└ (작성자)ㄴㄴ 질리언 ㅈㅅ 내가 요새 소라카만 해서 헷갈림
-└ () 할배랑 유니콘이 헷갈릴 수가 있나;
-ㅇㅇ(61.203)
-지인피셜 실제로 시간 만지는 능력자 있다더라 근데 쓸 때마다 무드 씹창 난다고 함 정부도 함부로 못 굴린대
-└ ㅇㅇ(110.9) 시간 능력이면 시험 딸깍 아님? 시험 전날로 무한 회귀 ㅆㄱㄴ
-└ ㅇㅇ(59.144) 딸깍 한 번에 무드 씹창 난다는데?
-└ 시간 능력자 처음 들어봄 ㄷㄷ;
-ㄴ 김하온 아님?
-
-제목: 페어<<이새끼 뭐임?
+제목: 대기실에서 수능 금지곡 틀어 준다던데 진짜임?
 내용: ㅈㄱㄴ
 댓글:
-ㅇㅇ(106.77)
-페어 맺으면 서로 살리는 공생이라던데 아님?
-└ 언제부터 공생이라고 착각하고 있었지?
-└ 어느 한쪽만 갈리는 것도 공생이라고 할 수 있음?
-ㅇㅇ(14.37)
-말 그대로 한 몸 되는 거임 자세한 건 나도 발현자가 아니라서 모름 듣기로는 페어 하나가 폭주하면 남은 쪽은 신호 소실 처리된다는 얘기 있음 죽은 것도 산 것도 아닌 상태로 서류에서만 지워진다고
-ㄴ 모르면 아가리 싸물어 그럼
-ㄴ (14.37) 이건 뭐야 ㅋㅋ
+ㅇㅇ(223.15)
+ㅇㅇ 그거 일부러 거슬리게 해서 게이지 반응 보는 거래
+└ (작성자) ㅅㅂ 그럼 이왕 틀어줄거면 레몬탱으로 틀어달라해야지
+ㄴ (233.15) 좋아하는 곡은 안 틀어준대 게이지에 영향 갈 수 있어서
+ㄴ () 존나 빡빡하네 ㅋㅋ
+
+제목: 다음 달 뽑기하러감
+내용: 꽝 나왔으면 좋겠다
+댓글:
+ㅇㅇ()
+꽝 나오면 자살하는게 나을텐데?
+└ 그래도 탄피보단 낫지
+└ 충전기 나오면 그나마 나음
+└ 공용 충전기 되면 그게 더 지옥임
+ㅇㅇ(223.15) 내 친구 펑하고 절전된지 3년됨
+└ 절전모드는 원래 잘 안 깸
+└ 충전기가 옆에 있었으면 펑까진 안 갔을 텐데
+└ 공용 충전기 줄 서다가 펑한 거임 대부분. 그래서 탄피 되는 거고 ㅇㅇ
+ㅇㅇ(175.198) 충전기 나오면 센 하나 잘 물어서 정품 되는 게 인생 루트인데 꽝을 바란다고?
+└ 펑하면 충전기도 같이 로그아웃임
+└ 정품 충전기 되려면 이새끼가 센을 유지할 운명인지 탄피가 될 운명인지 잘 살펴봐야됨
+└ 연애하듯이 고르는 거네ㅋㅋ
+└└ 고르긴 뭘 골라 개집에서 붙여 줌
+└└ 억지로 붙여주는 경우도 있고 잘 맞으면 알아서 붙음 ㅇㅇ
+
+제목: 담달 검진
+내용: 다음 달 검진인데 여태 감기 한 번 안 걸렸던 사람임. 근데 귀신같이 검진 날짜 다가오니까 열 남. 솔직히 좀 무섭다 ㅇㅇ;
+댓글:
+ㅇㅇ()
+살면서 감기 한 번 안 걸린게 더 무서운데
+ㅇㅇ()
+끌려가기 전에 썰 풀고 가셈
+ㄴ 경찰견들 차 타기 0.1초 전에 글 싸도 빛삭돼서 어차피 못 봄 ㅇㅇ
 
 제목: ㅅㅈㅎ 니네 발현될 것 같냐?
 내용: 우리 앰앱 둘다 노발이라 ㅈㄴ 걱정됨 ㅆㅂ... 현실은 빤스런이 안되잖아
@@ -648,6 +820,50 @@ const RAW = `
 ㅇㅇ(39.115)
 ㅉㅉ 노발련들 형 오늘 발현하는 꿈꿨다 센터 다 엎고 반정부 수장돼서 올게 ㅇㅇ 내가 하늘에 서겠다
 └ 너무 강한 말은 쓰지 마라 약해 보인다
+
+제목: 노발게이들아
+내용: 그냥 다 같이 운 나쁜 시대에 태어난 거임 ㅇㅇ
+서로 욕하지 말자
+댓글:
+ㅇㅇ(106.243) 착한 척 ㅈㄴ 하네
+ㅇㅇ(1.229) (디씨콘)
+
+제목: 여기서 감정적으로 싸워 봤자 바뀌는 거 없음.
+작성자: ㅇㅇ(175.113)
+내용: 그리고 이성적으로 생각했을 때 내 말이 다 맞음.
+└ 에휴...
+└ ㅇㅇ
+ㄴ (디씨콘)
+
+제목: 여기 글 왜 아직도 안 썰림?
+내용: ㅇ
+└ ㅇㅇ(223.33) 지금 지우면 더 시끄러우니까 냅두는 거임 아이피는 다 따고 있을 거고
+>>3초 뒤, 삭제된 게시물입니다 처리, 뒤로갔을 때도 게시글 목록에 없도록.<<
+
+제목: 우리 동네 ㅈ됨 ㅋㅋ
+내용: 개구멍 하나 털렸다던데 들개 열 명 넘게 잡혀감 ㅆㅂ 발현하면 껴달라고 하려 했는데...
+댓글:
+ㅇㅇ() 늑대는 안 잡힘?
+└ 늑대는 원래 안 잡힘 들개만 잡히지
+└ 어디서나 윗대가리는 안 잡힘
+└ 잡힌 들개들은 개집 가냐 어항 가냐
+└ 삭제된 댓글입니다.
+ㅇㅇ(223.33) 이 글 지금 목줄들이 보고 있음 ㄹㅇ
+└ ㅎㅇ
+└ 늑대들도 보고 있을 듯
+ㄴㄴ 빈자리 채우셔야지 ㅇㅇ
+ㅇㅇ(1.97) 정보) 센터견은 개집, 들개는 개구멍, 박쥐는 동굴
+└ 동굴 실존함?
+└ └ 동굴 정보
+└ ㅇㅇ(1.97) 나도 모름 ㅋㅋ
+
+제목: 개집 vs 개구멍
+내용: 사상검증 간다 ㅋㅋ
+댓글:
+ㅇㅇ(39.115) 사상을 떠나 개집에선 탄피 과열돼도 충전기 배급 순서 정해져 있어서 개좆같을듯 계급 높은 탄피부터 충전해줄거아냐
+└ ㅇㅇ(106.77) 그래도 산짐승들은 충전기 자체가 없잖아
+ㄴㄴ 개들 충전기 없다는 말은 누가 퍼뜨린거냐 개구씹을 ㅉㅉ
+└ ㅇㅇ(39.115) 없는 게 줄 서다 펑하는 거보단 나음
 
 제목: 근데 배급으로 먹고살면 사실상 센터캥 아니냐
 내용: ㅇㅇ
@@ -681,15 +897,23 @@ const RAW = `
 
 제목: 곧 삭제될 글
 내용:
-다들 너무 감정적으로만 접근하는 것 같아서 한마디 함. 일단 발현은 본인 선택이 아님. 그건 다 알 거고. 문제는 발현 이후 선택지가 사실상 세 개밖에 없다는 거임.
-센터 편입
-반정부 합류
-은둔
+다들 너무 감정적으로만 접근하는 것 같아서 한마디 함.
+일단 발현은 본인 선택이 아님.
+그건 다 알 거고.
+문제는 발현 이후 선택지가 사실상 세 개밖에 없다는 거임.
+1. 센터 편입
+2. 반정부 합류
+3. 은둔
 근데 은둔은 추적 때문에 현실적으로 불가능하고(무조건 3일 안에 잡힌다는 얘기가 괜히 나오는 게 아님)
-반정부는 보급도 체계도 없어서 폭주 관리가 안 됨. 가이드 수급이 안 되는 조직에서 센티넬이 오래 버틸 수 있다고 생각함? 폭주 한 번이면 끝임.
+반정부는 보급도 체계도 없어서 폭주 관리가 안 됨.
+가이드 수급이 안 되는 조직에서 센티넬이 오래 버틸 수 있다고 생각함?
+폭주 한 번이면 끝임.
 그러니까 감정적으로 센터가 싫은 건 이해하는데, 생존 확률만 놓고 보면 센터 편입이 그나마 합리적인 선택이라는 거임.
-물론 센터가 완벽하다는 말은 아님. 소모품 취급하는 거 맞고 가이드 돌려쓰기도 문제 맞음. 근데 그건 내부에서 바꿔야지 밖에서 총 들고 엎는다고 해결되는 게 아님.
-결국 체제 안에서 목소리를 내야 함. 이런 얘기하면 센터견이라고 할 텐데 그냥 현실을 말하는 거임.
+물론 센터가 완벽하다는 말은 아님.
+소모품 취급하는 거 맞고 가이드 돌려쓰기도 문제 맞음.
+근데 그건 내부에서 바꿔야지 밖에서 총 들고 엎는다고 해결되는 게 아님.
+결국 체제 안에서 목소리를 내야 함.
+이런 얘기하면 센터견이라고 할 텐데 그냥 현실을 말하는 거임.
 감정 빼고 팩트로 봐라.
 댓글:
 ㅇㅇ(118.235)
@@ -742,317 +966,105 @@ const RAW = `
 └ (56.28)현실이 그래 병신아
 └ (211.43)그럼 인력 가져다 쓰면서 후처리 이런식으로 해도 됨? 나도 니 아빠 쓰고 죽으면 통보만 때려도 되냐?
 ㅇㅇ(37.91)
-재목은 곧 삭제될 글 이지랄 하면서 씹쓰레기 똥발언 싸질러 놓고 삭제되지 않는 것까지가 템플릿임 ㅇㅇ
+제목은 곧 삭제될 글 이지랄 하면서 씹쓰레기 똥발언 싸질러 놓고 삭제되지 않는 것까지가 템플릿임 ㅇㅇ
 
-제목: 여기 글 왜 아직도 안 썰림?
-내용: ㅇ
-└ ㅇㅇ(223.33) 지금 지우면 더 시끄러우니까 냅두는 거임 아이피는 다 따고 있을 거고
->>3초 뒤, 삭제된 게시물입니다 처리, 뒤로갔을 때도 게시글 목록에 없도록.<<
-
-제목: 여기서 감정적으로 싸워 봤자 바뀌는 거 없음.
-작성자: ㅇㅇ(175.113)
-내용: 그리고 이성적으로 생각했을 때 내 말이 다 맞음.
-└ 에휴...
-└ ㅇㅇ
-ㄴ (디씨콘)
-
-제목: 노발게이들아
-내용: 그냥 다 같이 운 나쁜 시대에 태어난 거임 ㅇㅇ
-서로 욕하지 말자
-댓글:
-ㅇㅇ(106.243) 착한 척 ㅈㄴ 하네
-ㅇㅇ(1.229) (디씨콘)
-
-제목: 어항이 뭐임?
-내용:
-어항 어항 거리는데 새로운 신음소리냐?
-ㅇㅇ
-댓글:
-삭제된 댓글입니다.{{어항 말고 그냥 실험실이라고 해 ㅋㅋ 우리 사촌이 거기서 일했었는데}}
-└ 이거 파딱이 지운거임? 뭐라 했길래 지워짐?
-└ 어항 얘기했음
-└ 그거 하면 바로 지워지더라
-└ 무섭게 왜 이럼
-ㄴ 그니까 어항이 뭔데
-삭제된 댓글입니다.
-└ 아 ㅂㅅ아 그 단어 쓰면 바로 지워진다고
-ㄴ 단어가 기억 안 남; 뭐였지?
-ㄴ 어항 씨발아
-ㄴ 아니 그니까 어항이 뭘 지칭했지?
-ㄴ삭제된 댓글입니다.
-ㄴㄴ ㅂㅅ들 ㅋㅋㅋ
-ㅇㅇ(189.27)
-어항은 물고기를 기르거나 잡는 데 사용하는 용기를 의미하며, 법률적으로는 어업 근거지로서의 항구를 지칭하기도 합니다.
-ㅇㅇ(61.74)
-핑프련 니는 어항 가라 ㅋㅋ
-
-제목: 발현되면 다 어항감?
-내용: 어항 기준이 뭐임?
-좆반인으로 치면 서울대 가는 수준이냐?
-댓글:
-ㅇㅇ()
-서울대를 어따 비교해 ㅋㅋ 어항은 지옥이다...
-ㅇㅇ(211.52)
-내 친구 작년에 발현했는데 그 뒤로 연락 끊김
-└(113.21) 센터 들어가면 폰 뺏어서 그럼
-└ (211.52) 내가 알기론 금붕어들만 뺏김
-└ ()왜? 폰 놔둔 곳을 까먹나?
-└ ()유동유동아...
-└ ()니 친구 어항 간 거야
-└ ()이 글 곧 삭제되면 ㄹㅇ이라는 거임
->>>13초 후, 삭제된 게시물입니다 처리, 뒤로갔을 때도 게시글 목록에 없도록.<<
-
-제목: 어항 ㅉㄹㅅ
-내용: 7년된 금붕어 있었다고 함
-댓글:
-ㅇㅇ(211.178)
-ㄹㅇ? 이걸 보고도 센터견인 새끼들은 사람새끼냐?
-ㄴ () 그래서 센터견이라고 하는 거임
-ㅇㅇ()
-어항 들어간 사람들은 평생 금붕어임? 어렸을때부터 금붕어된 애들은 걍 답도 없는 거임?
-└ 어항이 싫으면 금붕어가 떠나야지
-└ 횟집에서 초밥이 탈출하는거 본 적 있음?
-└ 이렇게 말하니까 ㅈㄴ 무섭긴 하네
-
-제목: 니네 어항 한번 깨졌었던거 아냐?
-내용: 가스 폭발이라고 뉴스 나왔는데 그거 금붕어가 붕어빵된거라는 썰이 있음
-ㅇㅇ(118.92)
-한번이 아니라 몇번 깨졌을걸
-ㅇㅇ(175.113) 공식 발표로 가스 누출 사고 맞음. 근거 없는 썰 퍼뜨리지 마라
-└ ㅇㅇ() 가스 누출로 철문이 종잇장처럼 구겨지냐?
-└ ㅇㅇ() 금붕어에 붕어빵 ㅆㅂㅋㅋ 지랄을 해라
-└ 금붕어가 어항 깨고 나온거라고 기정사실화됨.
-└ 솔직히 무슨 말인지 모르겠고 은어 웃기면 개추
-ㄴㄴ 개추
-ㄴㄴ 개추ㅋㅋㅋㅋㅋ 웃음타율 ㅈㄴ 높음
-ㅇㅇ()
-그럼 어항에서 탈출한 금붕어 있다는게 진짜임?
-ㄴ붕어빵이라고 했지 탈출했다고 하진 않았다
-└ ㄴ언제부터 탈출했다고 착각하고 있었지?
-└ 하나 있긴 하다던데
-└ ㅇㅇ(175.113) 어항에서 나온 개체는 없음. 있었으면 공식 수배 떴음.
-└ 이새낀 어딜 가나 있네 현실 좀 살아라
-ㅇㅇ()
-어항 관련 ㅈㄴ 유명한 사건 있음. 불붕이었는데 소화기 없어서 그때도 어항에 불 ㅈㄴ 크게 나고 난리 났었음 좀만 늦었으면 근처 산 다 탔다했음 ㅇㅇ
-ㄴ 진짜 씹...어항주들은 뇌가 없나? 무슨 정신머리로 금붕어 혼자만 둠?
-ㄴ 그럼 붕어빵이 슈붕된거임?
-ㄴ 그런 은어는 없어요 어머님.
-ㄴ 슈붕이 뭔데 ㅅㅂ아 ㅋㅋ
-ㄴㄴ 불속이라매 ㅋㅋ 그럼 붕어빵돼서 녹았으니까 슈붕 ㅋㅋ
-ㄴ ㅂㅅㅋㅋㅋㅋ
-
-제목: 냉탕에 상어가 살거라 믿었지
-내용:
-나도 알아 색기야 그딴 건 없지~
-내가 노발인 것도 안 믿겨 병신
-어항보다 내 상황이 더 무섭지~
-댓글:
-ㅇㅇ()
-ㅂㅅ
-
-제목: 이거 맞음?
-내용:
-센티 - 금붕어
-불속성 금붕어 - 불속붕/불붕
-불붕을 위한 충전기 - 소화기
-물속성 금붕어 - 물속붕/물붕
-물붕을 위한 충전기 - 여과기
-그럼 다른 속성은 뭐라고 함? 다른 충전기는? ㅆㅂ 공부하는데 대가리 터질 거 같다......
-댓글:
-ㅇㅇ()
-굳이 이렇게까지 할 필요없고 대충 아다리 맞게 얘기하면 다 알아들음 ㅇㅇ
-ㅇㅇ()
-이렇게 모아보니까 다시 봐도 ㅈㄴ 웃기네 이거 만든 새끼는 뭐하는 놈이냐? ㅋㅋ
-ㄴ 어항 끌려갔다 나온 사람이래
-ㄴ ㄹㅇ이가...
-ㄴ 겠냐?
-ㄴ 실제로 어항이라 붙여진 이유는 그곳이 유리벽으로 이루어져서라고 합니다~
-ㅇㅇ()
-[[link:glossary]]https://m.h2hside.com/board/jiswoo2ian/10907
-
-제목: 횟집 사장
-내용:
-실종됐다는 얘기도 있던데 진짜임? 어벤져스 좋아한다고 유명했잖아
-댓글:
-ㅇㅇ(113.51)
-어항 주인 말고 횟집 사장이라고 해주세요~
-ㄴ(작성자) 수정함
-ㄴ 뭔 차이임?
-ㄴ (113.51)어항 주인 꼽줄때 횟집 사장이라고 부름 정부 센티넬 센터견이라고 부르는 것처럼 ㅇㅇ
-ㄴ 와 은어의 은어..
-└ 나도 어벤져스 좋아하는데 왜 안 유명함?
-└ 금붕어한테 먹혔나 봄
-└ 삭제된 댓글입니다.
-└ 어벤져스를 안 좋아할 수 있나?
-
-제목: 센티 죽이는 법
-내용: 코마 상태 만들면 됨 ㅇㅇ
-댓글:
-ㅇㅇ()
-(덜덜 떠는 디씨콘)
-ㅇㅇ()
-그냥 충전기 없으면 아무것도 못함ㅋㅋ
-ㄴ ㄹㅇ 전자기기가 따로 없노
-
-제목: 코마 관련해서 아는 사람?
-내용:
-코마 빠진 센티넬은 원래 못 깨움?
-우리 사촌 형 폭주하고 반년째 누워 있는데 센터에서 포기하래
-댓글:
-ㅇㅇ(21.33)
-갓티넬뿐만 아니라 좆반인도 코마 상태에 빠지면 일어나기 힘들다는 거임 ㅇㅇ
-ㄴ (작성자) 센티넬이랑 일반인이랑 다르잖아...
-ㄴ (21.33) 그니까 느그형도 결국 인간이라고 ㅇㅇ
-ㅇㅇ(223.15)
-코마 걸리면 머릿속에서 특정 날이 무한반복된다던데
-└ 나 왜 이 하루가 영원할 거 같지?
-└ 그럼 본인은 매일 첫날인 줄 아는 거임?
-└ 언제부터 오늘이 처음이라고 착각하고 있었지?
-└ 아 이건 좀 소름이다
-ㄴ(작성자)아니 ㅅㅂ 진짜 궁금하다고...
-ㄴㄴ 그걸 왜 여기에 처물어봐
-ㅇㅇ(118.92)
-코마는 본인이 깨어나려는 의지가 있어야 깬대 밖에서 아무리 불러도 본인이 살고 싶어 해야 된다고 치타 누님의 코마라는 노래가 괜히 나온게 아님
-ㅇㅇ()
-나 같으면 안 깨어남 깨어나면 전선임
-└ 맞말추
-ㅇㅇ(175.113)
-코마 회복률 공식 통계상 1% 미만임. 골든 타임 지나면 사실상 불가능하고, 의식 개입은 센티 능력 생각하면 이론상 가능해도 개입하는 쪽 게이지가 먼저 터짐. 그런 썰은 희망 고문임
-└ ㅇㅇ(61.203) 1% 미만? 0.01%의 확률을 뚫은 나는 가능하겠군
-ㄴ ㅇㅇ(70.89) 뭐 뚫음?
-ㄴ ㅇㅇ(61.203) 에공삼 ㅋㅋ
-ㄴ ㅇㅇ(70.89) ㅆㅂ 부럽노...
-
-제목: 니네 그거 아냐?
-내용:
-카더라인데 코마 빠진 사람 의식에 직접 들어가서 끌고 나오는 기계 있다더라 정부 거 아니고 어디서 몰래 만든 거
-댓글:
-ㅇㅇ(106.243)
-ㅈㄹ 판타지 소설 쓰냐ㅋㅋㅋ
-ㅇㅇ()
-기계 정보
-ㄴ() 나는 위치 정보도 같이 주셈
-
-제목: 코마 관련 썰
-내용: 코마 센티넬 깨우려고 의식에 몇백 번 들어간 사람 있다더라
-지인피셜임
-댓글:
-ㅇㅇ(61.203)
-구라 즐
-ㅇㅇ()
-실제로 그게 가능함?
-└ 센티넬이 좆으로 보이냐?
-ㅇㅇ(1.97)
-의식 들어갔다가 같이 갇혀서 못 나온 사람도 있다는 썰 있음 ㅋㅋ
-└ 그럼 그 썰은 누가 푸는건데
-ㄴ 지인
-ㄴ ㅂㅅ
-ㅇㅇ()
-뭔씨발놈의 지인들은 다 신이냐? ㅋㅋㅋ
-
-제목: 어항에도 충전기 있음?
-내용: ㅈㄱㄴ
-ㅇㅇ(211.178) 없으면 금붕어만 죽는게 아니라 사장까지 다 ㅈ됨
-ㅇㅇ()
-어항에선 기포기라고 부름
-└ 기포기가 뭐임?
-ㄴㄴ 충전기 어항 버전이 기포기임 ㅇㅇ 금붕어 안 죽게 숨만 붙여 놓는 용도
-└ 기포기 끄면 금붕어 펑함
-
-제목: 니네 만약 충전기면 뭐 선택함?
-내용: 공용 충전기 되느니 기포기가 낫지 않냐 거긴 안 돌려쓰잖아
-댓글:
-ㅇㅇ()
-어항은 가고 싶다고 갈 수 있는 곳이 아님
-ㅇㅇ()
-정보) 기포기는 어항 밖으로 못 나온다
-└ 금붕어 하나 펑하면 기포기도 같이 터진다는 거임 그래서 기포기 성능이 ㅈㄴ 좋아야 함
-└ ㅇㅇ(작성자) 아 그럼 취소
-ㅇㅇ(118.92) 어항 깨진 날 기포기 하나가 금붕어 막으려고 유리 너머에 서 있었다는 썰
-└ 기포기가 금붕어를 막음?
-└ 유리 너머에서 어떻게 막아
-└ 삭제된 댓글입니다.
-└ 아 또
-ㅇㅇ()
-문득 든 생각인데 충전기가 박을 수도 있지 않음?
-ㄴ 그렇긴 해 충전기를 꽂는 거잖아
-ㄴㄴ 어흐...
-
-제목: 탄피 펑 확률 어떻게 됨?
-내용: 오죽 잘 터지면 탄피라고 하나 싶어서
-댓글:
-ㅇㅇ(175.113) 펑 확률은 충전 주기만 지키면 현저히 낮아짐. 개집에서 충전기 배정 기다리는 게 제일 안전함
-└ 그 배정 기다리다 펑한 애들이 더 많음
-└ 이새끼 또 개집 영업하네
-
-제목: 은둔 있냐? 아님 은둔할 예정이거나
-내용: 경찰견들 누가 봐도 ㅈㄴ 수상한 검은차 타고 다닌다니까 그거 보면 무조건 피해라
-댓글:
-ㅇㅇ()
-조용히 올라가는 추신수
-
-제목: 근데 붕어빵되면 사육사들 어캄?
+제목: 니네 발현자 되면 어떡할거임?
 내용: ㅇㅇ?
 댓글:
-ㅇㅇ()
-어항 깨지면 사육사는 거의 확정킬 난다고 보면 됨
-└ ㅁㅊ 붕어빵이 그렇게 쎔?
-└ () [[kill:10]]ㅇㅇ 그리고 사육사들 다쳐도 뉴스엔 가스 사고로 나옴
-└ 어항 주인 실종도 그날 아님?
-└ 삭제된 댓글입니다.
-ㅇㅇ(14.37) 사육사라고 부르는 것도 웃김 걔네가 하는 짓이 사육이냐
-└ 그럼 뭐라 부름
-└ 횟집 사장이라는 좋은 표현 있잖아
-ㅇㅇ(61.203) 사육사 중에도 금붕어 빼돌린 사람 있다는 카더라 있음
-└ 그 사육사 지금 어디 있음?
-└ 동굴?
-└ 박쥐 얘기 또 나오네
-└ 삭제된 댓글입니다.
-
-제목: 우리 동네 ㅈ됨 ㅋㅋ
-내용: 개구멍 하나 털렸다던데 들개 열 명 넘게 잡혀감 ㅆㅂ 발현하면 껴달라고 하려 했는데...
-댓글:
-ㅇㅇ() 늑대는 안 잡힘?
-└ 늑대는 원래 안 잡힘 들개만 잡히지
-└ 어디서나 윗대가리는 안 잡힘
-└ 잡힌 들개들은 개집 가냐 어항 가냐
-└ 삭제된 댓글입니다.
-ㅇㅇ(223.33) 이 글 지금 목줄들이 보고 있음 ㄹㅇ
+ㅇㅇ(211.36)
+일단 검진 문자 오면 폰 바꾸고 이사감
+└ 탈주닌자 ㄷㄷ
+└ 그거 다 추적됨 ㅇㅇ
+└ 옆집 형 그렇게 숨었다가 3일만에 차 와서 데려감
+└ 느리구나 도망치는 것조차
+└ 언제부터 숨었다고 착각하고 있었지?
+ㄴ 그게 뭔데 씹덕들아
+ㅇㅇ(118.235)
+아직도 센터견 자처하는 호구 있음? 코마 상태에서 깨어나라...
+└ 신호 끊기면 회수도 안 해준다는데 ㅈㅉㅇㅇ?
+└ 그래도 밥은 줌 ㅅㄱ
+└└ 밥 주면 목줄 차는 거 개웃기네 센터견 대단하다!
+ㅇㅇ(39.115)
+반정부군 감 최소한 거긴 안 버림
+└ ㅅㄱ 반동 새끼 신고함
+└└ ㅇㅇ 니는 평생 개밥 먹어라
+ㅇㅇ(106.243)
+다들 발현될 줄 아네ㅋㅋ 니넨 평생 노발임
+└ 개추 ㅋㅋ
+└ 아 ㅋㅋ 발현자들이 방구석에서 키보드를 왜 두드리고 있냐고
+ㅇㅇ(223.62)
+노발들은 왜 자꾸 끼냐 발현도 못 한 게
+└ 개밥은 공짜로 나오냐?
+└ (223.62) 센가 없으면 바로 죽을 새끼 ㅋㅋ
+└ 방구석 노발들끼리 사이좋게 지내요~
+ㅇㅇ(39.118)
+노발 ㅈㄴ 불쌍함 끌려 가면 후방 노역이라던데
+└ 구라 ㄴ
+└ (39.118) 우리 형이 거기 있음 ㅇㅇ
+└└ 아니 노발이 왜 끌려감? 민간인한테 총 쥐어주노;
+└└└ 이걸 믿냐 딱 봐도 구라자나 ㅂㅅ아
+└└└└ (39.118) [[burn]]ㅋㅋ
+ㅇㅇ(223.33)
+이 글 지금 목줄이 보고 있음 ㄹㅇ
 └ ㅎㅇ
-└ 늑대들도 보고 있을 듯
-ㄴㄴ 빈자리 채우셔야지 ㅇㅇ
-ㅇㅇ(1.97) 정보) 센터견은 개집, 들개는 개구멍, 박쥐는 동굴
-└ 동굴 실존함?
-└ └ 동굴 정보
-└ ㅇㅇ(1.97) 나도 모름 ㅋㅋ
-
-제목: 다음 달 뽑기하러감
-내용: 꽝 나왔으면 좋겠다
-댓글:
-ㅇㅇ()
-꽝 나오면 자살하는게 나을텐데?
-└ 그래도 탄피보단 낫지
-└ 충전기 나오면 그나마 나음
-└ 공용 충전기 되면 그게 더 지옥임
-ㅇㅇ(223.15) 내 친구 펑하고 절전된지 3년됨
-└ 절전모드는 원래 잘 안 깸
-└ 충전기가 옆에 있었으면 펑까진 안 갔을 텐데
-└ 공용 충전기 줄 서다가 펑한 거임 대부분. 그래서 탄피 되는 거고 ㅇㅇ
-ㅇㅇ(175.198) 충전기 나오면 센 하나 잘 물어서 정품 되는 게 인생 루트인데 꽝을 바란다고?
-└ 펑하면 충전기도 같이 로그아웃임
-└ 정품 충전기 되려면 이새끼가 센을 유지할 운명인지 탄피가 될 운명인지 잘 살펴봐야됨
-└ 연애하듯이 고르는 거네ㅋㅋ
-└└ 고르긴 뭘 골라 개집에서 붙여 줌
-└└ 억지로 붙여주는 경우도 있고 잘 맞으면 알아서 붙음 ㅇㅇ
-
-제목: 개집 vs 개구멍
-내용: 사상검증 간다 ㅋㅋ
-댓글:
-ㅇㅇ(39.115) 사상을 떠나 개집에선 탄피 과열돼도 충전기 배급 순서 정해져 있어서 개좆같을듯 계급 높은 탄피부터 충전해줄거아냐
-└ ㅇㅇ(106.77) 그래도 산짐승들은 충전기 자체가 없잖아
-ㄴㄴ 개들 충전기 없다는 말은 누가 퍼뜨린거냐 개구씹을 ㅉㅉ
-└ ㅇㅇ(39.115) 없는 게 줄 서다 펑하는 거보단 나음
-
+└ 실시간으로 아이피 따이는중
+└└ 목줄 : 체포하겠어~ 검거하겠어~ 어항 보내겠어~
+└ 대충 다음 주에 뽑기 문자 받을 놈들 모임
+ㅇㅇ(121.131)
+우리 아빠는 나 발현되면 숨겨 준대
+└ 너 불속성 센임?
+└ ㄷㄷ 유동앱 의문의 감옥행
+└ 그거 은닉죄로 처벌받음. 부모님 생각하면 그런 말 하지 말자
+└ 근데 진심 애 뺏기는 것보단 그게 낫지 나 초딩 때 내 친구 발현 ㅈㄴ 일찍 돼서 어항 끌려갔는데 그때 친구 부모님 애 죽은 것마냥 우심 ㄹㅇ
+└└ 어항 끌려간 건 죽은 거 맞잖아......
+ㅇㅇ(223.39)
+솔직히 능력 생기면 센터 가는 게 맞지 않냐. 다들 웃으면서 얘기하는데 지금 전쟁 중인 거 잊은 듯. 뉴스 안 봄? 지난달에만 전선에서 일반인 피해 몇 명 났는지 앎? 그거 막는 게 센티넬들임. 반정부 애들이 도시 하나 날려도 그거 수습하는 것도 센터고. 우리가 지금 여기서 커뮤 하면서 키보드 두드릴 수 있는 것도 누군가 전선에서 버텨 주니까 가능한 거임. 근데 능력 생기면 도망가겠다, 숨겠다, 반정부 가겠다 이런 말이 너무 쉽게 나옴. 그럼 그 자리 누가 채움? 결국 다른 발현자가 대신 가는 거고, 그 사람도 누군가의 형이고 친구임. 센터가 완벽하다는 거 아님. 소모품 취급하는 거 나도 앎. 근데 능력은 선택 못 해도 그걸 어떻게 쓸지는 선택할 수 있잖아. 나는 발현하면 갈 거임. 무섭긴 한데 그게 맞다고 생각함.
+└ 세줄요약좀
+└└ ㅇㅇ(223.39) 1. 전쟁 중이다 2. 누군가는 가야 한다 3. 나는 간다
+└ 니나 가
+└ 막상 문자 오면 제일 먼저 폰 바꿀 듯
+└└ ㅇㅇ(223.39) 안 바꿈
+└ 국뽕도 아니고 센뽕은 또 무슨 초식이냐 ㅋㅋ
+└└ ㅇㅇ(223.39) 팩트임
+└ ???:이것은 내가 센터견이 되기까지의 이야기다
+ㅇㅇ(118.41)
+실제로 요즘 우리 동네 쉬었음 청년보다 숨었음 청년이 더 많음
+└ 숨었음 청년 3일 뒤면 잡혔음 청년됨
+└ 바~로 연락없음 청년
+ㄴ 야 이 나쁜새끼들아
+ㅇㅇ(175.198)
+난 센티보단 가이드였으면 좋겠음 전선 안 나가도 된다며
+└ 그럼 전선 나가있는 센티넬은 누가 물빨해주는데
+ㄴ 너 혹시 성향이 그쪽임?
+└ 페어 못 하면 이 사람 저 사람 돌려쓰기 당하는데도? ㅋㅋ
+└└ 와 ㄹㅇ임?
+└└ 씹ㅋㅋ 그냥 공공재네
+└└ 와...이 글 보고 센터견 하기로 했다 ㅇㅇ
+└└ 근데 진짜 잘 몰라서 그러는데 센티가 박는 거임? 능력도 있는데 박기까지? 씹알파자너
+└└ 정보) 미발갤은 노발만 있는 곳이다
+ㅇㅇ(61.84)
+발현하면 학교부터 안 감 개꿀
+└ 학교 안 가면 바로 센터행인데 ㅂㅅ아
+└└ (61.84)그게 개꿀이라고 학교보다 나음
+└ 얘는 진짜 불쌍하네
+ㅇㅇ(106.77)
+반정부 애들 하는 짓 보면 센터가 낫다 진짜로
+└ (112.169)니 센터 직원이지
+└ (223.38)시급 얼마임? 센터 직원도 센티임?
+└└ (112.169)센터 직원은 입만 무거우면 다 들어감 ㅇㅇ
+└└└ (223.38)그럼 이 새낀 왜 있음?
+└└└└ (106.77) 센터 직원 아니라고 ㅆㅂ들아
+ㅇㅇ(110.70)
+공부나 해라 정치충들아
+└ 공부해봤자 발현되면 다 소용없음
+└└ 이게 맞말이라 슬프네
+└ 걍 다 같이 망하자
+ㅇㅇ(1.229)
+결론: 센터 가면 소모품, 반정부 가면 반동분자, 숨으면 범죄자, 노발이면 부러워서 우울하고 후방 차출됨
+노발은 그냥 목매달고 자살 ㄱㄱ
+ㄴ박쥐는 뭐임?
+└└ (1.229) 취급 안함
+└ 정리 개 잘하네
 `;
 
 const NOTICE_TXT = `1. 특정 시설 언급 금지. 자동 필터로 즉시 삭제되며 반복 시 아이피 차단됩니다.
@@ -1063,7 +1075,7 @@ const NOTICE_TXT = `1. 특정 시설 언급 금지. 자동 필터로 즉시 삭�
 
 갤 오래 하고 싶으면 적당히 하자.`;
 const MILO={id:'milo',title:'미발갤러 분들께 알립니다.',head:'공지',nick:'Milo',badge:true,isMilo:true,
-  body:"안녕하세요. 미발현 마이너 갤러리 회원 여러분.\n여러분이 '어항 주인'이자 '횟집 사장'이라고 불러 주시는 Milo입니다.\n은어들이 참 재밌더군요. 덕분에 저도 오랜만에 웃었습니다.\n\n이제서야 인사를 드립니다.\n이 글을 쓰기까지 꽤 오래 기다렸습니다. 기다리는 것 말고는 할 수 있는 게 없었거든요.\n그동안은 시간이 제 편이 아니었으니까요.\n\n몇 해 전, 아니 이제는 십수 년 전이라고 해야 할까요?\n저는 어항에서 금붕어 한 마리를 돌보고 있었습니다.\n아주 예쁘고 귀여운 금붕어였지요.\n머리가 비상해 건방질 법도 한데, 말을 참 잘 들었습니다.\n저는 그 금붕어를 아꼈습니다.\n\n그래서 금붕어와 한 약속은 하나도 빠짐없이 지켰습니다.\n갖고 싶다던 것들도, 잠깐 바깥 공기를 쐬고 싶다던 부탁까지도요.\n\n그런데 그 금붕어가 저를 어항 밖으로 던져 버리고 사라졌습니다.\n덕분에 저는 아주 먼 길을 돌아와야 했습니다.\n\n처음부터 다시 자라야 했으니까요.\n이제야 그 금붕어와 눈높이가 맞게 되었네요.\n\n그래서 다시 손에 넣으려고 합니다.\n\n미발갤러 여러분께 부탁드리는 이유는 간단합니다.\n\n정보력이 뛰어나시니까요.\n오랫동안 눈팅을 해 왔습니다.\n\n근거 없는 찌라시도 많았지만,\n\n저를 깜짝 놀라게 한 썰도 분명 있었습니다.\n사육사분들 중에 그런 썰을 푸신 분이 계신다면,\n\n앞으로는 입조심해 주세요.\n누구신지는 이미 알고 있습니다.\n\n본론을 말씀드리겠습니다.\n제 금붕어에 대해 조금이라도 아시는 분은 제 갤로그 방명록에 비밀글로 남겨 주세요.\n보내 주신 분께는 작은 선물을 드리겠습니다.\n\n제가 놓친 금붕어를 다시 어항에 넣을 수 있도록 미발갤러 여러분의 많은 관심과 사랑 부탁드립니다.\n감사합니다.",
+  body:"안녕하세요. 미발현 마이너 갤러리 회원 여러분.\n여러분이 '어항 주인'이자 '횟집 사장'이라고 불러 주시는 Milo입니다.\n은어들이 참 재밌더군요. 덕분에 저도 오랜만에 웃었습니다.\n\n이제야 인사를 드립니다.\n이 글을 쓰기까지 꽤 오래 기다렸습니다. 기다리는 것 말고는 할 수 있는 게 없었거든요.\n그동안은 시간이 제 편이 아니었으니까요.\n\n몇 해 전, 아니 10년이 좀 지났을까요?\n저는 어항에서 금붕어 한 마리를 돌보고 있었습니다.\n아주 예쁘고 귀여운 금붕어였지요.\n머리가 비상해 건방질 법도 한데, 말을 참 잘 들었습니다.\n저는 그 금붕어를 무척 아꼈습니다.\n\n그래서 금붕어와 한 약속은 하나도 빠짐없이 지켰습니다.\n갖고 싶다던 것들도, 잠깐 바깥 공기를 쐬고 싶다던 부탁까지도요.\n그런데 그 금붕어가 저를 어항 밖으로 던져 버리고 사라졌습니다.\n\n덕분에 저는 아주 먼 길을 돌아와야 했습니다.\n처음부터 다시 자라야 했으니까요.\n그래도 이제야 그 금붕어와 눈높이가 맞게 되었네요.\n\n그동안 이곳을 오래 지켜봤습니다.\n다들 정보력이 참 뛰어나시더군요.\n노발이 후방으로 끌려간다는 이야기처럼 근거 없는 찌라시도 많았지만요.\n(걱정하지 마세요. 노발은 데려갈 이유가 없습니다. 하하.)\n그중에는 저를 깜짝 놀라게 한 썰도 분명 있었습니다.\n혹시라도 이 글을 보고 계신 사육사분들 중 그런 썰을 푸신 분이 계신다면,\n앞으로는 입조심해 주세요.\n누구신지는 이미 알고 있습니다.\n\n미발갤러 여러분은 염력과 시간계를 가장 좋아하시는 것 같더군요.\n저도 그 능력들을 참 좋아합니다. 제가 가장 좋아하는 히어로가 닥터 스트레인지거든요.\n공간계와 치유계도 인기가 많던데,\n공간계가 정부를 나와 공간을 지으면 그 공간이 곧 개집이 된다는 글은 처음 보고 얼마나 웃었는지 모릅니다. 하하.\n세상에는 참 다양한 능력이 있습니다. 매력적인 능력도 아주 많지요.\n어쩌면 지금 이 글을 훤히 들여다보며 마음대로 주무르고 있는 센티넬도 있을 겁니다.\n아. 요즘은 무슨 일이 생기면 당근을 흔들라던데, 이렇게 흔들면 되던가요? 🥕\n\n아무튼...\n정보력이 뛰어난 미발갤러 여러분께 부탁 하나만 드리겠습니다.\n제 금붕어에 대해 조금이라도 아시는 분은 제 갤로그 방명록에 비밀글로 남겨 주세요.\n보내 주신 분께는 작은 선물을 드리겠습니다.\n제가 놓친 금붕어를 다시 어항에 넣을 수 있도록, 미발갤러 여러분의 많은 관심과 사랑 부탁드립니다.\n감사합니다.",
   comments:[],n:0,views:1,up:0,down:0,min:1440+107};
 const SURVEY={q:'미발갤러들 사상검증 ㄱㄱ',opts:[['센터견',1204],['들개',987],['은둔',1630],['박쥐',211]]};
 
@@ -1134,6 +1146,7 @@ function setText(c,t){
   if((m=t.match(/^\[\[kill:(\d+)\]\]([\s\S]*)$/))){c.killAfter=+m[1];t=m[2].trim()}
   if((m=t.match(/^\[\[late:(\d+)\]\]([\s\S]*)$/))){c.lateBy=+m[1];t=m[2].trim()}
   if(/디씨콘\)$/.test(t)&&t.startsWith('(')){c.sticker=/덜덜/.test(t)?'shake':'basic';c.text='';return}
+  if(t.startsWith('[[burn]]')){c.burn=true;t=t.slice(8).trim()}
   if(t==='삭제된 댓글입니다.'||t==='작성자가 삭제한 댓글입니다.'){c.deleted=true;c.text='';return}
   c.text=t;
 }
@@ -1170,9 +1183,10 @@ function parseAll(raw){
     if((m=l.match(/^ㅇㅇ\s*(\([^)]*\))\s*(.*)$/))){cur=mkC(m[1],m[2],0,p);p.comments.push(cur);last=cur;orphan=false;continue}
     if(l.startsWith('삭제된 댓글입니다.')&&!(cur&&!orphan&&!cur.text&&!cur.replies.length&&!cur.sticker&&!cur.deleted&&!cur.link)){const live=(l.match(/\{\{(.+)\}\}/)||[])[1];cur={level:0,deleted:!live,live:live||null,ip:null,text:live||'',replies:[]};p.comments.push(cur);last=cur;orphan=false;continue}
     if(cur&&!orphan&&!cur.text&&!cur.replies.length&&!cur.sticker&&!cur.deleted&&!cur.link){setText(cur,l);continue}
-    if((m=l.match(/^(└\s*└|ㄴㄴ(?=\s)|└|ㄴ)\s*([\s\S]*)$/))){
-      let lvl=(/^└\s*└/.test(m[1])||m[1]==='ㄴㄴ')?2:1,t=m[2];
-      if(m[1]==='└'&&/^ㄴ[^ㄴ\s]/.test(t)){lvl=2;t=t.slice(1)}
+    if((m=l.match(/^((?:└\s*)+|ㄴㄴ(?=\s)|ㄴ)\s*([\s\S]*)$/))){
+      const nb=(m[1].match(/└/g)||[]).length;
+      let lvl=nb?nb:(m[1]==='ㄴㄴ'?2:1),t=m[2];
+      if(nb===1&&/^ㄴ[^ㄴ\s]/.test(t)){lvl=2;t=t.slice(1)}
       const r=mkReply(t,lvl,p);
       if(!cur||orphan){r.level=0;p.comments.push(r);cur=r;orphan=true}else cur.replies.push(r);
       last=r;continue;
@@ -1195,23 +1209,28 @@ const HICON={'잡담':'💬','질문':'❓','썰':'🔥','찌라시':'📰','정
 const CONCEPT=new Set(['니네 발현자 되면 어떡할거임?','니네 어항 한번 깨졌었던거 아냐?','이거 맞음?','센티 죽이는 법','미발갤충들아']);
 function finish(p,i,minute){
   if(!p.ip)p.ip=freshIP();
-  p.comments.forEach(c=>{if(c.author)c.ip=p.ip;else if(!c.ip&&!c.deleted)c.ip=freshIP();c.replies.forEach(r=>{if(r.author)r.ip=p.ip;else if(!r.ip&&!r.deleted)r.ip=freshIP()})});
+  p.comments.forEach(c=>{if(c.author)c.ip=p.ip;else if(!c.ip&&!c.deleted)c.ip=freshIP();c.replies.forEach(r=>{if(r.author)r.ip=p.ip;else if(!r.ip&&!r.deleted)r.ip=freshIP();else if(r.burn)freshIP()})});
   p.head=HEADOF(p.title);
   const h=hash(p.title+i);
-  p.views=i===0?31204:180+h%3900; p.up=i===0?512:(CONCEPT.has(p.title)?120+h%180:h%48); p.down=i===0?12:h%7;
+  const M=p.title==='니네 발현자 되면 어떡할거임?';
+  p.views=M?31204:180+h%3900; p.up=M?512:(CONCEPT.has(p.title)?120+h%180:h%48); p.down=M?12:h%7;
   p.concept=CONCEPT.has(p.title);
   p.min=minute;
   let t=p.min;p.comments.forEach(c=>{t+=c.lateBy?c.lateBy:1+Math.floor(rnd()*2);c.t=t;c.replies.forEach(r=>{t+=Math.floor(rnd()*2);r.t=t})});
   p.n=p.comments.reduce((n,c)=>n+1+c.replies.length,0);
   return h;
 }
+/* 답글 들여쓰기: '원댓글번호.답글번호': 단계 (앞 답글에 대답하는 답글은 한 칸 더) */
+const NEST={"니네 발현자 되면 어떡할거임?": {"0.2": 2, "0.3": 3, "0.5": 2, "4.1": 2, "9.1": 2, "9.2": 3, "10.1": 2, "11.2": 3, "13.2": 2}, "곧 삭제될 글": {"0.1": 2, "0.2": 2, "0.3": 2, "0.4": 2, "0.5": 3, "0.6": 3, "0.7": 3, "0.8": 4, "2.2": 2, "2.4": 2, "2.5": 3, "2.6": 4, "3.2": 2, "3.3": 3, "3.4": 4, "3.5": 4, "4.2": 2, "4.3": 3, "7.1": 2, "7.2": 3, "7.3": 4}, "니네 그거 아냐?:금수저": {"0.1": 2, "0.2": 3, "0.3": 4}, "근데 배급으로 먹고살면 사실상 센터캥 아니냐": {"4.1": 2, "4.2": 3, "4.3": 4, "5.2": 2}, "개집 vs 개구멍": {"0.2": 2}, "우리 동네 ㅈ됨 ㅋㅋ": {"2.2": 3}, "다음 달 뽑기하러감": {"0.2": 2, "1.2": 2, "2.2": 2, "2.3": 3, "2.4": 3}, "대기실에서 수능 금지곡 틀어 준다던데 진짜임?": {"0.1": 2, "0.2": 3}, "미발갤충들아": {"0.3": 2, "0.4": 3, "0.5": 3, "0.6": 3, "0.7": 4, "0.9": 2, "0.10": 2, "0.11": 3}, "니네 발현되면 뭔 능력이었으면 좋겠음?": {"0.1": 2, "0.2": 3}, "궁금한거 있는 게이들": {"0.1": 2, "0.2": 3}, "치유계<<이새끼 개꿀 아님?": {"0.1": 2, "0.2": 2, "0.3": 3, "1.2": 2, "1.3": 3, "1.4": 4, "2.1": 2, "2.2": 3}, "시간 되감는 애 썰 본 사람": {"1.1": 2, "2.1": 2}, "페어<<이새끼 뭐임?": {"1.1": 2}, "어항이 뭐임?": {"0.1": 2, "0.2": 2, "1.1": 2, "1.2": 3, "1.3": 4, "1.4": 4, "1.5": 1}, "이거 맞음?": {"1.1": 2, "1.2": 3}, "발현되면 다 어항감?": {"1.1": 2, "1.2": 3, "1.3": 4, "1.5": 2}, "어항 ㅉㄹㅅ": {"1.2": 2}, "니네 어항 한번 깨졌었던거 아냐?": {"2.3": 2, "2.4": 3, "3.2": 2, "3.3": 2, "3.4": 3, "3.5": 4}, "근데 붕어빵되면 사육사들 어캄?": {"0.1": 2, "1.1": 2, "2.1": 2, "2.2": 3}, "횟집 사장": {"0.2": 2, "0.3": 3}, "니네 만약 충전기면 뭐 선택함?": {"1.1": 2, "2.3": 2}, "코마 관련해서 아는 사람?": {"0.1": 2, "1.2": 2, "4.1": 2, "4.2": 3, "4.3": 4}, "코마 관련 썰": {"2.1": 2, "2.2": 3}, "오랜만에 불판 ㄱ?": {"0.2": 3, "0.3": 3, "1.2": 3, "1.7": 3, "1.8": 4, "1.9": 4, "2.1": 2, "2.2": 3, "2.3": 4, "2.4": 4, "4.2": 2, "5.2": 2, "5.3": 3, "5.4": 4, "6.2": 2, "6.3": 3, "6.4": 4, "7.2": 2, "7.3": 3, "8.3": 2}};
+function applyNest(){POSTS.forEach(p=>{const k=p.title==='니네 그거 아냐?'?p.title+(p.body.includes('금수저')?':금수저':':기계'):p.title;const m=NEST[k];if(!m)return;Object.entries(m).forEach(([ij,lv])=>{const [i,j]=ij.split('.').map(Number);const r=p.comments[i]&&p.comments[i].replies[j];if(r)r.level=lv})})}
 /* 새로 불러오기: 모든 글·댓글을 처음 상태로 다시 만듦 */
 function build(){
   seed=20261117;
-  POSTS=parseAll(RAW);GLOSSARY=parseAll(GLOSSARY_RAW)[0];collectIPs();
-  let minute=1440+130; // 맨 위 글: 11.18 02:10
-  POSTS.forEach((p,i)=>{p.id='p'+(i+1);const h=finish(p,i,minute);minute-=i===0?40:3+(h%7)});
-  GLOSSARY.id='glossary';finish(GLOSSARY,99,1440*0+20*60+9-1440);GLOSSARY.views=40221;GLOSSARY.up=1203;GLOSSARY.down=8;GLOSSARY.no=10907;GLOSSARY.hidden=true;
+  POSTS=parseAll(RAW);GLOSSARY=parseAll(GLOSSARY_RAW)[0];applyNest();collectIPs();
+  let minute=1440+150; // 맨 위 글: 11.18 02:30
+  const GAP={'이거 맞음?':16}; // '어항이 뭐임?'의 "어항이 뭔데" 댓글보다 늦게 올라오도록
+  POSTS.forEach((p,i)=>{p.id='p'+(i+1);const h=finish(p,i,minute);minute-=GAP[p.title]||4+(h%7)});
+  GLOSSARY.id='glossary';finish(GLOSSARY,99,1440*0+20*60+9-1440);GLOSSARY.views=40221;GLOSSARY.up=1203;GLOSSARY.down=8;GLOSSARY.no=10907;GLOSSARY.hidden=true;GLOSSARY.yr='2021.06.03';
   // Milo 공지는 모든 글·댓글보다 늦게
   let mx=0;POSTS.forEach(p=>{mx=Math.max(mx,p.min);p.comments.forEach(c=>{mx=Math.max(mx,c.t||0);c.replies.forEach(r=>mx=Math.max(mx,r.t||0))})});
   MILO.min=mx+6;
@@ -1219,7 +1238,7 @@ function build(){
 build();
 const hm=m=>{const mm=((m%1440)+1440)%1440;return String(Math.floor(mm/60)).padStart(2,'0')+':'+String(mm%60).padStart(2,'0')};
 const dayOf=m=>17+Math.floor(m/1440);
-const fullDate=m=>`2026.11.${String(dayOf(m)).padStart(2,'0')} ${hm(m)}`;
+const fullDate=(m,p)=>p&&p.yr?`${p.yr} ${hm(m)}`:`2026.11.${String(dayOf(m)).padStart(2,'0')} ${hm(m)}`;
 
 /* ---------- helpers ---------- */
 const app=document.getElementById('app');
@@ -1360,7 +1379,7 @@ function renderList(){
     if(state.tab==='all'&&state.head==='전체')app.append(specialRow('ad','AD','발현 전 마지막 휴가! 오늘 특가 숙소 확인',null,()=>toast('광고입니다')));
     if(state.miloShown&&!state.miloGone)app.append(specialRow('notice','공지',MILO.title,MILO.n,()=>go('milo')));
     app.append(specialRow('notice','공지','갤 이용 수칙 (필독) · 위반 시 아이피 차단',0,()=>go('notice')));
-    if(state.tab==='all'&&state.head==='전체'&&!POSTS[0].removed)app.append(specialRow('best','실베',POSTS[0].title,null,()=>go(POSTS[0].id)));
+    const BEST=POSTS.find(x=>x.title==='니네 발현자 되면 어떡할거임?');if(state.tab==='all'&&state.head==='전체'&&BEST&&!BEST.removed)app.append(specialRow('best','실베',BEST.title,null,()=>go(BEST.id)));
     if(state.tab!=='notice')state.burst.slice().reverse().forEach(b=>app.append(burstRow(b)));
     if(state.tab!=='notice')visible().filter(p=>(state.tab!=='concept'||p.concept)&&(state.head==='전체'||p.head===state.head)).forEach(p=>app.append(postRow(p)));
   }
@@ -1379,7 +1398,7 @@ function linkify(text,c,p){
   d.append(a);return d;
 }
 function cmtNode(c,isTop,p){
-  const cls=['cmt'];if(!isTop)cls.push('r');if(c.level===2)cls.push('r2');
+  const cls=['cmt'];if(!isTop)cls.push('r');if(c.level>=2)cls.push('r'+Math.min(c.level,4));
   if(c.deleted){cls.push('del');const d=el('div',cls.join(' '));d.append(el('div','ctx','삭제된 댓글입니다.'));return d}
   const d=el('div',cls.join(' '));
   const hd=el('div','chd');hd.append(el('span',null,'ㅇㅇ'),el('span','ip',`(${c.ip})`));
@@ -1387,7 +1406,7 @@ function cmtNode(c,isTop,p){
   d.append(hd);
   if(c.sticker){const s=el('div','stk'+(c.sticker==='shake'?' shake':''));s.innerHTML=SVG[c.sticker];d.append(s)}
   else d.append(linkify(c.text,c,p));
-  d.append(el('div','cdt',fullDate(c.t)));
+  d.append(el('div','cdt',fullDate(c.t,p)));
   if(c.live||c.link||c.killAfter){d.classList.add('live')}
   d._c=c;return d;
 }
@@ -1430,7 +1449,7 @@ function renderPost(p){
   if(!p.isMilo)markOpened(p.id);else state.miloRead=true;
   app.innerHTML='';app.append(siteHeader(),backBar());
   const t=el('div','ptitle');const h1=el('h1');h1.append(`[${HICON[p.head]||''}${p.head}] `,p.title);t.append(h1);app.append(t);
-  const who=el('div','pwho');who.append(p.nick?nickEl(p.nick,p.badge):el('span',null,`ㅇㅇ(${p.ip})`),el('i',null,'|'),el('span','dt',fullDate(p.min)),el('span','sp'));
+  const who=el('div','pwho');who.append(p.nick?nickEl(p.nick,p.badge):el('span',null,`ㅇㅇ(${p.ip})`),el('i',null,'|'),el('span','dt',fullDate(p.min,p)),el('span','sp'));
   const fold=el('button','fold','+');fold.setAttribute('aria-label','스크랩');fold.onclick=()=>toast('스크랩은 로그인 후 이용할 수 있습니다');who.append(fold);app.append(who);
   const st=el('div','pstat');const cp=el('button','cpill');cp.append('댓글 ',el('span','r',String(p.n)));
   st.append('조회수 '+fmt(p.views),el('i',null,'|'),'추천 ',el('span','r',fmt(p.up+(voted[p.id]==='up'?1:0))),el('i',null,'|'),cp);app.append(st);
@@ -1553,7 +1572,7 @@ function photoBlock(list){
 }
 
 /* Milo 공지가 사라진 뒤: 1초마다 새 글이 올라오고, 마지막 글 2초 뒤 갤러리가 사라짐 */
-const BURST=['ㅁㅊ 뭐임?','이런 씨발','공지 뭐임?','속보) 횟집 사장 실존','ㅁㅊ 금붕어 그 되감기 아님?','치유계 센티넬 미녀라던데 사실이었노','금붕어들 얼굴 공개됨 갤로그 ㄱ'];
+const BURST=["ㅁㅊ 뭐임?", "속보) 횟집 사장 입갤", "이런 씨발 금붕어 되감기 맞잖아", "🥕🥕🥕🥕🥕🥕🥕🥕🥕🥕🥕🥕", "즐거웠다 미발갤럼들아 나는 공간계가 만든 새 개집으로 떠난다 ㅇㅇ", "금붕어들 얼굴 공개됨 갤로그 ㄱ", "치유계 센티넬 미녀라더니 사실이었노 ㅋㅋ", "으아아악 터진다~~~~~~~~~"];
 function startBurst(){
   let i=0;const base=MILO.min+3;
   const tick=()=>{
@@ -1674,15 +1693,26 @@ function hardReset(){
   addEventListener('mouseup',()=>{if(mouse){mouse=false;end()}});
 })();
 
+/* Milo 공지가 나오는 두 번째 조건: 사이트를 15분 동안 켜 두면 */
+const MILO_AFTER_MS=15*60*1000;
+setTimeout(()=>{
+  if(state.miloReady||state.closed)return;
+  state.miloReady=true;
+  if(!state.route||state.route==='list'){const k=app.scrollTop;renderList();app.scrollTop=k}   // 목록이면 바로 공지+알림
+  else{state.miloShown=true;showNoti('[공지] '+MILO.title+' - Milo','milo')}                  // 글을 보는 중이면 알림만 먼저
+},MILO_AFTER_MS);
+
 /* ---------- device frame ---------- */
 const W=417,H=876;
 function fit(){
   const full=matchMedia('(max-width: 540px)').matches;
   document.body.classList.toggle('full',full);
   const wrap=document.getElementById('wrap'),dev=document.getElementById('device');
-  if(full){dev.style.transform='';return}
+  if(full){dev.style.transform='';dev.style.zoom='';return}
   const s=Math.min(1,(innerHeight-70)/H,(innerWidth-32)/W)*0.95;
-  dev.style.transform=`scale(${s})`;wrap.style.width=W*s+'px';wrap.style.height=H*s+'px';
+  // zoom은 글자를 그 크기로 다시 그려서 transform보다 선명함
+  if(CSS.supports('zoom','1')){dev.style.transform='';dev.style.zoom=s}else{dev.style.transform=`scale(${s})`}
+  wrap.style.width=W*s+'px';wrap.style.height=H*s+'px';
 }
 addEventListener('resize',fit);fit();
 function tick(){const d=new Date();document.getElementById('clock').textContent=(d.getHours()%12||12)+':'+String(d.getMinutes()).padStart(2,'0')}
