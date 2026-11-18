@@ -377,7 +377,19 @@ body.full .toast{position:fixed;bottom:calc(90px + env(safe-area-inset-bottom,0p
 .endv .nz{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .endv .nz b{position:absolute;left:0;right:0;background:rgba(214,52,40,.55);mix-blend-mode:screen}
 </style>
-</head>
+<style>
+.endv .say.recv{font:400 15px/1.6 ui-monospace,"SF Mono",Menlo,Consolas,monospace;letter-spacing:.18em;color:#d9dde0}
+.endv .say.recv.first{color:#9aa1a7;text-shadow:none}
+.endv .say .c{color:#48bed0;text-shadow:0 0 8px rgba(72,190,208,.7);font-family:ui-monospace,Menlo,Consolas,monospace}
+.endv .say.recv.warp{animation:rwarp .07s steps(2) infinite}
+.endv .say.recv.warp.cy{text-shadow:-3px 0 rgba(72,190,208,.85)}
+.endv .say.recv.warp.hard{animation:rwarp2 .05s steps(2) infinite;text-shadow:-4px 0 rgba(214,60,45,.9),4px 0 rgba(255,255,255,.35)}
+@keyframes rwarp{0%{transform:translate(-6px,-50%) skewX(18deg) scaleX(1.15)}50%{transform:translate(5px,-50%) skewX(-22deg) scaleX(.85)}100%{transform:translate(0,-50%) skewX(8deg)}}
+@keyframes rwarp2{0%{transform:translate(-10px,-48%) skewX(28deg) scale(1.25,.9)}50%{transform:translate(9px,-53%) skewX(-30deg) scale(.8,1.1)}100%{transform:translate(-3px,-50%) skewX(12deg)}}
+.endv .say.recv.dead{color:#4e5357;text-shadow:none}
+.endv .say.recv.live{color:#f4f7f8;font-weight:500;text-shadow:0 0 10px rgba(255,255,255,.5);animation:vblink 1.1s steps(1) infinite}
+@keyframes vblink{0%{opacity:1}60%{opacity:.1}100%{opacity:1}}
+</style></head>
 <body>
 
 
@@ -1901,7 +1913,8 @@ const END_MSGS=[ // '§' = 1초 뜸
   ['녹화, 잘 되고 있나요? :)'],
   ['금붕어가 붕어빵이 되면 큰일납니다.'],
   ['아, 무슨 말인지 모르시려나.','cut'],
-  ['이제 그만 가 보세요.','jam']];
+  ['이제 그만 가 보세요.','jam'],
+  ['수신: 1건.','recv']];
 const END_LOST='끊긴 신호입니다.';
 const endGet=k=>{try{return sessionStorage.getItem(k)}catch(e){return null}};
 const endSet=(k,v)=>{try{sessionStorage.setItem(k,v)}catch(e){}};
@@ -1913,9 +1926,9 @@ function endScreen(fromReload){
   if(fromReload)setTimeout(endNext,700);
 }
 /* 하람의 빨간 방해 신호: 가로 띠가 번쩍 */
-function endNoise(on,level){const nz=document.querySelector('.endv .nz');clearInterval(endNzT);nz.innerHTML='';if(!on)return;
+function endNoise(on,level,col){const nz=document.querySelector('.endv .nz');clearInterval(endNzT);nz.innerHTML='';if(!on)return;
   endNzT=setInterval(()=>{nz.innerHTML='';const n=Math.random()<level?Math.ceil(Math.random()*5*level+1):0;
-    for(let i=0;i<n;i++){const b=document.createElement('b');b.style.top=(Math.random()*100)+'%';b.style.height=(1+Math.random()*7)+'px';b.style.opacity=.25+Math.random()*.6;nz.append(b)}},70)}
+    for(let i=0;i<n;i++){const b=document.createElement('b');if(col)b.style.background=col;b.style.top=(Math.random()*100)+'%';b.style.height=(1+Math.random()*7)+'px';b.style.opacity=.25+Math.random()*.6;nz.append(b)}},70)}
 /* 진동: 안드로이드는 vibrate, 아이폰(iOS 18+)은 스위치 햅틱으로 시도 */
 let _hsw=null;
 function haptic(pattern){try{if(navigator.vibrate&&navigator.vibrate(pattern))return}catch(e){}
@@ -1929,12 +1942,24 @@ async function endNext(){
   if(endGet('mibal_end_done')==='0'&&endN>0){/* 문구가 다 뜨기 전에 브라우저 새로고침 → 같은 문구 다시 */}else endN=Math.max(1,endN+1);
   endSet('mibal_end_n',String(endN));endSet('mibal_end_done','0');endTyping=true;const my=++endTypeId;
   const done=()=>{if(my===endTypeId){endTyping=false;endSet('mibal_end_done','1')}};const wait=ms=>new Promise(r=>setTimeout(r,ms));
-  const old=v.querySelector('.lost');if(old)old.remove();endNoise(false);say.classList.remove('jam','dim');
+  const old=v.querySelector('.lost');if(old)old.remove();endNoise(false);say.className='say';
   if(say.textContent){say.classList.add('fade');await wait(260)}
   say.classList.remove('fade');say.textContent='';
   const cur=()=>{const i=document.createElement('i');return i};
   if(endN<=END_MSGS.length){
     const [msg,mode]=END_MSGS[endN-1];const t=[...(mode?msg.replace(/§/g,''):msg)];endBusy=false;
+    if(mode==='recv'){ // 수신: 1건(흐린 기록) → Milo 신호가 빠져나가며 0건 → 하람의 신호만 잡히다가 지우와 연결 → 흰 1건이 깜빡, 깜빡
+      const setT=(x,cls)=>{say.innerHTML=x;say.className='say recv'+(cls?' '+cls:'')};
+      const scr=(n,cls,p)=>['수','신',':',' ',n,'건','.'].map(c=>c===' '?' ':(Math.random()<p?`<span class="${cls}">${endBit(c)}</span>`:endEsc(c))).join('');
+      await wait(500);if(my!==endTypeId)return;
+      setT('수신: 1건.','first');await wait(1400);if(my!==endTypeId)return;
+      for(let k=0;k<12;k++){const p=.75-k*.06;setT(scr(Math.random()<.5?'1':'0','c',p),'warp cy');endNoise(true,.6-k*.05,'rgba(72,190,208,.55)');await wait(65+k*6)}
+      endNoise(false);setT('수신: 0건.','dead');await wait(1700);if(my!==endTypeId)return;
+      for(let k=0;k<24;k++){if(my!==endTypeId)return;setT(scr(Math.random()<.5?'1':'0','x',k<18?.65:.3),'warp hard');endNoise(true,.9);if(k%6===0)haptic([18]);await wait(k<16?45:70)}
+      endNoise(false);
+      setT('수신: 1건.','live');done();endBusy=false;
+      for(let k=0;k<4;k++){if(my!==endTypeId)return;haptic([14]);await wait(1100)}
+      return}
     if(mode==='jam'){ // 처음부터 방해받으며 겨우 써짐
       endNoise(true,.8);say.classList.add('jam','dim');
       for(let i=1;i<=t.length;i++){if(my!==endTypeId)return;
