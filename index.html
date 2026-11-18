@@ -353,6 +353,21 @@ body.full .toast{position:fixed;bottom:calc(90px + env(safe-area-inset-bottom,0p
 .err .mflash{position:absolute;inset:0;pointer-events:none;opacity:0;z-index:4;background:radial-gradient(ellipse 90% 70% at 50% 45%,rgba(70,130,170,.85),rgba(20,50,80,.75) 45%,rgba(5,15,30,.9));mix-blend-mode:normal}
 .err .box .line{min-height:21px;padding:0 14px}
 </style>
+<style>
+/* ===== 엔딩 뒤: 당겨서 새로고침할 때마다 Milo의 한마디 ===== */
+.endv{position:absolute;inset:0;z-index:1000;background:#000;touch-action:none;user-select:none;-webkit-user-select:none;overflow:hidden}
+.endv .pull{position:absolute;left:50%;top:-40px;width:28px;height:28px;margin-left:-14px;border-radius:50%;border:1.5px solid rgba(72,190,208,.25);border-top-color:rgba(72,190,208,.9);opacity:0;box-shadow:0 0 10px rgba(72,190,208,.25)}
+.endv .pull.spin{animation:espin .6s linear infinite}
+@keyframes espin{to{rotate:360deg}}
+.endv .say{position:absolute;left:0;right:0;top:46%;transform:translateY(-50%);padding:0 28px;text-align:center;font:400 16px/1.6 "Apple SD Gothic Neo","Noto Sans KR",sans-serif;letter-spacing:.02em;color:#7fd0dc;text-shadow:0 0 12px rgba(72,190,208,.45);white-space:pre-wrap}
+.endv .say i{display:inline-block;width:1.5px;height:16px;background:#48bed0;margin-left:3px;vertical-align:-2px;animation:eblk .6s steps(1) infinite}
+.endv .say.fade{transition:opacity .25s,filter .25s;opacity:0;filter:blur(4px)}
+@keyframes eblk{50%{opacity:0}}
+.endv .lost{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:12px}
+.endv .lost div{font:400 12px/1 ui-monospace,"SF Mono",Menlo,Consolas,"Noto Sans KR",monospace;letter-spacing:.24em;color:rgba(160,160,160,.55);opacity:0}
+.endv .lost div.on{animation:lost 1.8s steps(1) infinite}
+@keyframes lost{0%{opacity:.75}8%{opacity:.15}12%{opacity:.6}50%{opacity:.5}53%{opacity:0}57%{opacity:.55}100%{opacity:.5}}
+</style>
 </head>
 <body>
 
@@ -1840,9 +1855,51 @@ function startError(){
     const m=win.querySelector('.m');
     for(let i=1;i<=MILO_MSG.length;i++){m.textContent=MILO_MSG.slice(0,i);m.append(document.createElement('i'));await wait(MILO_MSG[i-1]===' '?40:80)}
     const close=async()=>{win.querySelectorAll('button').forEach(b=>b.onclick=null);win.classList.remove('show');win.classList.add('bye');hud.classList.remove('on');
-      await wait(330);win.remove();for(const [a,ms] of [[.6,60],[0,120],[.2,50],[0,0]]){fieldA=a;await wait(ms)}glow.classList.remove('on');run=false;fg.clearRect(0,0,W,H)};
+      await wait(330);win.remove();for(const [a,ms] of [[.6,60],[0,120],[.2,50],[0,0]]){fieldA=a;await wait(ms)}glow.classList.remove('on');run=false;fg.clearRect(0,0,W,H);endN=0;endSet('mibal_end_n','0');endScreen(false);ov.remove()};
     win.querySelector('.wx').onclick=close;win.querySelector('.ok').onclick=close;
   })();
+}
+
+/* ---------- 엔딩 뒤: 검은 화면에서 당겨서 새로고침(또는 브라우저 새로고침)할 때마다 Milo의 한마디 ----------
+   기억은 이 탭에만 남음(sessionStorage): 새로고침해도 이어지고, 탭/창을 닫았다 다시 열면 처음부터 */
+const END_MSGS=['HAHA :)','꺼내주지 못했나?','어항에 갇히면 이런 기분이겠네 :)','아직 못 나갔나?','안타깝네 :)','🐠','내 금붕어는 잘 있나? :)','안부 전해줘 :)','이제 나가 :)'];
+const END_LOST='끊긴 신호입니다.';
+const endGet=k=>{try{return sessionStorage.getItem(k)}catch(e){return null}};
+const endSet=(k,v)=>{try{sessionStorage.setItem(k,v)}catch(e){}};
+let endN=+(endGet('mibal_end_n')||0),endBusy=false,endTypeId=0;
+function endScreen(fromReload){
+  endSet('mibal_end','1');
+  const scr=document.querySelector('.screen');let v=scr.querySelector('.endv');
+  if(!v){v=document.createElement('div');v.className='endv';v.innerHTML='<div class="pull"></div><div class="say"></div>';scr.append(v);bindEndPull(v)}
+  if(fromReload)setTimeout(endNext,700);
+}
+async function endNext(){
+  if(endBusy)return;endBusy=true;const v=document.querySelector('.endv');const say=v.querySelector('.say');
+  endN++;endSet('mibal_end_n',String(endN));const my=++endTypeId;const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  const old=v.querySelector('.lost');if(old)old.remove();
+  if(say.textContent){say.classList.add('fade');await wait(260)}
+  say.classList.remove('fade');say.textContent='';
+  if(endN<=END_MSGS.length){
+    const t=[...END_MSGS[endN-1]];endBusy=false;
+    for(let i=1;i<=t.length;i++){if(my!==endTypeId)return;say.textContent=t.slice(0,i).join('');say.append(document.createElement('i'));await wait(t[i-1]===' '?45:95)}
+  }else{
+    const box=document.createElement('div');box.className='lost';v.append(box);endBusy=false;
+    for(let i=0;i<7;i++){if(my!==endTypeId)return;const d=document.createElement('div');d.textContent=END_LOST;d.style.animationDelay=(-Math.random()*1.8)+'s';box.append(d);d.classList.add('on');await wait(220)}
+  }
+}
+function bindEndPull(v){
+  const pull=v.querySelector('.pull');let y0=null,d=0,busy=false,wheel=0,wt;
+  const show=x=>{pull.style.transition='none';pull.style.opacity=Math.min(1,x/70);pull.style.transform=`translateY(${Math.min(x,110)}px) rotate(${x*3}deg)`};
+  const hide=()=>{pull.style.transition='opacity .2s,transform .2s';pull.style.opacity=0;pull.style.transform='translateY(0)'};
+  const fire=()=>{if(busy)return;busy=true;pull.style.transition='transform .2s';pull.style.transform='translateY(80px)';pull.style.opacity=1;pull.classList.add('spin');
+    setTimeout(()=>{pull.classList.remove('spin');hide();endNext();setTimeout(()=>busy=false,400)},650)};
+  v.addEventListener('touchstart',e=>{y0=e.touches[0].clientY;d=0},{passive:true});
+  v.addEventListener('touchmove',e=>{if(y0==null)return;d=(e.touches[0].clientY-y0)*.55;if(d>0){show(d);if(e.cancelable)e.preventDefault()}},{passive:false});
+  v.addEventListener('touchend',()=>{if(y0==null)return;if(d>70)fire();else hide();y0=null;d=0});
+  v.addEventListener('mousedown',e=>{y0=e.clientY;d=0});
+  addEventListener('mousemove',e=>{if(y0==null||!v.isConnected)return;d=(e.clientY-y0)*.55;if(d>6)show(d)});
+  addEventListener('mouseup',()=>{if(y0==null)return;if(d>70)fire();else if(d>6)hide();y0=null;d=0});
+  v.addEventListener('wheel',e=>{if(e.deltaY>=0)return;wheel+=-e.deltaY;show(wheel/4);clearTimeout(wt);if(wheel>320){wheel=0;fire();return}wt=setTimeout(()=>{wheel=0;if(!busy)hide()},250)},{passive:true});
 }
 /* ---------- routing ---------- */
 function route(){
@@ -1958,7 +2015,9 @@ function fit(){
 addEventListener('resize',fit);fit();
 function tick(){const d=new Date();document.getElementById('clock').textContent=(d.getHours()%12||12)+':'+String(d.getMinutes()).padStart(2,'0')}
 tick();setInterval(tick,15000);
+if(endGet('mibal_end')==='1'){state.closed=true;state.errStarted=true;state.miloShown=true;state.miloRead=true;state.miloGone=true;}
 route();
+if(endGet('mibal_end')==='1')endScreen(true);
 </script>
 
 </body>
