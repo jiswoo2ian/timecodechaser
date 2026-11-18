@@ -1,0 +1,1690 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>미발현 갤러리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<style>
+/* One visual world on purpose: a light, community-board mobile web page inside a phone.
+   Layout: phone on a desk for wide screens; the page itself, edge to edge, on a real phone. */
+:root{
+  color-scheme:light;
+  --desk:#e6e8ef; --desk-ink:#6d7282;
+  --bezel:#111216; --bezel-edge:#2a2c33;
+  --bg:#ffffff; --fg:#111111; --sub:#555a66; --muted:#8a8f9c; --faint:#b3b7c2;
+  --line:#e4e6ee; --line2:#d6d9e4; --soft:#f6f7fb; --countcol:#f3f4fa; --reply:#f7f8fb;
+  --navy:#3b4890; --navy2:#4352a3; --navy-deep:#2f3a7a; --yellow:#ffe94a;
+  --red:#d31900; --orange:#f26a1b; --notice:#e65a2b; --blue:#3b4890; --link:#2a5bd7;
+  --toast:#222; --toast-ink:#fff; --shadow:rgba(20,24,40,.28);
+  --font:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+}
+html,body{height:100%}
+body{background:var(--desk);color:var(--fg);font-family:var(--font)}
+*{box-sizing:border-box}
+button,select,input{font:inherit;color:inherit}
+button{background:none;border:0;padding:0;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--navy);outline-offset:-2px}
+mark{background:#fff0a0;color:inherit;border-radius:2px}
+
+.stage{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  padding-block:20px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.device-wrap{position:relative;flex:none}
+.device{position:absolute;left:0;top:0;width:417px;height:876px;transform-origin:top left;
+  background:var(--bezel);border-radius:64px;padding:12px;box-shadow:0 0 0 2px var(--bezel-edge),0 30px 70px var(--shadow)}
+.screen{position:relative;width:100%;height:100%;border-radius:52px;overflow:hidden;background:var(--bg);display:flex;flex-direction:column}
+.status{flex:none;height:54px;display:flex;align-items:center;justify-content:space-between;padding:12px 30px 0 44px;font-weight:600;font-size:16px;background:var(--bg);position:relative;z-index:3;color:#000}
+.status .icons{display:flex;gap:6px;align-items:center}
+.status svg{display:block}
+.island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:124px;height:36px;border-radius:20px;background:#000;z-index:4}
+.homebar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:136px;height:5px;border-radius:3px;background:#111;z-index:9;pointer-events:none}
+.caption{font-size:12px;color:var(--desk-ink);text-align:center;max-width:417px}
+
+/* in-app browser chrome */
+.urlbar{flex:none;height:34px;display:flex;align-items:center;justify-content:center;position:relative;font-size:14px;color:#666;background:var(--bg);border-bottom:1px solid #eee}
+.urlbar button{position:absolute;right:14px;top:5px;width:24px;height:24px;display:grid;place-items:center;color:#333}
+.btool{flex:none;height:66px;padding-bottom:16px;display:flex;justify-content:space-around;align-items:center;background:var(--bg);border-top:1px solid #e9e9ee;position:relative;z-index:5}
+.btool button{width:44px;height:40px;display:grid;place-items:center;color:#222}
+.btool button[disabled]{color:#c4c7cf}
+
+.ptr{position:absolute;left:50%;top:88px;width:40px;height:40px;margin-left:-20px;border-radius:50%;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.18);display:grid;place-items:center;color:var(--navy);z-index:7;opacity:0;transform:translateY(-30px);pointer-events:none}
+.ptr.spin svg{animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+body.full .ptr{position:fixed;top:calc(8px + env(safe-area-inset-top,0px))}
+.app{flex:1;overflow-y:auto;overflow-x:hidden;position:relative;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;scrollbar-width:none;background:var(--bg)}
+.app::-webkit-scrollbar{display:none}
+
+body.full .stage{padding:0;gap:0;justify-content:flex-start;height:100%}
+body.full .device-wrap{width:100%!important;height:100%!important}
+body.full .device{position:static;width:100%;height:100%;transform:none!important;border-radius:0;padding:0;box-shadow:none;background:var(--bg)}
+body.full .screen{border-radius:0}
+body.full .app,body.full .dock{zoom:.95}
+body.full .status,body.full .island,body.full .homebar,body.full .caption,body.full .urlbar,body.full .btool{display:none}
+
+/* site header */
+.site{background:var(--navy);padding:9px 10px 9px 6px;display:flex;align-items:center;gap:6px}
+.logo{flex:none;width:46px;height:40px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:24px;letter-spacing:-1.5px;font-style:italic}
+.sbox{flex:1;min-width:0;display:flex;align-items:center;background:#fff;border:2px solid var(--navy-deep);height:40px}
+.sbox .ham{flex:none;width:40px;height:100%;display:grid;place-items:center;border-right:1px solid #e3e3e8;color:#888}
+.sbox input{flex:1;min-width:0;border:0;outline:0;padding:0 8px;font-size:15px;background:transparent;color:#222}
+.sbox input::placeholder{color:#aaa}
+.sbox .go{flex:none;width:36px;height:100%;display:grid;place-items:center;color:var(--navy)}
+.sbox .recent{flex:none;padding:0 10px;border-left:1px solid #e3e3e8;font-size:14px;font-weight:700;color:#333;height:60%;display:flex;align-items:center}
+.gnav{background:var(--navy2);display:flex;gap:22px;overflow-x:auto;padding:0 14px;height:44px;align-items:center;scrollbar-width:none}
+.gnav::-webkit-scrollbar{display:none}
+.gnav button{color:#fff;font-weight:700;font-size:16.5px;white-space:nowrap}
+.gnav button.on{color:var(--yellow)}
+
+.gtitle{display:flex;align-items:center;gap:6px;padding:14px 12px 12px 14px;border-bottom:1px solid var(--line)}
+.gtitle .nm{font-size:20px;font-weight:900;letter-spacing:-.04em;white-space:nowrap}
+.gtitle .m{flex:none;width:21px;height:21px;border:2px solid #111;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:900;line-height:1}
+.gtitle .cnt{font-size:12px;color:var(--muted)}
+.gtitle .sp{flex:1}
+.gtitle .ln{display:flex;align-items:center;gap:6px;font-size:13.5px;color:#333;white-space:nowrap}
+.gtitle .ln i{font-style:normal;color:#ddd}
+.gtitle .ln .info{width:17px;height:17px;border:1.3px solid #999;border-radius:50%;display:grid;place-items:center;font-size:11px;color:#999;font-weight:700}
+.gtitle .ln .n{display:inline-grid;place-items:center;width:15px;height:15px;border-radius:50%;background:#e1251b;color:#fff;font-size:9px;font-weight:700;margin-left:1px;vertical-align:2px}
+.wbtn{flex:none;border:1.5px solid var(--navy);color:var(--navy);padding:6px 9px;font-size:14.5px;font-weight:700;white-space:nowrap}
+.adline{padding:11px 14px 12px;border-bottom:1px solid var(--line)}
+.adline b{font-size:15.5px;font-weight:700;display:flex;gap:6px;align-items:center}
+.adtag{font-size:11px;color:#999;border:1px solid #d5d5dc;border-radius:10px;padding:0 6px;font-weight:500}
+.adline p{margin:4px 0 0;font-size:12.5px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.tabs{display:flex;align-items:stretch;border-bottom:1px solid var(--line);background:var(--bg);position:sticky;top:0;z-index:3}
+.tabs button.t{flex:1;padding:12px 0 10px;font-size:16px;font-weight:700;color:#111;border-bottom:3px solid transparent;position:relative}
+.tabs button.t+button.t::before{content:"";position:absolute;left:0;top:16px;bottom:14px;width:1px;background:#e3e3e8}
+.tabs button.t[aria-selected="true"]{color:var(--navy);border-bottom-color:var(--navy)}
+.tabs .per{flex:.9;font-size:14px;color:#444;display:flex;align-items:center;justify-content:center;gap:4px}
+.heads{display:flex;gap:16px;overflow-x:auto;padding:11px 14px;border-bottom:1px solid var(--line);scrollbar-width:none;background:var(--bg)}
+.heads::-webkit-scrollbar{display:none}
+.heads button{font-size:15px;color:#333;white-space:nowrap;display:flex;align-items:center;gap:2px}
+.heads button[aria-pressed="true"]{color:#111;font-weight:900}
+.ic{font-size:15px;line-height:1}
+
+.lsearch{display:flex;gap:6px;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--soft)}
+.lsearch select{flex:none;border:1px solid var(--line2);background:#fff;padding:5px 4px;font-size:12.5px;color:#333}
+.lsearch input{flex:1;min-width:0;border:1px solid var(--line2);background:#fff;padding:5px 8px;font-size:14px}
+.lsearch button{flex:none;background:var(--navy);color:#fff;padding:0 12px;font-size:13px;font-weight:700}
+.sres{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;font-size:13.5px;border-bottom:1px solid var(--line)}
+.sres b{color:var(--navy)}
+.sres button{color:var(--muted);font-size:12.5px;text-decoration:underline}
+.empty{padding:50px 16px;text-align:center;color:var(--muted);font-size:14px}
+
+/* list rows */
+.lrow{display:flex;width:100%;text-align:left;border-bottom:1px solid var(--line);background:var(--bg)}
+.lrow:active{background:var(--soft)}
+.lrow .main{flex:1;min-width:0;padding:12px 8px 11px 14px}
+.lrow .cc{flex:none;width:52px;background:var(--countcol);color:var(--red);display:grid;place-items:center;font-size:14.5px;font-variant-numeric:tabular-nums}
+.lrow .tl{display:flex;align-items:flex-start;gap:6px;font-size:16px;line-height:1.38}
+.lrow .tl .tt{min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere}
+.lrow .meta{margin-top:6px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;font-variant-numeric:tabular-nums}
+.lrow .meta i{font-style:normal;color:#e0e0e6}
+.lrow .meta .hd{display:flex;align-items:center;gap:2px;color:#555}
+.bub{flex:none;width:19px;height:19px;margin-top:1px}
+.pill{flex:none;font-size:13px;border:1.5px solid;border-radius:14px;padding:1px 9px;font-weight:700;margin-top:-1px}
+.pill.survey{border-color:var(--orange);color:var(--orange)}
+.pill.ad{border-color:#222;color:#222;font-weight:500}
+.pill.notice{border-color:var(--notice);color:var(--notice)}
+.pill.best{border-color:var(--blue);color:var(--blue)}
+.srow .main{display:flex;align-items:center;gap:8px;padding:12px 8px 12px 14px}
+.srow .tt1{min-width:0;font-size:15.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.srow .tt1.survey{color:var(--orange);font-weight:700}
+.pager{display:flex;justify-content:center;gap:4px;padding:18px 16px 6px}
+.pager button{min-width:32px;height:32px;font-size:14px;color:#666}
+.pager button[aria-current="page"]{color:var(--navy);font-weight:900;text-decoration:underline}
+.foot{padding:14px 16px 24px;text-align:center;font-size:12px;color:var(--faint)}
+
+.dock{position:absolute;left:0;right:0;bottom:66px;z-index:6;pointer-events:none;display:flex;flex-direction:column;align-items:flex-end}
+.dock>*{pointer-events:auto}
+body.full .dock{position:fixed;bottom:0;padding-bottom:env(safe-area-inset-bottom,0px);background:transparent}
+.spacer{height:var(--dockh,70px)}
+.fab{margin:0 16px 12px 0;width:56px;height:56px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;box-shadow:0 6px 16px var(--shadow);z-index:5}
+.ccpill{margin:0 14px 12px 0;height:46px;padding:0 18px;border-radius:24px;background:#fff;border:1.5px solid #e2e4ec;box-shadow:0 4px 12px rgba(0,0,0,.12);display:flex;align-items:center;gap:8px;color:#333;font-size:16px;z-index:5}
+.ccpill svg{color:var(--navy)}
+.adbar{position:relative;align-self:stretch;background:#fff;border-top:1px solid var(--line);padding:9px 40px 10px 14px}
+.adbar b{font-size:15px;display:flex;gap:6px;align-items:center}
+.adbar p{margin:3px 0 0;font-size:12px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.adbar .x{position:absolute;right:8px;top:8px;width:24px;height:24px;border:1px solid #999;display:grid;place-items:center;color:#666;background:#f3f3f3}
+
+/* post view */
+.backbar{position:sticky;top:0;z-index:4;display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid var(--line);padding:6px 10px 6px 6px}
+.backbar .bk{display:flex;align-items:center;gap:2px;font-size:15px;font-weight:700;color:#222;padding:6px 8px}
+.backbar .ls{font-size:14px;color:var(--navy);font-weight:700;border:1.5px solid var(--navy);padding:4px 12px}
+.pbody .gh{font-size:18.5px;font-weight:900;margin:18px 0 4px;line-height:1.4}
+.pbody .gh.red{font-size:20.5px;color:var(--red)}
+.nick{display:inline-flex;align-items:center;gap:3px}
+.badge{width:15px;height:15px;flex:none}
+.ginfo{display:flex;gap:12px;padding:8px 14px;font-size:12.5px;color:var(--muted);border-bottom:1px solid var(--line);background:var(--soft);white-space:nowrap;overflow:hidden}
+.ginfo .nick{color:#222;font-weight:700}
+.photos{display:grid;gap:14px;padding:0 14px 26px}
+.photos figure{margin:0}
+.photos .art{border:1px solid var(--line);line-height:0;background:#eee}
+.photos .art svg{width:100%;height:auto;display:block}
+.photos .art.vintage{position:relative;overflow:hidden}
+.photos .art.vintage svg{filter:sepia(.32) saturate(.8) contrast(.92) brightness(1.06) hue-rotate(-6deg)}
+.photos .art.vintage::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 42%,rgba(255,240,215,.16) 0%,rgba(255,240,215,0) 45%,rgba(30,20,10,.38) 100%);mix-blend-mode:multiply;pointer-events:none}
+.photos .art.vintage::before{content:"";position:absolute;inset:0;background:rgba(255,200,140,.10);z-index:1;pointer-events:none}
+.photos figcaption{margin-top:6px;font-size:14px;color:#444}
+.lrow.burst{cursor:default}
+.lrow.burst.new{animation:drop .35s ease-out}
+@keyframes drop{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+.closed{min-height:70%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:70px 20px;text-align:center;background:#f4f5f8;border-top:1px solid var(--line)}
+.closed .ex{width:64px;height:64px;border-radius:50%;border:4px solid #c3c6d1;color:#c3c6d1;font-size:38px;font-weight:900;display:grid;place-items:center}
+.closed b{font-size:19px;color:#222}
+.closed p{margin:0;font-size:14px;color:#888;line-height:1.6}
+.closed button{margin-top:10px;border:1.5px solid var(--navy);color:var(--navy);background:#fff;padding:8px 22px;font-weight:700;font-size:14px}
+.ptitle{padding:16px 14px 10px}
+.ptitle h1{margin:0;font-size:20px;line-height:1.38;font-weight:900;letter-spacing:-.02em;overflow-wrap:anywhere}
+.pwho{display:flex;align-items:center;gap:8px;padding:2px 14px 13px;border-bottom:1px solid var(--line);font-size:14px;color:#333}
+.pwho i{font-style:normal;color:#ddd}
+.pwho .dt{color:var(--muted);font-variant-numeric:tabular-nums}
+.pwho .sp{flex:1}
+.pwho .fold{width:26px;height:22px;background:#c8cad3;border-radius:3px;display:grid;place-items:center;color:#fff;font-weight:900}
+.pstat{display:flex;align-items:center;gap:10px;padding:13px 14px;font-size:14px;color:#555;font-variant-numeric:tabular-nums}
+.pstat i{font-style:normal;color:#ddd}
+.pstat .r{color:var(--red)}
+.pstat .cpill{border:1px solid #d9dbe5;background:#f3f4f8;border-radius:16px;padding:2px 12px}
+.adcard{margin:4px 14px 18px;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+.adcard .img{height:150px;background:linear-gradient(120deg,#1d2350 0%,#4b2a6e 55%,#8a2f5d 100%);position:relative;color:#fff;padding:16px}
+.adcard .img .k{font-size:12px;opacity:.8;letter-spacing:.04em}
+.adcard .img .big{font-size:23px;font-weight:900;line-height:1.25;margin-top:8px}
+.adcard .img .tag{position:absolute;right:10px;top:10px;font-size:11px;background:rgba(255,255,255,.25);border-radius:10px;padding:1px 7px}
+.adcard .img .orb{position:absolute;right:22px;bottom:18px;width:74px;height:74px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff,#d9d6f2 60%,#9d97cf);opacity:.9}
+.adcard .txt{padding:12px 14px 14px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.adcard .txt b{display:block;font-size:16px}
+.adcard .txt span{font-size:13px;color:#555}
+.adcard .txt button{flex:none;background:#b9846a;color:#fff;border-radius:20px;padding:8px 14px;font-weight:700;font-size:14px}
+.pbody{padding:6px 14px 28px;font-size:16.5px;line-height:1.75;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}
+.votes{display:flex;justify-content:center;gap:12px;padding:0 14px 24px;border-bottom:8px solid var(--soft)}
+.vote{min-width:104px;border:1.5px solid var(--line2);border-radius:6px;padding:9px 12px;display:flex;flex-direction:column;align-items:center;gap:1px;font-size:12.5px;color:#666;background:#fff}
+.vote b{font-size:19px;color:var(--red);font-variant-numeric:tabular-nums}
+.vote.down b{color:#666}
+.vote[aria-pressed="true"]{border-color:var(--navy);background:#f1f2fa}
+.chead{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;border-bottom:2px solid var(--navy);font-size:15px;font-weight:700}
+.chead em{font-style:normal;color:var(--red)}
+.chead .sort{display:flex;gap:10px;font-weight:500;font-size:13px}
+.chead .sort button{color:var(--faint)}
+.chead .sort button[aria-pressed="true"]{color:#111;font-weight:700}
+.nocmt{padding:30px 16px;text-align:center;color:var(--faint);font-size:14px}
+
+.cmt{padding:13px 14px 12px;border-bottom:1px solid var(--line);position:relative;background:#fff}
+.cmt.r{background:var(--reply);padding-left:34px}
+.cmt.r::before{content:"ㄴ";position:absolute;left:15px;top:13px;color:#aaa;font-size:13px}
+.cmt.r2{padding-left:50px}
+.cmt.r2::before{left:32px}
+.chd{display:flex;align-items:center;gap:2px;font-size:15px}
+.chd .ip{color:var(--muted);font-size:14px}
+.chd .atag{margin-left:6px;font-size:11px;color:var(--navy);border:1px solid var(--navy);border-radius:9px;padding:0 6px;line-height:16px}
+.cmt.mine{box-shadow:inset 3px 0 0 var(--navy)}
+.ctx{margin-top:5px;font-size:15.5px;line-height:1.55;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}
+.ctx a{color:var(--link);text-decoration:underline;word-break:break-all;cursor:pointer}
+.cdt{margin-top:5px;font-size:13px;color:var(--faint);font-variant-numeric:tabular-nums}
+.cmt.del .ctx{color:var(--faint);margin:0;font-size:14px}
+.cmt.live .ctx,.cmt.live .chd,.cmt.live .cdt{transition:opacity .35s}
+.cmt.fading .ctx,.cmt.fading .chd,.cmt.fading .cdt{opacity:0}
+.stk{margin-top:6px;width:110px;height:110px;display:grid;place-items:center}
+.stk svg{width:100px;height:100px}
+.stk.shake svg{animation:shake .18s linear infinite}
+@keyframes shake{0%,100%{transform:translate(0,0)}25%{transform:translate(-1.5px,1px)}50%{transform:translate(1.5px,-1px)}75%{transform:translate(-1px,-1px)}}
+.endbar{display:flex;justify-content:center;gap:8px;padding:18px 16px 22px}
+.endbar button{border:1.5px solid var(--line2);padding:8px 16px;font-size:14px;background:#fff}
+.cwrite{margin:0 14px 18px;border:1.5px solid var(--line2);display:flex}
+.cwrite button.in{flex:1;text-align:left;padding:12px;color:#aaa;font-size:14px}
+.cwrite button.go{background:var(--navy);color:#fff;padding:0 16px;font-weight:700;font-size:14px}
+
+.poll{padding:6px 14px 28px;display:grid;gap:10px}
+.opt{position:relative;border:1.5px solid var(--line2);padding:12px 14px;text-align:left;overflow:hidden;font-size:15px}
+.opt .bar{position:absolute;inset:0 auto 0 0;background:#eef0fa;width:0;transition:width .5s}
+.opt span{position:relative}
+.opt .pc{position:relative;float:right;color:var(--muted);font-variant-numeric:tabular-nums}
+.opt.mine{border-color:var(--navy)}
+.gone-page{padding:80px 16px;text-align:center;color:var(--muted);font-size:15px;line-height:1.7;white-space:pre-line}
+.gone-page b{display:block;color:#111;font-size:17px;margin-bottom:6px}
+
+.noti{position:absolute;left:10px;right:10px;top:56px;z-index:12;display:flex;align-items:center;gap:10px;text-align:left;background:rgba(250,250,252,.97);border-radius:16px;padding:11px 12px;box-shadow:0 8px 24px rgba(0,0,0,.22);transform:translateY(-220%);visibility:hidden;transition:transform .45s cubic-bezier(.2,.9,.3,1.1),visibility 0s .45s;pointer-events:none}
+.noti.on{transform:translateY(0);visibility:visible;transition:transform .45s cubic-bezier(.2,.9,.3,1.1);pointer-events:auto}
+.noti .nicon{flex:none;width:38px;height:38px;border-radius:10px;background:var(--navy);color:#fff;font-weight:900;font-style:italic;display:grid;place-items:center;font-size:15px}
+.noti .ntext{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;font-size:13.5px;color:#222}
+.noti .ntext b{font-size:12.5px;color:#666;font-weight:500}
+.noti .ntext span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700}
+.noti .ntime{flex:none;align-self:flex-start;font-size:11.5px;color:#999}
+body.full .noti{position:fixed;top:calc(8px + env(safe-area-inset-top,0px))}
+.toast{position:absolute;left:50%;bottom:150px;transform:translateX(-50%) translateY(12px);background:var(--toast);color:var(--toast-ink);font-size:13px;padding:9px 16px;border-radius:20px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;white-space:nowrap;z-index:10;max-width:90%}
+.toast.on{opacity:.94;transform:translateX(-50%) translateY(0)}
+body.full .toast{position:fixed;bottom:calc(90px + env(safe-area-inset-bottom,0px))}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+
+<div class="stage">
+  <div class="device-wrap" id="wrap">
+    <div class="device" id="device">
+      <div class="screen">
+        <div class="island" aria-hidden="true"></div>
+        <div class="status" aria-hidden="true">
+          <span id="clock">3:27</span>
+          <span class="icons">
+            <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="currentColor"/><rect x="10" y="3" width="3" height="9" rx="1" fill="currentColor"/><rect x="15" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".35"/></svg>
+            <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 2.2c2.4 0 4.6.9 6.2 2.5l1.3-1.3A10.6 10.6 0 0 0 8 .4 10.6 10.6 0 0 0 .5 3.4l1.3 1.3A8.8 8.8 0 0 1 8 2.2Zm0 3.6c1.4 0 2.7.5 3.7 1.4L13 5.9A7.2 7.2 0 0 0 8 4a7.2 7.2 0 0 0-5 1.9l1.3 1.3c1-.9 2.3-1.4 3.7-1.4Zm0 3.5c-.5 0-1 .2-1.3.5L8 11.6l1.3-1.8c-.3-.3-.8-.5-1.3-.5Z" fill="currentColor"/></svg>
+            <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="16" height="9" rx="2" fill="currentColor"/><rect x="24.5" y="4.5" width="2" height="4" rx="1" fill="currentColor" opacity=".4"/></svg>
+          </span>
+        </div>
+        <div class="urlbar"><span>h2hside.com</span><button id="urlx" aria-label="닫기"><svg width="14" height="14" viewBox="0 0 14 14" stroke="currentColor" stroke-width="1.6"><path d="M1 1l12 12M13 1L1 13"/></svg></button></div>
+        <div class="ptr" id="ptr" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg></div>
+        <div class="app" id="app"></div>
+        <div class="dock" id="dock"></div>
+        <nav class="btool" aria-label="브라우저">
+          <button id="bHome" aria-label="처음으로"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 12L13 4l9 8"/><path d="M6.5 10.5V22h13V10.5"/><path d="M11 22v-6h4v6"/></svg></button>
+          <button id="bBack" aria-label="뒤로"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 4l-8 8 8 8"/></svg></button>
+          <button id="bFwd" aria-label="앞으로"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 4l8 8-8 8"/></svg></button>
+          <button id="bSearch" aria-label="검색"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10.5" cy="10.5" r="7"/><path d="M16 16l5 5"/></svg></button>
+          <button id="bReload" aria-label="새로고침"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg></button>
+          <button id="bMenu" aria-label="메뉴"><svg width="26" height="24" viewBox="0 0 26 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 8h20M3 16h20"/></svg></button>
+        </nav>
+        <button class="noti" id="noti" aria-live="polite"><span class="nicon">S2</span><span class="ntext"><b>미발현 갤러리 · 새 글 알림</b><span id="notiMsg"></span></span><span class="ntime">지금</span></button>
+        <div class="toast" id="toast" role="status"></div>
+        <div class="homebar" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+  <p class="caption">소설 「타임 코드 체이서」 속 가상의 커뮤니티입니다. 실제 사이트·인물과 관계없습니다.</p>
+</div>
+
+<script>
+/* =========================================================
+   원고 형식
+   - 제목: / 작성자: / 내용: / 댓글:
+   - ㅇㅇ(ip)  ㅇㅇ()  (작성자)  └ ㄴ └└ ㄴㄴ
+   - >>N초 후 ...<<  : 열어 본 뒤 N초가 지나면 삭제되는 글
+   - 삭제된 댓글입니다.{{원래 문장}} : 보고 있는 중에 지워지는 댓글
+   - [[link:glossary]]주소 : 누르면 숨은 글로 이동, 나오면(또는 10초 뒤) 지워지는 댓글
+   ========================================================= */
+const RAW = `
+제목: 니네 발현자 되면 어떡할거임?
+내용: ㅇㅇ?
+댓글:
+ㅇㅇ(211.36)
+일단 검진 문자 오면 폰 바꾸고 이사감
+└ 탈주닌자 ㄷㄷ
+└ 그거 다 추적됨 ㅇㅇ
+└ 옆집 형 그렇게 숨었다가 3일만에 차 와서 데려감
+└ 느리구나 도망치는 것조차
+└ 언제부터 숨었다고 착각하고 있었지?
+ㄴ 그게 뭔데 씹덕들아
+ㅇㅇ(118.235)
+아직도 센터견 자처하는 호구 있음? 코마 상태에서 깨어나라…
+└ 신호 끊기면 회수도 안 해준다는데 ㅈㅉㅇㅇ?
+└ 그래도 밥은 줌 ㅅㄱ
+└ 밥 주면 목줄 차는 거 개웃기네 센터견 대단하다!
+ㅇㅇ(39.115)
+반정부군 감 최소한 거긴 안 버림
+└ ㅅㄱ 반동 새끼 신고함
+└ ㅇㅇ 니는 평생 개밥 먹어라
+ㅇㅇ(106.243)
+다들 발현될 줄 아네ㅋㅋ 니넨 평생 노발임
+└ 개추 ㅋㅋ
+└ 아 ㅋㅋ 발현자들이 방구석에서 키보드를 왜 두드리고 있냐고
+ㅇㅇ(223.62)
+노발들은 왜 자꾸 끼냐 발현도 못 한 게
+└ 개밥은 공짜로 나오냐?
+└ (223.62) 센가 없으면 바로 죽을 새끼 ㅋㅋ
+└ 방구석 노발들끼리 사이좋게 지내요~
+ㅇㅇ(39.118)
+노발 ㅈㄴ 불쌍함 끌려 가면 후방 노역이라던데
+└ 구라 ㄴ
+└ (39.118) 우리 형이 거기 있음 ㅇㅇ
+└ 아니 노발이 왜 끌려감? 민간인한테 총 쥐어주노;
+└ 이걸 믿냐 딱 봐도 구라자나 ㅂㅅ아
+ㄴ ㅋㅋ
+ㅇㅇ(223.33)
+이 글 지금 센터 직원이 보고 있음 ㄹㅇ
+└ ㅎㅇ
+└ 실시간으로 아이피 따이는중
+└ 센터 직원 : 체포하겠어~ 검거하겠어~ 어항 보내겠어~
+└ 대충 다음 주에 검진 문자 받을 놈들 모임
+ㅇㅇ(121.131)
+우리 아빠는 나 발현되면 숨겨 준대
+└ 너 불속성 센임?
+└ ㄷㄷ 유동앱 의문의 감옥행
+└ 그거 은닉죄로 처벌받음. 부모님 생각하면 그런 말 하지 말자
+└ 근데 진심 애 뺏기는 것보단 그게 낫지 나 초딩 때 내 친구 발현 ㅈㄴ 일찍 돼서 어항 끌려갔는데 그때 친구 부모님 애 죽은 것마냥 우심 ㄹㅇ
+└ 어항 끌려간 건 죽은 거 맞잖아......
+ㅇㅇ(223.39)
+솔직히 능력 생기면 센터 가는 게 맞지 않냐. 다들 웃으면서 얘기하는데 지금 전쟁 중인 거 잊은 듯. 뉴스 안 봄? 지난달에만 전선에서 일반인 피해 몇 명 났는지 앎? 그거 막는 게 센티넬들임. 반정부 애들이 도시 하나 날려도 그거 수습하는 것도 센터고. 우리가 지금 여기서 커뮤 하면서 키보드 두드릴 수 있는 것도 누군가 전선에서 버텨 주니까 가능한 거임. 근데 능력 생기면 도망가겠다, 숨겠다, 반정부 가겠다 이런 말이 너무 쉽게 나옴. 그럼 그 자리 누가 채움? 결국 다른 발현자가 대신 가는 거고, 그 사람도 누군가의 형이고 친구임. 센터가 완벽하다는 거 아님. 소모품 취급하는 거 나도 앎. 근데 능력은 선택 못 해도 그걸 어떻게 쓸지는 선택할 수 있잖아. 나는 발현하면 갈 거임. 무섭긴 한데 그게 맞다고 생각함.
+└ 세줄요약좀
+└ ㅇㅇ(223.39) 1. 전쟁 중이다 2. 누군가는 가야 한다 3. 나는 간다
+└ 니나 가
+└ 막상 문자 오면 제일 먼저 폰 바꿀 듯
+└ ㅇㅇ(223.39) 안 바꿈
+└ 국뽕도 아니고 센뽕은 또 무슨 초식이냐 ㅋㅋ
+└ ㅇㅇ(223.39) 팩트임
+└ ???:이것은 내가 센터견이 되기까지의 이야기다
+ㅇㅇ(118.41)
+실제로 요즘 우리 동네 쉬었음 청년보다 숨었음 청년이 더 많음
+└ 숨었음 청년 3일 뒤면 잡혔음 청년됨
+└ 바~로 연락없음 청년
+ㄴ 야 이 나쁜새끼들아
+ㅇㅇ(175.198)
+난 센티보단 가이드였으면 좋겠음 전선 안 나가도 된다며
+└ 그럼 전선 나가있는 센티넬은 누가 물빨해주는데
+ㄴ 너 혹시 성향이 그쪽임?
+└ 페어 못 하면 이 사람 저 사람 돌려쓰기 당하는데도? ㅋㅋ
+└ 와 ㄹㅇ임?
+ㄴ씹ㅋㅋ 그냥 공공재네
+└ 와...이 글 보고 센터견 하기로 했다 ㅇㅇ
+ㄴ근데 진짜 잘 몰라서 그러는데 센티가 박는 거임? 능력도 있는데 박기까지? 씹알파자너
+ㄴ정보) 미발갤은 노발만 있는 곳이다
+ㅇㅇ(61.84)
+발현하면 학교부터 안 감 개꿀
+└ 학교 안 가면 바로 센터행인데 ㅂㅅ아
+└ (61.84)그게 개꿀이라고 학교보다 나음
+└ 얘는 진짜 불쌍하네
+ㅇㅇ(106.77)
+반정부 애들 하는 짓 보면 센터가 낫다 진짜로
+└ (112.169)니 센터 직원이지
+└ (223.38)시급 얼마임? 센터 직원도 센티임?
+ㄴ (112.169)센터 직원은 입만 무거우면 다 들어감 ㅇㅇ
+ㄴ (223.38)그럼 이 새낀 왜 있음?
+ㄴ (106.77) 센터 직원 아니라고 ㅆㅂ들아
+ㅇㅇ(110.70)
+공부나 해라 정치충들아
+└ 공부해봤자 발현되면 다 소용없음
+└ 이게 맞말이라 슬프네
+└ 걍 다 같이 망하자
+ㅇㅇ(1.229)
+결론: 센터 가면 소모품, 반정부 가면 반동분자, 숨으면 범죄자, 노발이면 부러워서 우울하고 후방 차출됨
+노발은 그냥 목매달고 자살 ㄱㄱ
+ㄴ박쥐는 뭐임?
+ㄴ(1.229) 취급 안함
+└ 정리 개 잘하네
+
+제목: 미발갤충들아
+내용: 이몸 심심하구나
+썰 좀 싸보거라 ㅇㅇ
+댓글:
+ㅇㅇ(61.84)
+어제 밤에 집 앞 골목에 검은 차 세 대 서 있었음. 창문 다 썬팅이고 번호판도 가려져 있었는데 그중 한 대에서 사람 내리더니 우리 집 쪽으로 걸어옴. 심장 터지는 줄 알았음.
+└ 냐냐냥
+└ 냐냐냥!!냐냐냥!!!!!
+└ 그래서 어케 됨?
+└ ㅇㅇ(61.84) 걍 옆집 지인이었음 ㅋㅋ
+└ ㅅㅂㄹ아
+ㄴ아이씨발 별거아니면 폼 좀 잡지마라
+ㄴㄹㅇ 옆집 지인 맞음?
+└ ㅇㅇ(61.84) ㅇㅇ 나머지 두 대는 그냥 주차된 거였음 별거 없음 ㅋㅋ
+ㄴ 경찰견인듯
+ㄴ 경찰견 맞는듯
+ㄴ 경찰견 근처에 사람 있으면 끌고갈 때 지인인 척 끌고 간다는 썰도 있음 ㅇㅇ
+ㄴ 와 ㅅㅂ 존나 무섭네...
+
+제목: 담달 검진
+내용: 다음 달 검진인데 여태 감기 한 번 안 걸렸던 사람임. 근데 귀신같이 검진 날짜 다가오니까 열 남. 솔직히 좀 무섭다 ㅇㅇ;
+댓글:
+ㅇㅇ()
+살면서 감기 한 번 안 걸린게 더 무서운데
+ㅇㅇ()
+끌려가기 전에 썰 풀고 가셈
+ㄴ 경찰견들 차 타기 0.1초 전에 글 싸도 빛삭돼서 어차피 못 봄 ㅇㅇ
+
+제목: 대기실에서 수능 금지곡 틀어 준다던데 진짜임?
+내용: ㅈㄱㄴ
+댓글:
+ㅇㅇ(223.15)
+ㅇㅇ 그거 일부러 거슬리게 해서 게이지 반응 보는 거래
+└ (작성자) ㅅㅂ 그럼 이왕 틀어줄거면 레몬탱으로 틀어달라해야지
+ㄴ (233.15) 좋아하는 곡은 안 틀어준대 게이지에 영향 갈 수 있어서
+ㄴ () 존나 빡빡하네 ㅋㅋ
+
+제목: ㅇㅎ 검진 장소 근처임?
+내용: 검진 받으러 갔는데 건물 뒤쪽에 창문 없는 동 있었음
+혹시 거기가 어항임?
+댓글:
+ㅇㅇ()
+고객님께서 검진 받으러 가신 곳은 병원이세요
+└ (작성자) ㅇㅎ
+└ () 어항이 민간인도 드나드는 곳에 왜 있음. 뭐 수족관이냐?
+
+제목: 니네 발현되면 뭔 능력이었으면 좋겠음?
+내용: 아무리 생각해도 딸깍충이 씹GOAT인데
+댓글:
+ㅇㅇ(56.14)
+그건 니가 게을러서 그럼
+ㄴ(작성자) 닌 뭐하고 싶은데
+ㄴ(56.14) 당연히 투명인간이지 으흐흐
+ㄴ(작성자) ㅂㅅㅋㅋ
+ㅇㅇ(1.97)
+염력 나오면 침대에서 리모컨 딸깍해야지 ㅋㅋ 아
+ㄴ(작성자) 개추 ㅋㅋ
+└ 그 염력으로 전선에서 탱크 딸깍해야 됨
+└ 딸깍 인생 끝
+
+제목: 궁금한거 있는 게이들
+내용:
+검진 담당이었음
+궁금한거 ㄱㄱ
+댓글:
+ㅇㅇ(175.211)
+나 요즘 자꾸 열나는데 이거 발현 전조임?
+└ (38.11)감기임
+└ ㅇㅇ(175.211) 구라 아니고 진짜 계속 뜨거움
+└ (38.11)그럼 독감임
+└ (작성자)치유계는 실제로 열난다는 썰 있긴 함
+└ ()병원 가라 커뮤에 묻지 말고 븅신아
+ㅇㅇ(110.9)
+나 처맞으면 회복력 빠른데 그럼 나도 치유계 센티넬 될 수 있는 거임?
+└ 아 그렇게 발현되는 거 아니라고ㅋㅋ
+└ 그건 그냥 니가 많이 처맞아서 내성 생긴 거임
+ㅇㅇ(61.84)
+나 숟가락 쳐다보면 미세하게 움직이는 거 같음 염력임?
+└ 니 손 떨리는 거임
+└ 카페인 줄여라
+└ (작성자)그럼 검진 문자 기다려라 축하함ㅋㅋ
+ㅇㅇ(223.62)
+나 시험 시간 존나 빨리 가는데 시간계 아님?
+└ 그건 니가 몰라서 찍고 처자서 그런 거
+└ 공부를 해라 시간계 타령하지 말고
+└ ㅂㅅㅋㅋ
+ㅇㅇ(118.41)
+나 방에 처박혀 있으면 아무도 못 찾음 공간계 맞지?
+└ 밖에 좀 나가라...
+└ 그건 그냥 친구가 없는 거임
+ㅇㅇ()
+이새낀 웬 머저리같은 글에만 답글 처달아주고있노 ㅅㅂ
+ㄴ 놀랍게도 작성자도 머저리다.
+ㄴ 정보) 병원 관계자들도 전부 정부 소속이다. 이말은 작성자 구씹이라는 뜻 ㅇㅇ
+ㄴㄴ 오늘의정보추
+
+제목: 공간계 나오면 나만의 방 만들어서 평생 숨을 거임
+내용: ㅇㅇ
+댓글:
+ㅇㅇ()
+너 지금 공간계 센티도 아니면서 왜 평생 숨어있음?
+ㄴ(작성자) ㅅㅂ아
+ㅇㅇ(118.41)
+공간계 뜰 확률 거의 이로치 수준임
+└ 이로치 흔한데?
+└└ 밥똥포 하는 사람인데 이거 맞습니다
+ㄴㄴ 씹...밥똥포 처하니까 흔하지...
+
+제목: 치유계<<이새끼 개꿀 아님?
+내용: 후방에서 힐만 싸면 되잖아
+댓글:
+ㅇㅇ(59.27)
+ㄴㄴ 치유력 있으면 거의 가이드로 발현됨
+└ ? 센티넬도 됨 치유계 센티넬은 최전방 직행이고 ㅋㅋ 귀해서 쓰다 버리지도 못하고 끝까지 굴린다더라
+└ ??? : 문도! 가고 싶은 데로 간다
+└ 센터장 씹련...그럼 나도 그렇게 되는 거임?
+└ ?
+ㅇㅇ(59.27)
+치유계 센티넬이면 그냥 현실 모이라 아님?
+└ 노란 구슬은 센터견한테 날리고 보라 구슬은 들개한테 날리고 강형욱이노 ㄹㅇ;;
+└ 아나 아님? 한 방에 힐이랑 딜 다 되는 거면
+└ 중요한 건 최전방 소모품이라는 거임 ㅋㅋ
+└ 아나가 왜 최전방에 있음?
+└ 아나가 아니라 문도입니다~
+ㅇㅇ(121.88)
+치유계 센티넬은 쓰러져도 몸이 계속 뜨겁다던데 자기 열로 게이지 식히던 게 안 멈춰서
+└ 그 사람 이모지 🥵
+└ 이거 제 이모지야~ 🫠
+ㄴ 어흐 ㅋㅋ
+
+제목: 형 발현함
+내용: 폭주하면 학교 반 날아가는 초고교급 센티넬로 발현했다~ 이거야 ㅇㅇ
+댓글:
+ㅇㅇ(175.211)
+넌 폭주해도 연필 하나 굴러감
+└ 연필 ㅅㅂㅋㅋ
+
+제목: 시간 되감는 애 썰 본 사람
+내용: 롤로 치면 소라카 같던데 맞음?
+댓글:
+ㅇㅇ(61.203)
+소라카는 힐싸갠데요
+ㅇㅇ()
+니 롤 안 하지
+└ (작성자)ㄴㄴ 질리언 ㅈㅅ 내가 요새 소라카만 해서 헷갈림
+└ () 할배랑 유니콘이 헷갈릴 수가 있나;
+ㅇㅇ(61.203)
+지인피셜 실제로 시간 만지는 능력자 있다더라 근데 쓸 때마다 무드 씹창 난다고 함 정부도 함부로 못 굴린대
+└ ㅇㅇ(110.9) 시간 능력이면 시험 딸깍 아님? 시험 전날로 무한 회귀 ㅆㄱㄴ
+└ ㅇㅇ(59.144) 딸깍 한 번에 무드 씹창 난다는데?
+└ 시간 능력자 처음 들어봄 ㄷㄷ;
+ㄴ 김하온 아님?
+
+제목: 페어<<이새끼 뭐임?
+내용: ㅈㄱㄴ
+댓글:
+ㅇㅇ(106.77)
+페어 맺으면 서로 살리는 공생이라던데 아님?
+└ 언제부터 공생이라고 착각하고 있었지?
+└ 어느 한쪽만 갈리는 것도 공생이라고 할 수 있음?
+ㅇㅇ(14.37)
+말 그대로 한 몸 되는 거임 자세한 건 나도 발현자가 아니라서 모름 듣기로는 페어 하나가 폭주하면 남은 쪽은 신호 소실 처리된다는 얘기 있음 죽은 것도 산 것도 아닌 상태로 서류에서만 지워진다고
+ㄴ 모르면 아가리 싸물어 그럼
+ㄴ (14.37) 이건 뭐야 ㅋㅋ
+
+제목: ㅅㅈㅎ 니네 발현될 것 같냐?
+내용: 우리 앰앱 둘다 노발이라 ㅈㄴ 걱정됨 ㅆㅂ... 현실은 빤스런이 안되잖아
+댓글:
+ㅇㅇ(110.13)
+발현 안 되면 걍 전업자녀 할 거임 집에서 설거지나 하면서
+└ 노발 전업자녀 ㅋㅋ 현실적으로 그게 제일 행복한 루트인 듯
+└ ㅇㅇ(175.113) 일반인도 후방 노역 차출 대상임. 전업자녀는 정책상 불가능함
+ㄴ 노발은 의학적으로도 불쌍한 단언데 실제로도 불쌍하노...
+ㄴ ?
+ㅇㅇ(39.115)
+ㅉㅉ 노발련들 형 오늘 발현하는 꿈꿨다 센터 다 엎고 반정부 수장돼서 올게 ㅇㅇ 내가 하늘에 서겠다
+└ 너무 강한 말은 쓰지 마라 약해 보인다
+
+제목: 근데 배급으로 먹고살면 사실상 센터캥 아니냐
+내용: ㅇㅇ
+ㅇㅇ(39.115) 센터캥 ㅇㅈㄹㅋㅋㅋ
+ㅇㅇ()세금은 우리가 내는데 왜 센터캥임?
+ㅇㅇ()반뽕은 집 나가서 지원도 못 받는 가출캥
+ㅇㅇ()박쥐들은 몰래 지원받는 블루투스캥
+ㅇㅇ(113.89)아니 박쥐들 지원 못 받는다고 ㅆㅂ들아
+ㄴ 니가 어떻게 앎
+ㄴ (113.89)우리 누나가 박쥐임
+ㄴ 아이피 땄고 신고할게 ㅇㅇ
+ㄴ (113.89)해라 븅신아 ㅋㅋ
+ㅇㅇ(121.165)
+센티넬들 월급 얼마임?
+└ 월급 같은 소리 하네 니는 봉사하는데 돈 받냐?
+└ 죽으면 유족 연금 나옴 ㅇㅇ
+└ 그거 받을 유족도 검진 끌려감 ㅅㄱ
+ㄴ어쨌든 개밥은 꼬박 드시잖아 한잔해~
+
+제목: 니네 그거 아냐?
+내용: 솔직히 센터 갈 놈들은 이미 정해져 있음
+집에 돈 있는 애들은 다 빠지고
+ㅇㅇ
+댓글:
+ㅇㅇ(91.73) 근거 있는 내용임? 발현은 집안이랑 아무 상관없음
+└ ㅇㅇ(118.235) 발현은 상관없는데 배치는 상관있지 돈 있는 집 애들 후방 배치 받는 거 모르는 사람 없음
+└ ㅇㅇ(91.73) 그건 일부 사례임
+└ ㅇㅇ(118.235) 일부 사례면 왜 우리 반 금수저는 발현했는데도 학교 계속 나옴?
+└ ㅇㅇ(91.73) 니때문에 내일 니네 학교로 경찰견 갈 예정 ㅇㅇ
+>>5초 후, 삭제된 게시물입니다 처리, 뒤로갔을 때도 게시글 목록에 없도록.<<
+
+제목: 곧 삭제될 글
+내용:
+다들 너무 감정적으로만 접근하는 것 같아서 한마디 함. 일단 발현은 본인 선택이 아님. 그건 다 알 거고. 문제는 발현 이후 선택지가 사실상 세 개밖에 없다는 거임.
+센터 편입
+반정부 합류
+은둔
+근데 은둔은 추적 때문에 현실적으로 불가능하고(무조건 3일 안에 잡힌다는 얘기가 괜히 나오는 게 아님)
+반정부는 보급도 체계도 없어서 폭주 관리가 안 됨. 가이드 수급이 안 되는 조직에서 센티넬이 오래 버틸 수 있다고 생각함? 폭주 한 번이면 끝임.
+그러니까 감정적으로 센터가 싫은 건 이해하는데, 생존 확률만 놓고 보면 센터 편입이 그나마 합리적인 선택이라는 거임.
+물론 센터가 완벽하다는 말은 아님. 소모품 취급하는 거 맞고 가이드 돌려쓰기도 문제 맞음. 근데 그건 내부에서 바꿔야지 밖에서 총 들고 엎는다고 해결되는 게 아님.
+결국 체제 안에서 목소리를 내야 함. 이런 얘기하면 센터견이라고 할 텐데 그냥 현실을 말하는 거임.
+감정 빼고 팩트로 봐라.
+댓글:
+ㅇㅇ(118.235)
+제발 장문 쓸 땐 세줄요약 같이 해라
+└ ㅇㅇ(175.113; 작성자) 감정 말고 생존률로 판단하자는 거임. 실제로 센터, 반정부 생존률 비교하면 센터가 압도적임. 그리고 이정도도 못 읽으면 발현 걱정할 게 아니라 문해력 걱정해야 됨
+└ ㅇㅇ(39.115) 개집에서 견들 말고 무작위로 다 쏴죽이는데 생존률 높은게 당연한거 아님?
+└ 문해력 드립 치는 거 보니 긁혔네ㅋㅋ
+└ 너 센터 직원이냐?
+└작성자 정부도 반정부도 아닌 애들 있다는 얘기 들어봄? 걔넨 어떻게 생각함?
+└ └걔네가 은둔임 ㅇㅇ
+└ └이새끼 글 안 읽었네 ㅋㅋ
+└ └(175.113) ㄴㄴ 은둔이랑 다름. 센터, 반정부, 은둔(검진 후 발현되어 숨는자들), 제 3세력(니네가 흔히 얘기하는 박쥐) 총 네 개임. 얘네가 진짜 악질인데 아직까지 들려오는 소식이 없어서 루머라고 쉬쉬하고 있긴 함. 정부 신호망 피해서 조직 굴리는 게 말이 됨? 사실상 은둔이 이거 모방해서 숨다가 잡히는 거임. 내 주변에서 성공한 사람 한번도 못 봄.
+└ 쓰니야 제발 성공했으면 너같은 거랑 연락 하겠냐고
+ㅇㅇ(175.113)
+그리고 다들 착각하는 게 있는데 센터가 나쁘다는 전제부터 틀림
+└ ㅇㅇ(39.115) 언제부터 니 말이 맞다고 착각하고 있었지?
+ㅇㅇ(39.115)
+센터견들아 그렇게 좋으면 개집으로 꺼지라고
+ㄴ 센터견들은 주인이 어항 보내도 좋아할 새끼들임 ㅋㅋ
+└ ㅇㅇ(106.77) 반뽕 새끼들은 가이드도 없어서 폭주하면 산에서 혼자 뒤짐 ㅋㅋ 괜히 들개가 아니죠?
+└ ㅇㅇ() 근데 들개<<라는 말은 진짜 잘 지은 듯 ㅇㅇ 나 센터견인데 들개라는 단어 하나만으로 개구멍 들어가고 싶어짐
+└(56.11)와 씨발 뭔소리를 하는지 하나도 모르겠네
+ㄴ 갤공지 봐라~
+ㄴ (56.11)봐도 안 나와 있음 ㅅㅂㅜ
+ㄴ 울면 어항 끌려감 ㅇㅇ
+ㅇㅇ()
+센터견들 진짜 모두가 이렇게 생각하는 거냐? 자기 친구 어항 끌려가도 나라 탓 안 하고 이딴식으로 반정부 탓만 함
+└ ㅇㅇ(작성자) 언제 반정부 탓 했음? 글 똑바로 읽어.
+ㄴㅇㅇ(106.77) 반뽕 새끼들이 무고한 도시 날려 먹을 때 우리 동네에서 일반인 31명 죽었음 ㅂㅅ아
+└ ㅇㅇ(39.115) 그거 정부가 반정부 탓으로 돌린 거잖아 뉴스를 그대로 믿냐
+└ ㅇㅇ(106.77) 그럼 내가 직접 본 건 뭔데 니가 거기 있었냐?
+ㄴ ㅇㅇ(39.115) 반정부가 안 움직이면 개밥만 처먹을 줄 알고 좆반인 케어는 하나도 안 해주는 센터견은 그럼 누가 잡는데 ㅆㅂㄹ아
+ㄴㅇㅇ(106.77) 느갭
+ㅇㅇ(1.97)
+센터견 vs 들개 싸움 구경에 박쥐 등은 안 터지나
+ㄴ일단 센터견도 들개도 아닌 좆반인 싸움 구경에 팝콘은 터짐 ㅇㅇ
+└ ㅇㅇ(31.47) 유령 얘기 좀 그만해라 신호도 안 잡힌다는데 왜 살아있는 사람 얘기하듯이 함?
+└ ㅇㅇ(1.97) 안 잡히니까 유령이고 귀에 걸면 귀걸이 코에 걸면 코걸이 되는 놈들이라 박쥐인 거임 ㅋㅋ
+└ ㅇㅇ(39.115) 박쥐들은 윗선이 어떻게 움직이냐에 따라 지들이 원하면 센터견이 될 수도 있고 들개가 될 수도 있습니다...
+ㅇㅇ(1.97)
+센터견 vs 들개 싸움에 가슴이 옹졸해진다…
+ㄴ 팩트는 진짜 센터견이랑 들개는 관심도 없다는 거임 ㅋㅋ
+ㅇㅇ(175.113)
+반뽕이든 박쥐든 결국 다 센터 신세 짐. 보급망 없이 버틸 조직은 없음. 역사적으로도 그랬고
+└ ㅇㅇ(118.235) 역사적으로도 그랬고<<ㅇㅈㄹㅋㅋ
+ㅇㅇ(14.37)
+우리 형 작년에 센터 갔는데 이번 달에 신호 소실 통보 받음. 시체도 없고 그냥 종이 한 장 옴. 엄마 매일 울고 있음.
+└ (56.28)아오씹...센티넬을 떠나서 어디든 전시 상황이면 피해가 있는게 당연한 거라고
+└ (211.43)윗댓만 봐도 센터견은 남녀불문 하다못해 노소까지 척살의 대상이다 ㅇㅇ
+└ (56.28)현실이 그래 병신아
+└ (211.43)그럼 인력 가져다 쓰면서 후처리 이런식으로 해도 됨? 나도 니 아빠 쓰고 죽으면 통보만 때려도 되냐?
+ㅇㅇ(37.91)
+재목은 곧 삭제될 글 이지랄 하면서 씹쓰레기 똥발언 싸질러 놓고 삭제되지 않는 것까지가 템플릿임 ㅇㅇ
+
+제목: 여기 글 왜 아직도 안 썰림?
+내용: ㅇ
+└ ㅇㅇ(223.33) 지금 지우면 더 시끄러우니까 냅두는 거임 아이피는 다 따고 있을 거고
+>>3초 뒤, 삭제된 게시물입니다 처리, 뒤로갔을 때도 게시글 목록에 없도록.<<
+
+제목: 여기서 감정적으로 싸워 봤자 바뀌는 거 없음.
+작성자: ㅇㅇ(175.113)
+내용: 그리고 이성적으로 생각했을 때 내 말이 다 맞음.
+└ 에휴...
+└ ㅇㅇ
+ㄴ (디씨콘)
+
+제목: 노발게이들아
+내용: 그냥 다 같이 운 나쁜 시대에 태어난 거임 ㅇㅇ
+서로 욕하지 말자
+댓글:
+ㅇㅇ(106.243) 착한 척 ㅈㄴ 하네
+ㅇㅇ(1.229) (디씨콘)
+
+제목: 어항이 뭐임?
+내용:
+어항 어항 거리는데 새로운 신음소리냐?
+ㅇㅇ
+댓글:
+삭제된 댓글입니다.{{어항 말고 그냥 실험실이라고 해 ㅋㅋ 우리 사촌이 거기서 일했었는데}}
+└ 이거 파딱이 지운거임? 뭐라 했길래 지워짐?
+└ 어항 얘기했음
+└ 그거 하면 바로 지워지더라
+└ 무섭게 왜 이럼
+ㄴ 그니까 어항이 뭔데
+삭제된 댓글입니다.
+└ 아 ㅂㅅ아 그 단어 쓰면 바로 지워진다고
+ㄴ 단어가 기억 안 남; 뭐였지?
+ㄴ 어항 씨발아
+ㄴ 아니 그니까 어항이 뭘 지칭했지?
+ㄴ삭제된 댓글입니다.
+ㄴㄴ ㅂㅅ들 ㅋㅋㅋ
+ㅇㅇ(189.27)
+어항은 물고기를 기르거나 잡는 데 사용하는 용기를 의미하며, 법률적으로는 어업 근거지로서의 항구를 지칭하기도 합니다.
+ㅇㅇ(61.74)
+핑프련 니는 어항 가라 ㅋㅋ
+
+제목: 발현되면 다 어항감?
+내용: 어항 기준이 뭐임?
+좆반인으로 치면 서울대 가는 수준이냐?
+댓글:
+ㅇㅇ()
+서울대를 어따 비교해 ㅋㅋ 어항은 지옥이다...
+ㅇㅇ(211.52)
+내 친구 작년에 발현했는데 그 뒤로 연락 끊김
+└(113.21) 센터 들어가면 폰 뺏어서 그럼
+└ (211.52) 내가 알기론 금붕어들만 뺏김
+└ ()왜? 폰 놔둔 곳을 까먹나?
+└ ()유동유동아...
+└ ()니 친구 어항 간 거야
+└ ()이 글 곧 삭제되면 ㄹㅇ이라는 거임
+>>>13초 후, 삭제된 게시물입니다 처리, 뒤로갔을 때도 게시글 목록에 없도록.<<
+
+제목: 어항 ㅉㄹㅅ
+내용: 7년된 금붕어 있었다고 함
+댓글:
+ㅇㅇ(211.178)
+ㄹㅇ? 이걸 보고도 센터견인 새끼들은 사람새끼냐?
+ㄴ () 그래서 센터견이라고 하는 거임
+ㅇㅇ()
+어항 들어간 사람들은 평생 금붕어임? 어렸을때부터 금붕어된 애들은 걍 답도 없는 거임?
+└ 어항이 싫으면 금붕어가 떠나야지
+└ 횟집에서 초밥이 탈출하는거 본 적 있음?
+└ 이렇게 말하니까 ㅈㄴ 무섭긴 하네
+
+제목: 니네 어항 한번 깨졌었던거 아냐?
+내용: 가스 폭발이라고 뉴스 나왔는데 그거 금붕어가 붕어빵된거라는 썰이 있음
+ㅇㅇ(118.92)
+한번이 아니라 몇번 깨졌을걸
+ㅇㅇ(175.113) 공식 발표로 가스 누출 사고 맞음. 근거 없는 썰 퍼뜨리지 마라
+└ ㅇㅇ() 가스 누출로 철문이 종잇장처럼 구겨지냐?
+└ ㅇㅇ() 금붕어에 붕어빵 ㅆㅂㅋㅋ 지랄을 해라
+└ 금붕어가 어항 깨고 나온거라고 기정사실화됨.
+└ 솔직히 무슨 말인지 모르겠고 은어 웃기면 개추
+ㄴㄴ 개추
+ㄴㄴ 개추ㅋㅋㅋㅋㅋ 웃음타율 ㅈㄴ 높음
+ㅇㅇ()
+그럼 어항에서 탈출한 금붕어 있다는게 진짜임?
+ㄴ붕어빵이라고 했지 탈출했다고 하진 않았다
+└ ㄴ언제부터 탈출했다고 착각하고 있었지?
+└ 하나 있긴 하다던데
+└ ㅇㅇ(175.113) 어항에서 나온 개체는 없음. 있었으면 공식 수배 떴음.
+└ 이새낀 어딜 가나 있네 현실 좀 살아라
+ㅇㅇ()
+어항 관련 ㅈㄴ 유명한 사건 있음. 불붕이었는데 소화기 없어서 그때도 어항에 불 ㅈㄴ 크게 나고 난리 났었음 좀만 늦었으면 근처 산 다 탔다했음 ㅇㅇ
+ㄴ 진짜 씹...어항주들은 뇌가 없나? 무슨 정신머리로 금붕어 혼자만 둠?
+ㄴ 그럼 붕어빵이 슈붕된거임?
+ㄴ 그런 은어는 없어요 어머님.
+ㄴ 슈붕이 뭔데 ㅅㅂ아 ㅋㅋ
+ㄴㄴ 불속이라매 ㅋㅋ 그럼 붕어빵돼서 녹았으니까 슈붕 ㅋㅋ
+ㄴ ㅂㅅㅋㅋㅋㅋ
+
+제목: 냉탕에 상어가 살거라 믿었지
+내용:
+나도 알아 색기야 그딴 건 없지~
+내가 노발인 것도 안 믿겨 병신
+어항보다 내 상황이 더 무섭지~
+댓글:
+ㅇㅇ()
+ㅂㅅ
+
+제목: 이거 맞음?
+내용:
+센티 - 금붕어
+불속성 금붕어 - 불속붕/불붕
+불붕을 위한 충전기 - 소화기
+물속성 금붕어 - 물속붕/물붕
+물붕을 위한 충전기 - 여과기
+그럼 다른 속성은 뭐라고 함? 다른 충전기는? ㅆㅂ 공부하는데 대가리 터질 거 같다......
+댓글:
+ㅇㅇ()
+굳이 이렇게까지 할 필요없고 대충 아다리 맞게 얘기하면 다 알아들음 ㅇㅇ
+ㅇㅇ()
+이렇게 모아보니까 다시 봐도 ㅈㄴ 웃기네 이거 만든 새끼는 뭐하는 놈이냐? ㅋㅋ
+ㄴ 어항 끌려갔다 나온 사람이래
+ㄴ ㄹㅇ이가...
+ㄴ 겠냐?
+ㄴ 실제로 어항이라 붙여진 이유는 그곳이 유리벽으로 이루어져서라고 합니다~
+ㅇㅇ()
+[[link:glossary]]https://m.h2hside.com/board/jiswoo2ian/10907
+
+제목: 횟집 사장
+내용:
+실종됐다는 얘기도 있던데 진짜임? 어벤져스 좋아한다고 유명했잖아
+댓글:
+ㅇㅇ(113.51)
+어항 주인 말고 횟집 사장이라고 해주세요~
+ㄴ(작성자) 수정함
+ㄴ 뭔 차이임?
+ㄴ (113.51)어항 주인 꼽줄때 횟집 사장이라고 부름 정부 센티넬 센터견이라고 부르는 것처럼 ㅇㅇ
+ㄴ 와 은어의 은어..
+└ 나도 어벤져스 좋아하는데 왜 안 유명함?
+└ 금붕어한테 먹혔나 봄
+└ 삭제된 댓글입니다.
+└ 어벤져스를 안 좋아할 수 있나?
+
+제목: 센티 죽이는 법
+내용: 코마 상태 만들면 됨 ㅇㅇ
+댓글:
+ㅇㅇ()
+(덜덜 떠는 디씨콘)
+ㅇㅇ()
+그냥 충전기 없으면 아무것도 못함ㅋㅋ
+ㄴ ㄹㅇ 전자기기가 따로 없노
+
+제목: 코마 관련해서 아는 사람?
+내용:
+코마 빠진 센티넬은 원래 못 깨움?
+우리 사촌 형 폭주하고 반년째 누워 있는데 센터에서 포기하래
+댓글:
+ㅇㅇ(21.33)
+갓티넬뿐만 아니라 좆반인도 코마 상태에 빠지면 일어나기 힘들다는 거임 ㅇㅇ
+ㄴ (작성자) 센티넬이랑 일반인이랑 다르잖아...
+ㄴ (21.33) 그니까 느그형도 결국 인간이라고 ㅇㅇ
+ㅇㅇ(223.15)
+코마 걸리면 머릿속에서 특정 날이 무한반복된다던데
+└ 나 왜 이 하루가 영원할 거 같지?
+└ 그럼 본인은 매일 첫날인 줄 아는 거임?
+└ 언제부터 오늘이 처음이라고 착각하고 있었지?
+└ 아 이건 좀 소름이다
+ㄴ(작성자)아니 ㅅㅂ 진짜 궁금하다고...
+ㄴㄴ 그걸 왜 여기에 처물어봐
+ㅇㅇ(118.92)
+코마는 본인이 깨어나려는 의지가 있어야 깬대 밖에서 아무리 불러도 본인이 살고 싶어 해야 된다고 치타 누님의 코마라는 노래가 괜히 나온게 아님
+ㅇㅇ()
+나 같으면 안 깨어남 깨어나면 전선임
+└ 맞말추
+ㅇㅇ(175.113)
+코마 회복률 공식 통계상 1% 미만임. 골든 타임 지나면 사실상 불가능하고, 의식 개입은 센티 능력 생각하면 이론상 가능해도 개입하는 쪽 게이지가 먼저 터짐. 그런 썰은 희망 고문임
+└ ㅇㅇ(61.203) 1% 미만? 0.01%의 확률을 뚫은 나는 가능하겠군
+ㄴ ㅇㅇ(70.89) 뭐 뚫음?
+ㄴ ㅇㅇ(61.203) 에공삼 ㅋㅋ
+ㄴ ㅇㅇ(70.89) ㅆㅂ 부럽노...
+
+제목: 니네 그거 아냐?
+내용:
+카더라인데 코마 빠진 사람 의식에 직접 들어가서 끌고 나오는 기계 있다더라 정부 거 아니고 어디서 몰래 만든 거
+댓글:
+ㅇㅇ(106.243)
+ㅈㄹ 판타지 소설 쓰냐ㅋㅋㅋ
+ㅇㅇ()
+기계 정보
+ㄴ() 나는 위치 정보도 같이 주셈
+
+제목: 코마 관련 썰
+내용: 코마 센티넬 깨우려고 의식에 몇백 번 들어간 사람 있다더라
+지인피셜임
+댓글:
+ㅇㅇ(61.203)
+구라 즐
+ㅇㅇ()
+실제로 그게 가능함?
+└ 센티넬이 좆으로 보이냐?
+ㅇㅇ(1.97)
+의식 들어갔다가 같이 갇혀서 못 나온 사람도 있다는 썰 있음 ㅋㅋ
+└ 그럼 그 썰은 누가 푸는건데
+ㄴ 지인
+ㄴ ㅂㅅ
+ㅇㅇ()
+뭔씨발놈의 지인들은 다 신이냐? ㅋㅋㅋ
+
+제목: 어항에도 충전기 있음?
+내용: ㅈㄱㄴ
+ㅇㅇ(211.178) 없으면 금붕어만 죽는게 아니라 사장까지 다 ㅈ됨
+ㅇㅇ()
+어항에선 기포기라고 부름
+└ 기포기가 뭐임?
+ㄴㄴ 충전기 어항 버전이 기포기임 ㅇㅇ 금붕어 안 죽게 숨만 붙여 놓는 용도
+└ 기포기 끄면 금붕어 펑함
+
+제목: 니네 만약 충전기면 뭐 선택함?
+내용: 공용 충전기 되느니 기포기가 낫지 않냐 거긴 안 돌려쓰잖아
+댓글:
+ㅇㅇ()
+어항은 가고 싶다고 갈 수 있는 곳이 아님
+ㅇㅇ()
+정보) 기포기는 어항 밖으로 못 나온다
+└ 금붕어 하나 펑하면 기포기도 같이 터진다는 거임 그래서 기포기 성능이 ㅈㄴ 좋아야 함
+└ ㅇㅇ(작성자) 아 그럼 취소
+ㅇㅇ(118.92) 어항 깨진 날 기포기 하나가 금붕어 막으려고 유리 너머에 서 있었다는 썰
+└ 기포기가 금붕어를 막음?
+└ 유리 너머에서 어떻게 막아
+└ 삭제된 댓글입니다.
+└ 아 또
+ㅇㅇ()
+문득 든 생각인데 충전기가 박을 수도 있지 않음?
+ㄴ 그렇긴 해 충전기를 꽂는 거잖아
+ㄴㄴ 어흐…
+
+제목: 탄피 펑 확률 어떻게 됨?
+내용: 오죽 잘 터지면 탄피라고 하나 싶어서
+댓글:
+ㅇㅇ(175.113) 펑 확률은 충전 주기만 지키면 현저히 낮아짐. 개집에서 충전기 배정 기다리는 게 제일 안전함
+└ 그 배정 기다리다 펑한 애들이 더 많음
+└ 이새끼 또 개집 영업하네
+
+제목: 은둔 있냐? 아님 은둔할 예정이거나
+내용: 경찰견들 누가 봐도 ㅈㄴ 수상한 검은차 타고 다닌다니까 그거 보면 무조건 피해라
+댓글:
+ㅇㅇ()
+조용히 올라가는 추신수
+
+제목: 근데 붕어빵되면 사육사들 어캄?
+내용: ㅇㅇ?
+댓글:
+ㅇㅇ()
+어항 깨지면 사육사는 거의 확정킬 난다고 보면 됨
+└ ㅁㅊ 붕어빵이 그렇게 쎔?
+└ () [[kill:10]]ㅇㅇ 그리고 사육사들 다쳐도 뉴스엔 가스 사고로 나옴
+└ 어항 주인 실종도 그날 아님?
+└ 삭제된 댓글입니다.
+ㅇㅇ(14.37) 사육사라고 부르는 것도 웃김 걔네가 하는 짓이 사육이냐
+└ 그럼 뭐라 부름
+└ 횟집 사장이라는 좋은 표현 있잖아
+ㅇㅇ(61.203) 사육사 중에도 금붕어 빼돌린 사람 있다는 카더라 있음
+└ 그 사육사 지금 어디 있음?
+└ 동굴?
+└ 박쥐 얘기 또 나오네
+└ 삭제된 댓글입니다.
+
+제목: 우리 동네 ㅈ됨 ㅋㅋ
+내용: 개구멍 하나 털렸다던데 들개 열 명 넘게 잡혀감 ㅆㅂ 발현하면 껴달라고 하려 했는데…
+댓글:
+ㅇㅇ() 늑대는 안 잡힘?
+└ 늑대는 원래 안 잡힘 들개만 잡히지
+└ 어디서나 윗대가리는 안 잡힘
+└ 잡힌 들개들은 개집 가냐 어항 가냐
+└ 삭제된 댓글입니다.
+ㅇㅇ(223.33) 이 글 지금 목줄들이 보고 있음 ㄹㅇ
+└ ㅎㅇ
+└ 늑대들도 보고 있을 듯
+ㄴㄴ 빈자리 채우셔야지 ㅇㅇ
+ㅇㅇ(1.97) 정보) 센터견은 개집, 들개는 개구멍, 박쥐는 동굴
+└ 동굴 실존함?
+└ └ 동굴 정보
+└ ㅇㅇ(1.97) 나도 모름 ㅋㅋ
+
+제목: 다음 달 뽑기하러감
+내용: 꽝 나왔으면 좋겠다
+댓글:
+ㅇㅇ()
+꽝 나오면 자살하는게 나을텐데?
+└ 그래도 탄피보단 낫지
+└ 충전기 나오면 그나마 나음
+└ 공용 충전기 되면 그게 더 지옥임
+ㅇㅇ(223.15) 내 친구 펑하고 절전된지 3년됨
+└ 절전모드는 원래 잘 안 깸
+└ 충전기가 옆에 있었으면 펑까진 안 갔을 텐데
+└ 공용 충전기 줄 서다가 펑한 거임 대부분. 그래서 탄피 되는 거고 ㅇㅇ
+ㅇㅇ(175.198) 충전기 나오면 센 하나 잘 물어서 정품 되는 게 인생 루트인데 꽝을 바란다고?
+└ 펑하면 충전기도 같이 로그아웃임
+└ 정품 충전기 되려면 이새끼가 센을 유지할 운명인지 탄피가 될 운명인지 잘 살펴봐야됨
+└ 연애하듯이 고르는 거네ㅋㅋ
+└└ 고르긴 뭘 골라 개집에서 붙여 줌
+└└ 억지로 붙여주는 경우도 있고 잘 맞으면 알아서 붙음 ㅇㅇ
+
+제목: 개집 vs 개구멍
+내용: 사상검증 간다 ㅋㅋ
+댓글:
+ㅇㅇ(39.115) 사상을 떠나 개집에선 탄피 과열돼도 충전기 배급 순서 정해져 있어서 개좆같을듯 계급 높은 탄피부터 충전해줄거아냐
+└ ㅇㅇ(106.77) 그래도 산짐승들은 충전기 자체가 없잖아
+ㄴㄴ 개들 충전기 없다는 말은 누가 퍼뜨린거냐 개구씹을 ㅉㅉ
+└ ㅇㅇ(39.115) 없는 게 줄 서다 펑하는 거보단 나음
+
+제목: 오랜만에 불판 ㄱ?
+내용:
+내일 검진인데 시간 ㅈㄴ 안 감ㅋㅋ
+잡담 ㄱㄱ
+댓글:
+ㅇㅇ(118.41) 나 어제 하루종일 생각한거 있는데 얘기해도 됨?
+ㄴ (작성자) ㅇㅇ
+ㄴㄴ (118.41) 공간계 센은 탄피 안 하고 숨을 수 있음?
+ㄴㄴ () 공간계는 개집에서 절대 안 놔줌
+ㄴㄴ () 공간계가 개집 떠나면 그때부터는 그 방이 개집임 ㅇㅇ
+ㅇㅇ(61.203)
+센끼리는 어떤 짓을 해도 서로 못 살리나? 충전기끼리는 당연히 안될 거 같고 ㅋㅋ
+ㄴ (10.31) 힐러라는 직업은 괜히 있는게 아님 ㅇㅇ
+ㄴㄴ (61.203) 그럼 그 힐러는 누가 펑 조절해줌?
+ㄴㄴ (10.31) …센과 센은 이루어질 수 없는 운명인듯
+ㄴ () 상대가 되감기면 펑하기 전으로 계속 돌리면 되는 거 아님?
+ㄴㄴ () 되감을 때마다 본인 펑 수치 참
+ㄴㄴ () 남의 펑 막다가 본인이 펑함 ㅋㅋ
+ㄴㄴ () 되감기는 충전기 두 개 붙여도 모자란다더라
+ㄴㄴ () 그거 들은 데가 어딘데
+ㄴㄴ () 삭제된 댓글입니다.
+ㄴㄴ 아오 ㅡㅡ
+ㅇㅇ(59.27) 오 여기 센센 불판임?
+ㄴ (작성자) 암거나 올려서 처먹는곳임 ㅇㅇ
+└ (59.27) 나는 예전부터 자가치유도 되고 서폿도 가능한 센이 ㅈㄴ 궁금했음 ㅋㅋ
+└ () 오히려 남 힐하느라 더 빨리 과열됨
+└ └ () 그래서 절전모드 제일 많이 간다는 썰 있음
+└ └ () 작년에 로그아웃된 탄피도 그 종류였을걸?
+ㅇㅇ(110.13) 나 노발인데 센 친구 있음 에스퍼계라 가끔 내 뇌파에 지 상태 보내는데 요즘 충전 끊겨서 눈 밑 시퍼럼 나한테 능력 좀 그만쓰라고 욕하니까 이게 마지막 메시지라더니 아직까지 연락 없음…ㅠ
+└ 아…주님 또 한 명 갑니다…
+└ └ (110.13) 씨바련아 아직 보내지마
+└ () 공용 충전기 배정 밀렸노…
+└ () 에스퍼계 친구 둔 기분 어떰? ㅈㄴ 재밌겠다
+└ └ (110.13) 재밌긴 해 뭐 특별한건 없고 걍 영상통화 하는 거 같음 근데 이제 일방적인.
+└ () 한 일주일만 더 기다려봐라 충전돼서 올거임
+└ └ (110.13) ㅇㅇ..그래야지
+ㅇㅇ(223.39) 나 뽑기 결과 센 나옴 다음 주 개집 들어감
+└ 헐
+└ ’이것은 내가 센터견이 되기까지의 이야기다.‘가 실화였노…
+└ ㅇㅇ(223.39) 장문 쓴 거 후회함
+└ 정품 충전기 만나라 진심
+└ 미발갤 최고 아웃풋 ㅊㅊ
+└ 펑하지 마라
+ㅇㅇ(14.37) 로그아웃 통보 받으면 다시 로그인되는 경우 있음?
+└ 없음
+└ 서류상 로그아웃이지 진짜 죽은 건 아니라는 썰은 있음
+└ 그럼 어디 있는데
+└ 박쥐들이 데려간다는 얘기도 있고
+└ 유령충 얘기 그만해라
+ㅇㅇ(1.97) 절전모드 탄피 깨우는 거 충전기로도 안 됨?
+└ 절전모드는 충전 자체가 안 들어감
+└ 본인이 다시 켜지려고 해야 켜진다더라
+└ 전원 버튼이 안에 있는 거네
+└ 그 버튼 누르러 들어간 사람 있다던데
+└ 이 썰은 틈만 나면 올라오네 ㅅㅂ…꺼지라고 유령충 새끼들아
+ㅇㅇ(106.243) 솔직히 노발 입장에선 발충들 다 부러움
+└ 탄피 부러운 거면 개집 가서 대신 펑해라
+└ 충전기는 공용 되면 공공재 취급
+└ ㅇㅇ(106.243) 그래도 뭐라도 되잖아
+└ 안타깝게도 니가 태어난 세대는 뭐라도 되는 게 로그아웃임
+ㅇㅇ(118.92) 금붕어 중에 되감기 있었다던데
+└ 어항에서 되감기면 실험 엄청 당했겠네
+└ 그 금붕어가 어항 깨고 나간 거 아님?
+└ 삭제된 댓글입니다.
+└ 아 또 지워짐
+ㅇㅇ(1.229)
+[[late:27]]아 ㅅㅂ 늦었네
+`;
+
+const NOTICE_TXT = `1. 특정 시설 언급 금지. 자동 필터로 즉시 삭제되며 반복 시 아이피 차단됩니다.
+2. 실명, 학교명, 주소, 검진 날짜 등 개인정보 노출 금지.
+3. 검진 안내 문자 인증은 번호·이름 가린 뒤 올려 주세요.
+4. 정치 떡밥은 적당히. 서로 신고하는 거 다 보입니다.
+5. 은어 정리 요청 글은 받지 않습니다. 눈치껏 쓰세요.
+
+갤 오래 하고 싶으면 적당히 하자.`;
+const MILO={id:'milo',title:'미발갤러 분들께 알립니다.',head:'공지',nick:'Milo',badge:true,isMilo:true,
+  body:"안녕하세요. 미발현 마이너 갤러리 회원 여러분.\n여러분이 '어항 주인'이자 '횟집 사장'이라고 불러 주시는 Milo입니다.\n은어들이 참 재밌더군요. 덕분에 저도 오랜만에 웃었습니다.\n\n이제서야 인사를 드립니다.\n이 글을 쓰기까지 꽤 오래 기다렸습니다. 기다리는 것 말고는 할 수 있는 게 없었거든요.\n그동안은 시간이 제 편이 아니었으니까요.\n\n몇 해 전, 아니 이제는 십수 년 전이라고 해야 할까요?\n저는 어항에서 금붕어 한 마리를 돌보고 있었습니다.\n아주 예쁘고 귀여운 금붕어였지요.\n머리가 비상해 건방질 법도 한데, 말을 참 잘 들었습니다.\n저는 그 금붕어를 아꼈습니다.\n\n그래서 금붕어와 한 약속은 하나도 빠짐없이 지켰습니다.\n갖고 싶다던 것들도, 잠깐 바깥 공기를 쐬고 싶다던 부탁까지도요.\n\n그런데 그 금붕어가 저를 어항 밖으로 던져 버리고 사라졌습니다.\n덕분에 저는 아주 먼 길을 돌아와야 했습니다.\n\n처음부터 다시 자라야 했으니까요.\n이제야 그 금붕어와 눈높이가 맞게 되었네요.\n\n그래서 다시 손에 넣으려고 합니다.\n\n미발갤러 여러분께 부탁드리는 이유는 간단합니다.\n\n정보력이 뛰어나시니까요.\n오랫동안 눈팅을 해 왔습니다.\n\n근거 없는 찌라시도 많았지만,\n\n저를 깜짝 놀라게 한 썰도 분명 있었습니다.\n사육사분들 중에 그런 썰을 푸신 분이 계신다면,\n\n앞으로는 입조심해 주세요.\n누구신지는 이미 알고 있습니다.\n\n본론을 말씀드리겠습니다.\n제 금붕어에 대해 조금이라도 아시는 분은 제 갤로그 방명록에 비밀글로 남겨 주세요.\n보내 주신 분께는 작은 선물을 드리겠습니다.\n\n제가 놓친 금붕어를 다시 어항에 넣을 수 있도록 미발갤러 여러분의 많은 관심과 사랑 부탁드립니다.\n감사합니다.",
+  comments:[],n:0,views:1,up:0,down:0,min:1440+107};
+const SURVEY={q:'미발갤러들 사상검증 ㄱㄱ',opts:[['센터견',1204],['들개',987],['은둔',1630],['박쥐',211]]};
+
+/* 링크로만 들어갈 수 있는 숨은 글 (목록·검색에 안 뜸) */
+const GLOSSARY_RAW = `
+제목: ㅇㅇ 정리
+내용:
+늒비들 맨날 물어봐서 정리함.
+링크 퍼나르는건 갤 안에서만 해라
+그리고 글삭 안 당하려면 이걸로만 말하셈 ㅇㅇ
+## 사람
+노발 : 일반인. 발현 안 된 사람
+발충 : 발현자 전체 (노발들이 부를 때)
+센 / 센티 : 센티넬
+탄피 : 센티넬 (쓰고 버려져서 ㅇㅇ)
+충전기 : 가이드
+공용 충전기 : 페어 없이 돌려쓰이는 가이드
+정품 충전기 : 페어 있는 가이드
+## 센터
+센터견 : 센터 쪽 사람 (지지자도 센터견이라 부르기도 함)
+개집 : 센터 건물
+목줄 : 센터 직원
+경찰견 : 숨은 사람 잡으러 다니는 애들 (싫어하는 애들은 사냥개라고 함)
+센뽕 : 센터 뽕차서 빠는 애들
+## 반정부
+들개 / 산짐승 : 반정부 사람 (지지자 포함)
+개구멍 : 들개들 거점
+늑대 : 들개 간부
+반뽕 : 반정부 빠는 애들
+## 그 외
+박쥐 / 유령 (아마 제3세력) : 정부도 반정부도 아닌 애들 (실존 여부 모름)
+유령충 : 박쥐 / 유령 지지자
+동굴 : 박쥐 소굴
+은둔 : 발현 통지 받고 숨는 놈들
+##! ㅅㅎㅅ 관련
+어항 : ㅅㅎㅅ. 원래 단어 그대로 쓰면 빛삭
+금붕어 : 어항 들어간 사람 (ex. 17년된 금붕어 = 17살 금붕어 ㅇㅇ)
+기포기 : 어항 안에 있는 가이드
+사육사 : 연구원
+어항 주인 / 횟집 사장 : 어항 제일 윗대가리
+불붕 / 물붕 : 불속성 / 물속성 금붕어 (소화기, 여과기는 걔네 충전기) -> 더 추가하려했는데 추가 발견되는 능력 ㅈㄴ 많아서 불가능해짐 알아서 쓰셈
+붕어빵 : 폭주한 금붕어
+## 상태
+뽑기 : 발현 검진
+꽝 : 노발 판정
+당첨 : 발현 판정
+충전 : 가이딩
+과열 → 합선 → 펑 : 걍 폭주 뜻하는 단어들
+절전모드 : 코마
+로그아웃 : 신호 소실 처리
+댓글:
+ㅇㅇ()
+정리추
+ㅇㅇ()
+뽑기 꽝 당첨 이런 거 누가 만든 거임 ㅋㅋ 존나 잘 지었네
+└ 충전기 라인 통일한 거 보면 천재임
+ㅇㅇ()
+삭제된 댓글입니다.
+ㅇㅇ()
+미발갤에 링크 박지 마라 거기 필터 개빡셈
+`;
+
+/* ---------- parsing ---------- */
+const IPRX=/^\s*([\d.]*)\s*(?:;\s*(작성자))?\s*$|^\s*(작성자)\s*$/;
+function setText(c,t){
+  t=t.trim();let m;
+  if((m=t.match(/^\[\[link:(\w+)\]\](.*)$/))){c.link=m[1];c.text=m[2].trim();return}
+  if((m=t.match(/^\[\[kill:(\d+)\]\]([\s\S]*)$/))){c.killAfter=+m[1];t=m[2].trim()}
+  if((m=t.match(/^\[\[late:(\d+)\]\]([\s\S]*)$/))){c.lateBy=+m[1];t=m[2].trim()}
+  if(/디씨콘\)$/.test(t)&&t.startsWith('(')){c.sticker=/덜덜/.test(t)?'shake':'basic';c.text='';return}
+  if(t==='삭제된 댓글입니다.'||t==='작성자가 삭제한 댓글입니다.'){c.deleted=true;c.text='';return}
+  c.text=t;
+}
+function mkC(paren,rest,level,p){
+  const inner=paren.slice(1,-1);const m=inner.match(IPRX);
+  const author=!!(m&&(m[2]||m[3]));const ip=m&&m[1]&&/\d+\.\d+/.test(m[1])?m[1]:null;
+  if(author&&ip&&!p.ip)p.ip=ip;
+  const c={level,ip,author,text:'',replies:[]};
+  if(rest&&rest.trim())setText(c,rest);
+  return c;
+}
+function mkReply(t,lvl,p){
+  const m=t.match(/^(?:ㅇㅇ\s*)?(\([^)]*\))\s*([\s\S]*)$/);
+  if(m&&IPRX.test(m[1].slice(1,-1)))return mkC(m[1],m[2],lvl,p);
+  const c={level:lvl,ip:null,author:false,text:'',replies:[]};
+  setText(c,t.replace(/^ㅇㅇ\s+/,''));
+  return c;
+}
+function parseAll(raw){
+  const posts=[];let p=null,mode=null,cur=null,last=null,orphan=false;
+  for(const l0 of raw.split('\n')){
+    const l=l0.trim();
+    if(!l){if(mode==='body'&&p&&p.body)p.body+='\n';continue}
+    let m;
+    if(l.startsWith('>')){m=l.match(/(\d+)\s*초\s*(후|뒤)/);if(m&&p)p.autoDel=+m[1];continue}
+    if((m=l.match(/^제목:\s*(.*)$/))){p={title:m[1].trim(),body:'',comments:[],ip:null};posts.push(p);mode='pre';cur=null;last=null;orphan=false;continue}
+    if(!p)continue;
+    if((m=l.match(/^작성자:\s*(?:ㅇㅇ)?\s*\(([\d.]+)\)/))){p.ip=m[1];continue}
+    if((m=l.match(/^내용:\s*(.*)$/))){mode='body';p.body=m[1].trim();continue}
+    if(/^댓글:/.test(l)){mode='cmt';continue}
+    const isStart=/^ㅇㅇ\s*\(/.test(l)||/^[└ㄴ]/.test(l)||l.startsWith('삭제된 댓글입니다.');
+    if(mode==='body'&&!isStart){p.body=p.body&&!p.body.endsWith('\n')?p.body+'\n'+l:(p.body||'')+l;continue}
+    mode='cmt';
+    if((m=l.match(/^ㅇㅇ\s*(\([^)]*\))\s*(.*)$/))){cur=mkC(m[1],m[2],0,p);p.comments.push(cur);last=cur;orphan=false;continue}
+    if(l.startsWith('삭제된 댓글입니다.')&&!(cur&&!orphan&&!cur.text&&!cur.replies.length&&!cur.sticker&&!cur.deleted&&!cur.link)){const live=(l.match(/\{\{(.+)\}\}/)||[])[1];cur={level:0,deleted:!live,live:live||null,ip:null,text:live||'',replies:[]};p.comments.push(cur);last=cur;orphan=false;continue}
+    if(cur&&!orphan&&!cur.text&&!cur.replies.length&&!cur.sticker&&!cur.deleted&&!cur.link){setText(cur,l);continue}
+    if((m=l.match(/^(└\s*└|ㄴㄴ(?=\s)|└|ㄴ)\s*([\s\S]*)$/))){
+      let lvl=(/^└\s*└/.test(m[1])||m[1]==='ㄴㄴ')?2:1,t=m[2];
+      if(m[1]==='└'&&/^ㄴ[^ㄴ\s]/.test(t)){lvl=2;t=t.slice(1)}
+      const r=mkReply(t,lvl,p);
+      if(!cur||orphan){r.level=0;p.comments.push(r);cur=r;orphan=true}else cur.replies.push(r);
+      last=r;continue;
+    }
+    if(last)setText(last,last.text?last.text+'\n'+l:l);
+  }
+  posts.forEach(p=>p.body=p.body.replace(/\n+$/,''));
+  return posts;
+}
+
+/* ---------- build ---------- */
+function hash(s){let h=2166136261;for(const c of s){h^=c.codePointAt(0);h=Math.imul(h,16777619)}return h>>>0}
+let seed=20261117;const rnd=()=>{seed=(Math.imul(seed,1103515245)+12345)>>>0;return seed/4294967296};
+let POSTS,GLOSSARY,used;
+function collectIPs(){used=new Set();[...POSTS,GLOSSARY].forEach(p=>{if(p.ip)used.add(p.ip);p.comments.forEach(c=>{if(c.ip)used.add(c.ip);c.replies.forEach(r=>{if(r.ip)used.add(r.ip)})})})}
+function freshIP(){let ip;do{ip=(1+Math.floor(rnd()*222))+'.'+Math.floor(rnd()*256)}while(used.has(ip));used.add(ip);return ip}
+const FORCE_CHAT=new Set(['니네 발현자 되면 어떡할거임?','시간 되감는 애 썰 본 사람']);
+const HEADOF=t=>FORCE_CHAT.has(t)?'잡담':/ㅉㄹㅅ|찌라시|횟집/.test(t)?'찌라시':/썰(?!림)/.test(t)?'썰':/이거 맞음|죽이는 법|정리/.test(t)?'정보':/\?$/.test(t)?'질문':'잡담';
+const HICON={'잡담':'💬','질문':'❓','썰':'🔥','찌라시':'📰','정보':'🎓','공지':'📢'};
+const CONCEPT=new Set(['니네 발현자 되면 어떡할거임?','니네 어항 한번 깨졌었던거 아냐?','이거 맞음?','센티 죽이는 법','미발갤충들아']);
+function finish(p,i,minute){
+  if(!p.ip)p.ip=freshIP();
+  p.comments.forEach(c=>{if(c.author)c.ip=p.ip;else if(!c.ip&&!c.deleted)c.ip=freshIP();c.replies.forEach(r=>{if(r.author)r.ip=p.ip;else if(!r.ip&&!r.deleted)r.ip=freshIP()})});
+  p.head=HEADOF(p.title);
+  const h=hash(p.title+i);
+  p.views=i===0?31204:180+h%3900; p.up=i===0?512:(CONCEPT.has(p.title)?120+h%180:h%48); p.down=i===0?12:h%7;
+  p.concept=CONCEPT.has(p.title);
+  p.min=minute;
+  let t=p.min;p.comments.forEach(c=>{t+=c.lateBy?c.lateBy:1+Math.floor(rnd()*2);c.t=t;c.replies.forEach(r=>{t+=Math.floor(rnd()*2);r.t=t})});
+  p.n=p.comments.reduce((n,c)=>n+1+c.replies.length,0);
+  return h;
+}
+/* 새로 불러오기: 모든 글·댓글을 처음 상태로 다시 만듦 */
+function build(){
+  seed=20261117;
+  POSTS=parseAll(RAW);GLOSSARY=parseAll(GLOSSARY_RAW)[0];collectIPs();
+  let minute=1440+72;
+  POSTS.forEach((p,i)=>{p.id='p'+(i+1);const h=finish(p,i,minute);minute-=3+(h%7)});
+  GLOSSARY.id='glossary';finish(GLOSSARY,99,1440*0+20*60+9-1440);GLOSSARY.views=40221;GLOSSARY.up=1203;GLOSSARY.down=8;GLOSSARY.no=10907;GLOSSARY.hidden=true;
+}
+build();
+const hm=m=>{const mm=((m%1440)+1440)%1440;return String(Math.floor(mm/60)).padStart(2,'0')+':'+String(mm%60).padStart(2,'0')};
+const dayOf=m=>17+Math.floor(m/1440);
+const fullDate=m=>`2026.11.${String(dayOf(m)).padStart(2,'0')} ${hm(m)}`;
+
+/* ---------- helpers ---------- */
+const app=document.getElementById('app');
+const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e};
+const fmt=n=>n.toLocaleString('ko-KR');
+let toastT;
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),1800)}
+function hl(text,q){const s=el('span');if(!q){s.textContent=text;return s}const low=text.toLowerCase(),ql=q.toLowerCase();let i=0,k;while((k=low.indexOf(ql,i))>-1){s.append(text.slice(i,k),el('mark',null,text.slice(k,k+q.length)));i=k+q.length}s.append(text.slice(i));return s}
+const SVG={
+ bub:'<svg class="bub" viewBox="0 0 20 20"><path d="M10 3.2c4.5 0 7.6 2.7 7.6 6s-3.1 6-7.6 6c-.9 0-1.7-.1-2.5-.3L4 16.6l.9-3C3.4 12.5 2.4 11 2.4 9.2c0-3.3 3.1-6 7.6-6z" fill="#c9ccd6"/><circle cx="7" cy="9.3" r="1" fill="#fff"/><circle cx="10" cy="9.3" r="1" fill="#fff"/><circle cx="13" cy="9.3" r="1" fill="#fff"/></svg>',
+ bubHot:'<svg class="bub" viewBox="0 0 20 20"><path d="M10 3.2c4.5 0 7.6 2.7 7.6 6s-3.1 6-7.6 6c-.9 0-1.7-.1-2.5-.3L4 16.6l.9-3C3.4 12.5 2.4 11 2.4 9.2c0-3.3 3.1-6 7.6-6z" fill="#ff7b5a"/><circle cx="7" cy="9.3" r="1" fill="#fff"/><circle cx="10" cy="9.3" r="1" fill="#fff"/><circle cx="13" cy="9.3" r="1" fill="#fff"/></svg>',
+ ham:'<svg width="22" height="18" viewBox="0 0 22 18" stroke="currentColor" stroke-width="2.4"><path d="M1 2h20M1 9h20M1 16h20"/></svg>',
+ mag:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><circle cx="10.5" cy="10.5" r="7"/><path d="M16 16l5 5"/></svg>',
+ pen:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/></svg>',
+ cmt:'<svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 4h16v12H10l-5 4v-4H4z" fill="currentColor"/><path d="M8 8.5h8M8 12h6" stroke="#fff" stroke-width="1.8"/></svg>',
+ basic:'<svg viewBox="0 0 70 70"><circle cx="35" cy="37" r="27" fill="#ffd451"/><path d="M20 33q5-5 10 0M40 33q5-5 10 0" stroke="#3a2a10" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M25 48q10 6 20 0" stroke="#3a2a10" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M52 14l6-6M56 20l8-2" stroke="#ff8a3d" stroke-width="3" stroke-linecap="round"/></svg>',
+ shake:'<svg viewBox="0 0 70 70"><circle cx="35" cy="37" r="26" fill="#bfe3ff"/><circle cx="26" cy="33" r="5" fill="#fff" stroke="#203040" stroke-width="2"/><circle cx="44" cy="33" r="5" fill="#fff" stroke="#203040" stroke-width="2"/><circle cx="26" cy="34" r="2" fill="#203040"/><circle cx="44" cy="34" r="2" fill="#203040"/><path d="M24 48l4-3 4 3 4-3 4 3 4-3" stroke="#203040" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 30q-3 5 0 10M64 30q3 5 0 10M10 26q-3 9 0 18M60 26q3 9 0 18" stroke="#7fa7c9" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M52 16q2 4 0 6" stroke="#5aa9e6" stroke-width="3" fill="none" stroke-linecap="round"/></svg>'
+};
+
+/* ---------- state ---------- */
+const state={opened:new Set(),miloReady:false,miloShown:false,miloRead:false,miloGone:false,burst:[],closed:false,tab:'all',head:'전체',listScroll:0,q:'',qmode:'all',route:'',adbar:true,restore:{}};
+const HEADS=['전체','잡담','질문','썰','찌라시','정보'];
+const visible=()=>POSTS.filter(p=>!p.removed);
+function matches(p,q,mode){
+  const s=q.toLowerCase();const has=t=>t&&t.toLowerCase().includes(s);
+  const inCmt=()=>p.comments.some(c=>(!c.deleted&&has(c.text))||c.replies.some(r=>!r.deleted&&has(r.text)));
+  if(mode==='title')return has(p.title);
+  if(mode==='body')return has(p.body);
+  if(mode==='cmt')return inCmt();
+  return has(p.title)||has(p.body)||inCmt();
+}
+
+/* ---------- shared chrome ---------- */
+function siteHeader(){
+  const wrap=el('div');
+  const s=el('div','site');
+  const logo=el('button','logo','S2');logo.setAttribute('aria-label','처음으로');logo.onclick=()=>goList();
+  const box=el('form','sbox');box.setAttribute('role','search');
+  const ham=el('button','ham');ham.type='button';ham.innerHTML=SVG.ham;ham.setAttribute('aria-label','메뉴');ham.onclick=()=>toast('로그인 후 이용할 수 있습니다');
+  const inp=el('input');inp.id='topq';inp.type='search';inp.placeholder='갤러리 & 통합검색';inp.setAttribute('aria-label','갤러리 검색');
+  const go=el('button','go');go.type='submit';go.innerHTML=SVG.mag;go.setAttribute('aria-label','검색');
+  const rec=el('button','recent','최근 방문');rec.type='button';rec.onclick=()=>toast('최근 방문: 미발현 마이너 갤러리');
+  box.append(ham,inp,go,rec);
+  box.onsubmit=e=>{e.preventDefault();const q=inp.value.trim();if(!q){toast('검색어를 입력하세요');return}runSearch(q,'all')};
+  s.append(logo,box);
+  const nav=el('nav','gnav');nav.setAttribute('aria-label','사이트 메뉴');
+  ['갤러리','마이너갤','미니갤','인물갤','갤로그','이벤트'].forEach(x=>{const b=el('button',x==='마이너갤'?'on':null,x);b.onclick=()=>x==='마이너갤'?goList():toast('이 소설에선 미발갤만 열려 있습니다');nav.append(b)});
+  const gt=el('div','gtitle');
+  const nm=el('button','nm','미발현');nm.onclick=()=>goList();
+  const ln=el('span','ln');ln.innerHTML='<span class="info">i</span><i>|</i><span>설정<span class="n">N</span></span><i>|</i><span>연관</span>';
+  ln.onclick=()=>toast('설정은 로그인 후 이용할 수 있습니다');
+  const w=el('button','wbtn','글쓰기');w.onclick=()=>toast('검진 미완료 회원은 글을 쓸 수 없습니다');
+  gt.append(nm,el('span','m','m'),el('span','cnt','(52,118)'),el('span','sp'),ln,w);
+  const ad=el('div','adline');const ab=el('b');ab.append('감각 차단 훈련 전문 학원',el('span','adtag','AD'));
+  ad.append(ab,el('p',null,'검진 대비반 · 1:1 게이지 관리 · 발현 전 멘탈 케어 · 주말반 상담'));
+  const gi=el('div','ginfo');const mg=el('span');mg.append('매니저 ',nickEl(MANAGER(),true));gi.append(mg,el('span',null,'부매니저 2'),el('span',null,'개설일 2026.03.02'));
+  wrap.append(s,nav,gt,gi,ad);return wrap;
+}
+function adBar(){
+  if(!state.adbar)return null;
+  const a=el('div','adbar');const b=el('b');b.append('센터 공식 페어 매칭',el('span','adtag','AD'));
+  const x=el('button','x','✕');x.setAttribute('aria-label','광고 닫기');x.onclick=()=>{state.adbar=false;a.remove();setDock(...document.getElementById('dock').children)};
+  a.append(b,el('p',null,'판정 후 30일 이내 신청 시 정품 충전기 우선 배정 · 첫 가이딩 무료'),x);return a;
+}
+const BADGE='<svg class="badge" viewBox="0 0 16 16" aria-label="매니저"><rect x="1" y="1" width="14" height="14" rx="3.5" fill="#2f6be0"/><path d="M4.4 8.3l2.4 2.3 4.8-5" stroke="#fff" stroke-width="1.9" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const MANAGER=()=>state.miloShown?'Milo':'미발갤매니저';
+function nickEl(name,badge){const s=el('span','nick');s.append(name);if(badge){const b=el('span');b.innerHTML=BADGE;s.append(b.firstChild)}return s}
+function markOpened(id){state.opened.add(id);if(!state.miloReady&&POSTS.every(p=>state.opened.has(p.id))&&state.opened.has('glossary'))state.miloReady=true}
+let notiT;
+function showNoti(msg,target){
+  const n=document.getElementById('noti');document.getElementById('notiMsg').textContent=msg;
+  n.onclick=()=>{n.classList.remove('on');go(target)};
+  n.classList.add('on');clearTimeout(notiT);notiT=setTimeout(()=>n.classList.remove('on'),4200);
+}
+function setDock(...items){const d=document.getElementById('dock');d.innerHTML='';items.filter(Boolean).forEach(x=>d.append(x));requestAnimationFrame(()=>{document.documentElement.style.setProperty('--dockh',(d.offsetHeight+10)+'px')})}
+/* 본문: '## 제목'은 굵고 큰 소제목, '##! 제목'은 더 크고 빨간 소제목 */
+function richBody(text){
+  const d=el('div','pbody');const lines=text.split('\n');
+  lines.forEach((ln,i)=>{const m=ln.match(/^##(!?)\s*(.*)$/);
+    if(m){d.append(el('div','gh'+(m[1]?' red':''),m[2]))}
+    else{const nx=lines[i+1];d.append(ln+((nx!==undefined&&!/^##/.test(nx))?'\n':''))}});
+  return d;
+}
+function backBar(){
+  const b=el('div','backbar');
+  const bk=el('button','bk');bk.innerHTML='<svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11.5 3l-6 6 6 6"/></svg>';bk.append('뒤로');bk.onclick=()=>goBack();
+  const ls=el('button','ls','목록');ls.onclick=()=>goList();
+  b.append(bk,ls);return b;
+}
+function headLabel(h){const s=el('span','hd');s.append(el('span','ic',HICON[h]||''));if(h!=='잡담')s.append(h);return s}
+
+/* ---------- list view ---------- */
+function postRow(p,q){
+  const r=el('button','lrow');
+  const main=el('span','main');
+  const tl=el('span','tl');const ic=el('span');ic.innerHTML=p.n>=30?SVG.bubHot:SVG.bub;
+  const tt=el('span','tt');tt.append(hl(p.title,q&&(state.qmode==='all'||state.qmode==='title')?q:''));
+  tl.append(ic.firstChild,tt);
+  const meta=el('span','meta');
+  [headLabel(p.head),null,`ㅇㅇ(${p.ip})`,null,hm(p.min),null,'조회 '+fmt(p.views),null,'추천 '+p.up].forEach(x=>{if(x===null)meta.append(el('i',null,'|'));else meta.append(typeof x==='string'?el('span',null,x):x)});
+  main.append(tl,meta);r.append(main,el('span','cc',String(p.n)));
+  r.onclick=()=>go(p.id);return r;
+}
+function specialRow(kind,label,title,n,onclick){
+  const r=el('button','lrow srow');const main=el('span','main');
+  main.append(el('span','pill '+kind,label),el('span','tt1'+(kind==='survey'?' survey':''),title));
+  r.append(main,el('span','cc',n==null?'':String(n)));r.onclick=onclick;return r;
+}
+function runSearch(q,mode){state.q=q;state.qmode=mode;state.tab='all';state.head='전체';state.listScroll=0;if(cur()!=='list'){nav.back.push(cur());nav.fwd=[];moveTo('list')}else{renderList();app.scrollTop=0}}
+function renderList(){
+  if(state.closed){renderClosed();return}
+  if(state.miloRead&&!state.miloGone){state.miloGone=true;state.listScroll=0;startBurst()} // 목록 맨 위에서 새 글이 올라오는 걸 보게
+  if(state.miloReady&&!state.miloShown){state.miloShown=true;setTimeout(()=>showNoti('[공지] '+MILO.title+' - Milo','milo'),600)} // 마지막 글을 열고 목록으로 돌아온 순간
+  app.innerHTML='';app.append(siteHeader());
+  const tabs=el('div','tabs');tabs.setAttribute('role','tablist');
+  [['all','전체'],['concept','개념글'],['notice','공지']].forEach(([k,l])=>{const b=el('button','t',l);b.setAttribute('role','tab');b.setAttribute('aria-selected',state.tab===k&&!state.q);b.onclick=()=>{state.tab=k;state.q='';renderList()};tabs.append(b)});
+  const per=el('button','per');per.append('30개',el('span',null,'⌄'));per.onclick=()=>toast('30개씩 보는 중');tabs.append(per);app.append(tabs);
+
+  const hs=el('div','heads');HEADS.forEach(x=>{const b=el('button');b.setAttribute('aria-pressed',state.head===x);if(HICON[x])b.append(el('span','ic',HICON[x]));if(x!=='잡담'||!HICON[x])b.append(x==='잡담'?'':x);if(x==='잡담')b.setAttribute('aria-label','잡담');b.onclick=()=>{state.head=x;state.q='';renderList()};hs.append(b)});app.append(hs);
+
+  const sf=el('form','lsearch');sf.setAttribute('role','search');
+  const sel=el('select');sel.id='sopt';sel.setAttribute('aria-label','검색 범위');
+  [['all','제목+내용+댓글'],['title','제목'],['body','내용'],['cmt','댓글']].forEach(([v,l])=>{const o=el('option',null,l);o.value=v;if(state.qmode===v)o.selected=true;sel.append(o)});
+  const inp=el('input');inp.id='sq';inp.type='search';inp.placeholder='갤러리 내 검색';inp.value=state.q;inp.setAttribute('aria-label','검색어');
+  const sb=el('button',null,'검색');sb.type='submit';sf.append(sel,inp,sb);
+  sf.onsubmit=e=>{e.preventDefault();const q=inp.value.trim();if(!q){toast('검색어를 입력하세요');return}runSearch(q,sel.value)};
+  app.append(sf);
+
+  if(state.q){
+    const res=visible().filter(p=>matches(p,state.q,state.qmode));
+    const bar=el('div','sres');const lab=el('span');lab.append('‘',el('b',null,state.q),`’ 검색 결과 ${res.length}건`);
+    const clr=el('button',null,'검색 해제');clr.onclick=()=>{state.q='';renderList()};bar.append(lab,clr);app.append(bar);
+    if((state.qmode==='all'||state.qmode==='body')&&NOTICE_TXT.includes(state.q))app.append(specialRow('notice','공지','갤 이용 수칙 (필독) · 위반 시 아이피 차단',0,()=>go('notice')));
+    if(!res.length)app.append(el('div','empty','검색 결과가 없습니다.'));
+    res.forEach(p=>app.append(postRow(p,state.q)));
+  }else{
+    if(state.tab!=='notice'&&state.head==='전체')app.append(specialRow('survey','설문',SURVEY.q,null,()=>go('survey')));
+    if(state.tab==='all'&&state.head==='전체')app.append(specialRow('ad','AD','발현 전 마지막 휴가! 오늘 특가 숙소 확인',null,()=>toast('광고입니다')));
+    if(state.miloShown&&!state.miloGone)app.append(specialRow('notice','공지',MILO.title,MILO.n,()=>go('milo')));
+    app.append(specialRow('notice','공지','갤 이용 수칙 (필독) · 위반 시 아이피 차단',0,()=>go('notice')));
+    if(state.tab==='all'&&state.head==='전체'&&!POSTS[0].removed)app.append(specialRow('best','실베',POSTS[0].title,null,()=>go(POSTS[0].id)));
+    if(state.tab!=='notice')state.burst.slice().reverse().forEach(b=>app.append(burstRow(b)));
+    if(state.tab!=='notice')visible().filter(p=>(state.tab!=='concept'||p.concept)&&(state.head==='전체'||p.head===state.head)).forEach(p=>app.append(postRow(p)));
+  }
+  const pg=el('div','pager');['‹','1','2','3','4','5','›'].forEach(x=>{const b=el('button',null,x);if(x==='1')b.setAttribute('aria-current','page');b.onclick=()=>{if(x!=='1')toast('보관 기간이 지난 글입니다')};pg.append(b)});app.append(pg);
+  app.append(el('div','foot','소설 「타임 코드 체이서」 속 가상의 커뮤니티입니다.'));
+  const fab=el('button','fab');fab.innerHTML=SVG.pen;fab.setAttribute('aria-label','글쓰기');fab.onclick=()=>toast('검진 미완료 회원은 글을 쓸 수 없습니다');
+  app.append(el('div','spacer'));setDock(fab,adBar());
+}
+
+/* ---------- post view ---------- */
+let sortNew=false,io;
+function linkify(text,c,p){
+  const d=el('div','ctx');
+  if(!c.link){d.textContent=text;return d}
+  const a=el('a',null,text);a.href='#'+c.link;a.onclick=e=>{e.preventDefault();state.restore[p.id]=app.scrollTop;c.pendingKill=true;go(c.link,true)};
+  d.append(a);return d;
+}
+function cmtNode(c,isTop,p){
+  const cls=['cmt'];if(!isTop)cls.push('r');if(c.level===2)cls.push('r2');
+  if(c.deleted){cls.push('del');const d=el('div',cls.join(' '));d.append(el('div','ctx','삭제된 댓글입니다.'));return d}
+  const d=el('div',cls.join(' '));
+  const hd=el('div','chd');hd.append(el('span',null,'ㅇㅇ'),el('span','ip',`(${c.ip})`));
+  if(c.author||(p&&c.ip===p.ip)){hd.append(el('span','atag','작성자'));d.classList.add('mine')}
+  d.append(hd);
+  if(c.sticker){const s=el('div','stk'+(c.sticker==='shake'?' shake':''));s.innerHTML=SVG[c.sticker];d.append(s)}
+  else d.append(linkify(c.text,c,p));
+  d.append(el('div','cdt',fullDate(c.t)));
+  if(c.live||c.link||c.killAfter){d.classList.add('live')}
+  d._c=c;return d;
+}
+function wipe(node,c){
+  if(c.deleted&&!node.isConnected)return;
+  c.deleted=true;c.live=null;
+  if(!node||!node.isConnected)return;
+  node.classList.add('fading');
+  setTimeout(()=>{node.className=node.className.replace(/\b(live|fading)\b/g,'')+' del';node.innerHTML='';node.append(el('div','ctx','삭제된 댓글입니다.'))},380);
+}
+function renderComments(box,p){
+  box.innerHTML='';
+  if(!p.comments.length){box.append(el('div','nocmt','등록된 댓글이 없습니다.'));return}
+  const list=sortNew?[...p.comments].reverse():p.comments;
+  list.forEach(c=>{box.append(cmtNode(c,true,p));c.replies.forEach(r=>box.append(cmtNode(r,false,p)))});
+  if(io)io.disconnect();
+  io=new IntersectionObserver(es=>es.forEach(e=>{
+    const n=e.target;if(!e.isIntersecting||n.dataset.armed)return;n.dataset.armed='1';
+    setTimeout(()=>wipe(n,n._c),3000);
+  }),{root:app,threshold:.8});
+  box.querySelectorAll('.cmt.live').forEach(n=>{
+    const c=n._c;
+    if(c.live)io.observe(n);
+    if(c.link&&c.pendingKill){setTimeout(()=>wipe(n,c),700)}   // 링크로 'ㅇㅇ 정리'를 보고 돌아옴 → 그때 지워짐
+    if(c.killAfter&&!c.link){
+      if(!c.killTimer){c.killTimer=setTimeout(()=>{const cur=[...app.querySelectorAll('.cmt.live')].find(x=>x._c===c);c.deleted=true;if(cur)wipe(cur,c)},c.killAfter*1000)}
+    }
+  });
+}
+let voted={};
+function scheduleDelete(p){
+  if(!p.autoDel||p.delTimer)return;
+  p.delTimer=setTimeout(()=>{
+    p.removed=true;p.gone=true;
+    if(state.route===p.id)renderGone(p);
+    else if(!state.route||state.route==='list'){const keep=app.scrollTop;renderList();app.scrollTop=keep}
+  },p.autoDel*1000);
+}
+function renderPost(p){
+  if(!p.isMilo)markOpened(p.id);else state.miloRead=true;
+  app.innerHTML='';app.append(siteHeader(),backBar());
+  const t=el('div','ptitle');const h1=el('h1');h1.append(`[${HICON[p.head]||''}${p.head}] `,p.title);t.append(h1);app.append(t);
+  const who=el('div','pwho');who.append(p.nick?nickEl(p.nick,p.badge):el('span',null,`ㅇㅇ(${p.ip})`),el('i',null,'|'),el('span','dt',fullDate(p.min)),el('span','sp'));
+  const fold=el('button','fold','+');fold.setAttribute('aria-label','스크랩');fold.onclick=()=>toast('스크랩은 로그인 후 이용할 수 있습니다');who.append(fold);app.append(who);
+  const st=el('div','pstat');const cp=el('button','cpill');cp.append('댓글 ',el('span','r',String(p.n)));
+  st.append('조회수 '+fmt(p.views),el('i',null,'|'),'추천 ',el('span','r',fmt(p.up+(voted[p.id]==='up'?1:0))),el('i',null,'|'),cp);app.append(st);
+  const ad=el('div','adcard');ad.innerHTML='<div class="img"><span class="k">CENTER · 페어 매칭</span><div class="big">정품 충전기<br>우선 배정</div><span class="tag">AD</span><span class="orb"></span></div>';
+  const tx=el('div','txt');const tl=el('div');tl.append(el('b',null,'판정 후 30일, 놓치면 공용입니다'),el('span',null,'센터 공식 페어 매칭'));const ab=el('button',null,'지금 신청하기');ab.onclick=()=>toast('발현 판정 후 신청할 수 있습니다');tx.append(tl,ab);ad.append(tx);app.append(ad);
+  app.append(richBody(p.body||' '));
+  if(p.photos)app.append(photoBlock(p.photos));
+  const v=el('div','votes');
+  [['up','개념 추천',p.up],['down','비추천',p.down]].forEach(([k,l,base])=>{
+    const b=el('button','vote'+(k==='down'?' down':''));const num=el('b',null,fmt(base+(voted[p.id]===k?1:0)));b.append(num,l);
+    b.setAttribute('aria-pressed',voted[p.id]===k);
+    b.onclick=()=>{if(voted[p.id]){toast('이미 추천한 게시물입니다');return}voted[p.id]=k;num.textContent=fmt(base+1);b.setAttribute('aria-pressed','true');toast(k==='up'?'개념 추천 완료':'비추천 완료')};
+    v.append(b)});
+  app.append(v);
+  const ch=el('div','chead');ch.id='cmts';const tl2=el('span');tl2.append('전체 댓글 ',el('em',null,String(p.n)),'개');
+  const so=el('div','sort');const box=el('div');
+  [['등록순',false],['최신순',true]].forEach(([l,val])=>{const b=el('button',null,l);b.setAttribute('aria-pressed',sortNew===val);b.onclick=()=>{sortNew=val;so.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));renderComments(box,p)};so.append(b)});
+  ch.append(tl2,so);app.append(ch,box);
+  cp.onclick=()=>ch.scrollIntoView({block:'start'});
+  const eb=el('div','endbar');
+  const vis=visible(),i=vis.indexOf(p);
+  const prev=el('button',null,'이전글'),list=el('button',null,'목록'),next=el('button',null,'다음글');
+  prev.onclick=()=>{const q=vis[i-1];q?go(q.id,true):toast('첫 글입니다')};next.onclick=()=>{const q=vis[i+1];q?go(q.id,true):toast('마지막 글입니다')};list.onclick=()=>goList();
+  if(p.hidden){prev.onclick=next.onclick=()=>toast('다른 갤러리 글입니다')}
+  if(p.isMilo){prev.onclick=next.onclick=()=>toast('공지글입니다')}
+  eb.append(prev,list,next);app.append(eb);
+  const cw=el('div','cwrite');const ci=el('button','in','댓글을 입력하세요');const cg=el('button','go','등록');
+  ci.onclick=cg.onclick=()=>toast('검진 미완료 회원은 댓글을 쓸 수 없습니다');cw.append(ci,cg);app.append(cw);
+  const pill=el('button','ccpill');pill.innerHTML=SVG.cmt;pill.append(String(p.n));pill.setAttribute('aria-label','댓글로 이동');pill.onclick=()=>ch.scrollIntoView({block:'start'});
+  app.append(el('div','spacer'));setDock(pill,adBar());
+  renderComments(box,p);
+  if(state.restore[p.id]!=null){app.scrollTop=state.restore[p.id];delete state.restore[p.id]}else app.scrollTop=0;
+  scheduleDelete(p);
+}
+function renderGone(p){
+  p.removed=true; // 한 번 열어 본 삭제 글은 목록에서 사라짐
+  markOpened(p.id);
+  app.innerHTML='';app.append(siteHeader(),backBar());
+  const g=el('div','gone-page');g.append(el('b',null,'삭제된 게시물입니다.'),'게시물 작성자 또는 관리자에 의해\n삭제되었습니다.');app.append(g);setDock(adBar());app.scrollTop=0;
+}
+function renderNotice(){
+  app.innerHTML='';app.append(siteHeader(),backBar());
+  const t=el('div','ptitle');t.append(el('h1',null,'[📢공지] 갤 이용 수칙 (필독) · 위반 시 아이피 차단'));app.append(t);
+  const who=el('div','pwho');who.append(nickEl(MANAGER(),true),el('i',null,'|'),el('span','dt','2026.03.02 10:00'));app.append(who);
+  const st=el('div','pstat');st.append('조회수 88,410',el('i',null,'|'),'추천 ',el('span','r','0'));app.append(st);
+  app.append(el('div','pbody',NOTICE_TXT),el('div','spacer'));setDock(adBar());app.scrollTop=0;
+}
+let myVote=null;
+function renderSurvey(){
+  app.innerHTML='';app.append(siteHeader(),backBar());
+  const total=SURVEY.opts.reduce((a,o)=>a+o[1],0)+(myVote!==null?1:0);
+  const t=el('div','ptitle');t.append(el('h1',null,'[설문] '+SURVEY.q));app.append(t);
+  const who=el('div','pwho');who.append(nickEl(MANAGER(),true),el('i',null,'|'),el('span','dt','참여 '+fmt(total)+'명 · 11.24 마감'));app.append(who);
+  const poll=el('div','poll');
+  SURVEY.opts.forEach(([label,n],i)=>{
+    const b=el('button','opt'+(myVote===i?' mine':''));const bar=el('span','bar');b.append(bar,el('span',null,label));
+    if(myVote!==null){const c=n+(myVote===i?1:0);b.append(el('span','pc',Math.round(c/total*100)+'%'));requestAnimationFrame(()=>bar.style.width=(c/total*100)+'%')}
+    b.onclick=()=>{if(myVote!==null){toast('이미 투표했습니다');return}myVote=i;renderSurvey();toast('투표 완료')};
+    poll.append(b)});
+  app.append(el('div','pbody','센터견 들개 은둔 박쥐\n솔직하게 찍어라 ㅇㅇ'),poll,el('div','spacer'));setDock(adBar());
+}
+
+/* Milo 공지 사진: 실존 인물이 아닌 그림으로 그린 인물 */
+const ART={
+kid:`<svg viewBox="0 0 240 300"><defs><radialGradient id="kch" cx=".45" cy=".4" r=".7"><stop offset="0" stop-color="#7a5592"/><stop offset="1" stop-color="#432a55"/></radialGradient><pattern id="lace" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#1d1c22"/><circle cx="4" cy="4" r="1.3" fill="#3a3842"/></pattern></defs>
+<rect width="240" height="300" fill="#16161a"/><rect y="270" width="240" height="30" fill="#2a2524"/>
+<ellipse cx="128" cy="196" rx="104" ry="82" fill="url(#kch)"/><ellipse cx="18" cy="236" rx="18" ry="26" fill="#4d3361"/><ellipse cx="228" cy="246" rx="16" ry="28" fill="#4d3361"/>
+<path d="M76 300l10-88c6-18 70-18 76 0l10 88z" fill="#f4f3ef"/><path d="M112 214l8 30 8-30" stroke="#1d1c22" stroke-width="2" fill="none"/>
+<path d="M74 206c10-14 30-18 40-14l-4 74c-14 4-30 0-42-6z" fill="url(#lace)" opacity=".92"/><path d="M168 206c-10-14-30-18-40-14l4 74c14 4 30 0 42-6z" fill="url(#lace)" opacity=".92"/>
+<path d="M172 214c10 8 16 22 18 40" stroke="#efd2c2" stroke-width="10" stroke-linecap="round" fill="none"/>
+<path d="M184 252l16-6 6 16-16 6z" fill="#f2efe6"/><path d="M188 254l12-4" stroke="#d7b45a" stroke-width="3"/><circle cx="186" cy="262" r="6" fill="#efd2c2"/>
+<rect x="108" y="170" width="26" height="28" rx="9" fill="#e9c6b4"/>
+<path d="M82 108c0-34 20-54 46-54s44 20 42 52c-1 22-6 40-14 54-8-14-60-14-74 0-2-16 0-34 0-52z" fill="#141317"/>
+<circle cx="146" cy="58" r="13" fill="#141317"/>
+<path d="M86 118c-2 30 14 54 36 56 18 1 32-14 34-38 2-20-8-36-26-40-22-4-42 6-44 22z" fill="#f2d5c6"/>
+<path d="M84 112c6-26 26-40 50-34 14 4 22 14 24 26-16-6-34-4-48 4-10 6-18 6-26 4z" fill="#141317"/>
+<ellipse cx="102" cy="132" rx="5.5" ry="6.5" fill="#2a1d1a"/><ellipse cx="126" cy="132" rx="5" ry="6" fill="#2a1d1a"/><circle cx="100.5" cy="130" r="1.7" fill="#fff"/><circle cx="124.5" cy="130" r="1.6" fill="#fff"/>
+<path d="M94 124q8-4 15-1M119 123q7-3 13 0" stroke="#2a2420" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+<path d="M110 142q-4 8 2 10" stroke="#d6a896" stroke-width="2" fill="none" stroke-linecap="round"/>
+<path d="M106 158q7 4 14 0" stroke="#cf7a82" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+<ellipse cx="94" cy="148" rx="7" ry="4" fill="#efb2ad" opacity=".5"/><ellipse cx="134" cy="148" rx="7" ry="4" fill="#efb2ad" opacity=".5"/>
+<path d="M164 200c8-30 10-64-4-86" stroke="#efd2c2" stroke-width="13" stroke-linecap="round" fill="none"/>
+<path d="M146 96c10-8 26-8 30 4 2 8-4 16-12 18-10 2-20-4-22-10z" fill="#efd2c2"/><path d="M152 92l4 14M160 90l3 15M168 92l1 13" stroke="#d9b4a2" stroke-width="1.5"/>
+<path d="M170 78l10-6 4 10-6 8-10-2z" fill="#e2789a"/><circle cx="176" cy="82" r="3" fill="#f3a8bf"/>
+</svg>`,
+hall:`<svg viewBox="0 0 240 300"><rect width="240" height="300" fill="#f2e4c4"/><rect y="132" width="240" height="40" fill="#e3cfa4"/><rect y="170" width="240" height="6" fill="#6e4430"/>
+<rect y="176" width="240" height="124" fill="#d6d0c2"/><g fill="#b8a184" opacity=".7"><rect x="0" y="210" width="40" height="22"/><rect x="80" y="240" width="40" height="22"/><rect x="160" y="210" width="40" height="22"/><rect x="40" y="270" width="40" height="22"/><rect x="200" y="270" width="40" height="22"/></g>
+<rect x="190" y="0" width="50" height="230" fill="#d9a65e"/><rect x="198" y="14" width="34" height="40" fill="#8a9aa3"/><circle cx="196" cy="120" r="5" fill="#e8c54a"/>
+<path d="M60 70l120 0 0 60-120 0z" fill="#fff4cf" opacity=".5"/>
+<path d="M106 92c-2-26 14-40 30-38 18 2 26 18 24 36l2 70c-6 4-14 4-18 0z" fill="#141418"/>
+<ellipse cx="126" cy="96" rx="19" ry="22" fill="#f4d9cb"/>
+<path d="M106 92c2-22 18-30 32-26 10 3 16 12 16 24-10-8-26-10-36-6-6 2-10 6-12 8z" fill="#141418"/>
+<ellipse cx="119" cy="97" rx="3" ry="3.6" fill="#2a1d1a"/><ellipse cx="134" cy="97" rx="3" ry="3.6" fill="#2a1d1a"/><circle cx="120" cy="95.6" r="1" fill="#fff"/><circle cx="135" cy="95.6" r="1" fill="#fff"/>
+<ellipse cx="127" cy="110" rx="4" ry="3" fill="#d76b78"/>
+<rect x="120" y="114" width="12" height="10" fill="#ecc8b6"/>
+<path d="M98 126c8-6 46-6 56 0l6 60H94z" fill="#fbfbfb"/><path d="M124 124l4 0 6 40-8 6-8-6z" fill="#2f3036"/>
+<path d="M150 132q14 4 6 26l-14-2z" fill="#fbfbfb"/><rect x="140" y="146" width="14" height="22" rx="3" fill="#1b1b1f"/><ellipse cx="146" cy="168" rx="7" ry="5" fill="#f4d9cb"/>
+<path d="M90 186h74l14 26c-20 8-80 8-104 0z" fill="#1d1f2b"/>
+<path d="M76 212c20-6 50-4 60 4l-6 14c-14-6-36-6-50-2z" fill="#f4d9cb"/><path d="M128 214c14-4 34-2 46 6l-4 12c-12-4-28-6-40-2z" fill="#f4d9cb"/>
+<rect x="64" y="208" width="18" height="22" rx="4" fill="#d22b3a"/><path d="M60 226h26l2 10H56z" fill="#5a4a3a"/><path d="M168 216h18l4 12h-24z" fill="#5a4a3a"/>
+<path d="M44 170c10-14 46-14 56 0l4 40c-20 8-50 6-62-2z" fill="#9fbfda"/><path d="M52 176h40" stroke="#7f9fbb" stroke-width="2"/>
+</svg>`,
+blue:`<svg viewBox="0 0 320 180"><rect width="320" height="180" fill="#f5f3f6"/><rect x="0" y="120" width="320" height="60" fill="#e8eef6"/>
+<rect x="56" y="0" width="16" height="180" fill="#3c6eb6"/><rect x="100" y="0" width="10" height="180" fill="#5c87c8"/><rect x="140" y="0" width="8" height="180" fill="#9bb6dc" opacity=".6"/>
+<rect x="292" y="40" width="28" height="140" fill="#3a63ad"/>
+<path d="M186 54c-2-26 16-40 34-38 20 2 30 18 28 40l-4 34c-10 6-24 6-34 2z" fill="#1b1c2b"/>
+<path d="M190 60c0-16 12-26 26-26 8 0 14 4 16 10" fill="#1b1c2b"/>
+<path d="M188 62q-6 12 0 24 4 8 14 10 6 0 10-6 2-14-2-28z" fill="#f2d6c8"/>
+<ellipse cx="194" cy="74" rx="2.6" ry="3.2" fill="#2a1d1a"/><circle cx="194.6" cy="72.8" r=".9" fill="#fff"/><path d="M188 68q4-3 9-1" stroke="#2a2420" stroke-width="1.6" fill="none"/>
+<path d="M184 79l-3 4 4 1" stroke="#d8ab98" stroke-width="1.6" fill="none"/><path d="M186 89q4 2 7 0" stroke="#d47c86" stroke-width="2" fill="none"/>
+<path d="M204 92c12 6 24 4 32 0" fill="none"/><path d="M176 104c10-10 54-12 70 0l14 76H164z" fill="#fcfcfe"/>
+<path d="M186 108c-18 2-46 10-70 16l4 12c26-2 50-6 70-12z" fill="#fcfcfe"/><circle cx="116" cy="128" r="9" fill="#f2d6c8"/>
+<path d="M200 116c-6 10-10 22-6 34l14-2c-2-10 0-20 4-28z" fill="#f0f0f6"/><circle cx="200" cy="112" r="8" fill="#f2d6c8"/>
+<path d="M78 124l38 4" stroke="#e2e2ea" stroke-width="4" stroke-linecap="round" opacity=".8"/>
+</svg>`};
+function photoBlock(list){
+  const w=el('div','photos');
+  list.forEach(([kind,cap])=>{const f=el('figure');const a=el('div','art'+(kind==='kid'?' vintage':''));a.innerHTML=ART[kind];f.append(a,el('figcaption',null,cap));w.append(f)});
+  return w;
+}
+
+/* Milo 공지가 사라진 뒤: 1초마다 새 글이 올라오고, 마지막 글 2초 뒤 갤러리가 사라짐 */
+const BURST=['ㅁㅊ 뭐임?','이런 씨발','공지 뭐임?','속보) 횟집 사장 실존','ㅁㅊ 금붕어 그 되감기 아님?','치유계 센티넬 미녀라던데 사실이었노','금붕어들 얼굴 공개됨 갤로그 ㄱ'];
+function startBurst(){
+  let i=0;const base=MILO.min+3;
+  const tick=()=>{
+    if(state.closed)return;
+    const title=BURST[i];
+    state.burst.push({title,ip:freshIP(),min:base+i,n:i<3?0:(i%3)+1,views:3+i*7,fresh:true});
+    i++;
+    if(!state.route||state.route==='list'){const k=app.scrollTop;renderList();app.scrollTop=k}
+    if(i<BURST.length)setTimeout(tick,1000);
+    else setTimeout(()=>{state.closed=true;route()},2000);
+  };
+  setTimeout(tick,1000);
+}
+function burstRow(b){
+  const r=el('div','lrow burst'+(b.fresh?' new':''));b.fresh=false;
+  const main=el('span','main');const tl=el('span','tl');const ic=el('span');ic.innerHTML=SVG.bub;
+  tl.append(ic.firstChild,el('span','tt',b.title));
+  const meta=el('span','meta');
+  [headLabel('잡담'),null,`ㅇㅇ(${b.ip})`,null,hm(b.min),null,'조회 '+b.views,null,'추천 0'].forEach(x=>{if(x===null)meta.append(el('i',null,'|'));else meta.append(typeof x==='string'?el('span',null,x):x)});
+  main.append(tl,meta);r.append(main,el('span','cc',String(b.n)));return r;
+}
+function renderClosed(){
+  app.innerHTML='';
+  const hd=siteHeader();[...hd.children].slice(2).forEach(x=>x.remove());app.append(hd);
+  const c=el('div','closed');c.append(el('div','ex','!'),el('b',null,'해당 갤러리는 존재하지 않습니다.'),el('p',null,'갤러리가 삭제되었거나 주소가 잘못되었습니다.\n주소를 다시 확인해 주세요.'));
+  c.querySelector('p').style.whiteSpace='pre-line';
+  const m=el('button',null,'메인으로');m.onclick=()=>toast('메인 페이지에 연결할 수 없습니다');c.append(m);
+  app.append(c);setDock();app.scrollTop=0;
+}
+
+/* ---------- routing ---------- */
+function route(){
+  const id=(location.hash||'').slice(1);state.route=id;
+  if(!id||id==='list'){renderList();app.scrollTop=state.listScroll;return}
+  if(id==='survey')return renderSurvey();
+  if(id==='notice')return renderNotice();
+  if(id==='glossary')return renderPost(GLOSSARY);
+  if(state.closed)return renderClosed();
+  if(id==='milo'){if(state.miloShown&&!state.miloGone)return renderPost(MILO);if(state.miloGone){renderGone(MILO);return}state.route='list';renderList();return}
+  const p=POSTS.find(x=>x.id===id);
+  if(!p){state.route='list';renderList();return}
+  p.gone?renderGone(p):renderPost(p);
+}
+/* 자체 방문 기록: 브라우저 기록에 기대지 않고 바로 이전 화면으로 돌아감 */
+const nav={back:[],fwd:[]};
+function cur(){return (location.hash||'').slice(1)||'list'}
+function moveTo(id){if(cur()===id){route();return}location.hash=id}
+function go(id,fromPost){if(!fromPost&&(!state.route||state.route==='list'))state.listScroll=app.scrollTop;nav.back.push(cur());nav.fwd=[];moveTo(id)}
+function goList(){if(cur()!=='list'){nav.back.push(cur());nav.fwd=[];moveTo('list')}else{state.q='';renderList();app.scrollTop=0}}
+function goBack(){if(!nav.back.length){if(cur()!=='list'){moveTo('list');return}toast('첫 화면입니다');return}nav.fwd.push(cur());moveTo(nav.back.pop())}
+function goFwd(){if(!nav.fwd.length){toast('다음 화면이 없습니다');return}nav.back.push(cur());moveTo(nav.fwd.pop())}
+window.addEventListener('hashchange',route);
+
+/* browser toolbar */
+document.getElementById('bHome').onclick=()=>{state.q='';state.tab='all';state.head='전체';state.listScroll=0;goList()};
+document.getElementById('bBack').onclick=()=>goBack();
+document.getElementById('bFwd').onclick=()=>goFwd();
+document.getElementById('bSearch').onclick=()=>{app.scrollTop=0;const i=document.getElementById('topq');if(i)i.focus()};
+document.getElementById('bReload').onclick=()=>hardReset();
+document.getElementById('bMenu').onclick=()=>toast('메뉴는 준비 중입니다');
+document.getElementById('urlx').onclick=()=>toast('창을 닫을 수 없습니다');
+
+/* ---------- 당겨서 새로고침 (완전 초기화) ---------- */
+function hardReset(){
+  const ptr=document.getElementById('ptr');ptr.classList.add('spin');ptr.style.transition='';ptr.style.opacity='1';ptr.style.transform='translateY(0)';
+  setTimeout(()=>{
+    // 새로고침: 시간이 지나 삭제된 글만 다시 살아남. 진행도(열어 본 글, Milo 공지 등)는 그대로.
+    POSTS.forEach(p=>{if(p.autoDel){clearTimeout(p.delTimer);p.delTimer=null;p.removed=false;p.gone=false}});
+    const onList=state.route==='list'||!state.route,keep=app.scrollTop;
+    route();if(onList)app.scrollTop=keep;
+    ptr.style.transition='opacity .25s,transform .25s';ptr.style.opacity='0';ptr.style.transform='translateY(-30px)';
+    setTimeout(()=>{ptr.classList.remove('spin');ptr.style.transition=''},260);
+  },650);
+}
+(function(){
+  const ptr=document.getElementById('ptr');let y0=null,pull=0,busy=false,wheelAcc=0,wheelT;
+  const show=d=>{ptr.style.opacity=Math.min(1,d/70);ptr.style.transform=`translateY(${Math.min(d,90)-30}px) rotate(${d*3}deg)`};
+  const hide=()=>{ptr.style.transition='opacity .2s,transform .2s';ptr.style.opacity='0';ptr.style.transform='translateY(-30px)';setTimeout(()=>ptr.style.transition='',220)};
+  const fire=()=>{if(busy)return;busy=true;hardReset();setTimeout(()=>busy=false,1200)};
+  app.addEventListener('touchstart',e=>{y0=app.scrollTop<=0?e.touches[0].clientY:null;pull=0},{passive:true});
+  app.addEventListener('touchmove',e=>{if(y0==null)return;pull=(e.touches[0].clientY-y0)*.5;if(pull>0&&app.scrollTop<=0){show(pull);if(e.cancelable)e.preventDefault()}},{passive:false});
+  app.addEventListener('touchend',()=>{if(y0==null)return;if(pull>70)fire();else hide();y0=null;pull=0});
+  app.addEventListener('wheel',e=>{
+    if(app.scrollTop>0||e.deltaY>=0){wheelAcc=0;return}
+    wheelAcc+=-e.deltaY;show(wheelAcc/4);clearTimeout(wheelT);
+    if(wheelAcc>320){wheelAcc=0;fire();return}
+    wheelT=setTimeout(()=>{wheelAcc=0;if(!busy)hide()},250);
+  },{passive:true});
+  // mouse drag on desktop
+  let my=null;
+  app.addEventListener('mousedown',e=>{my=app.scrollTop<=0?e.clientY:null;pull=0});
+  addEventListener('mousemove',e=>{if(my==null)return;pull=(e.clientY-my)*.5;if(pull>8)show(pull)});
+  addEventListener('mouseup',()=>{if(my==null)return;if(pull>70)fire();else if(pull>8)hide();my=null;pull=0});
+})();
+
+/* ---------- 오른쪽으로 밀어서 뒤로가기 (휴대폰 제스처) ---------- */
+(function(){
+  let sx=null,sy=0,dx=0,on=false,mouse=false;
+  const skip=t=>t.closest&&t.closest('.heads,.gnav,input,select');
+  const start=(x,y,target)=>{if(skip(target)){sx=null;return}sx=x;sy=y;dx=0;on=false};
+  const move=(x,y,e)=>{
+    if(sx==null)return;dx=x-sx;const dy=Math.abs(y-sy);
+    if(!on){if(dx>12&&dx>dy*1.6)on=true;else if(dy>14||dx<-12){sx=null;return}}
+    if(on){app.style.transition='none';app.style.transform=`translateX(${Math.max(0,dx)}px)`;app.style.boxShadow='-8px 0 18px rgba(0,0,0,.15)';if(e&&e.cancelable)e.preventDefault()}
+  };
+  const end=()=>{
+    if(sx==null)return;sx=null;if(!on)return;on=false;
+    const back=dx>90;
+    app.style.transition='transform .2s ease-out';
+    app.style.transform=back?'translateX(100%)':'translateX(0)';
+    setTimeout(()=>{app.style.transition='none';app.style.transform='';app.style.boxShadow='';if(back)goBack()},200);
+  };
+  app.addEventListener('touchstart',e=>start(e.touches[0].clientX,e.touches[0].clientY,e.target),{passive:true});
+  app.addEventListener('touchmove',e=>move(e.touches[0].clientX,e.touches[0].clientY,e),{passive:false});
+  app.addEventListener('touchend',end);app.addEventListener('touchcancel',end);
+  app.addEventListener('mousedown',e=>{mouse=true;start(e.clientX,e.clientY,e.target)});
+  addEventListener('mousemove',e=>{if(mouse)move(e.clientX,e.clientY,e)});
+  addEventListener('mouseup',()=>{if(mouse){mouse=false;end()}});
+})();
+
+/* ---------- device frame ---------- */
+const W=417,H=876;
+function fit(){
+  const full=matchMedia('(max-width: 540px)').matches;
+  document.body.classList.toggle('full',full);
+  const wrap=document.getElementById('wrap'),dev=document.getElementById('device');
+  if(full){dev.style.transform='';return}
+  const s=Math.min(1,(innerHeight-70)/H,(innerWidth-32)/W)*0.95;
+  dev.style.transform=`scale(${s})`;wrap.style.width=W*s+'px';wrap.style.height=H*s+'px';
+}
+addEventListener('resize',fit);fit();
+function tick(){const d=new Date();document.getElementById('clock').textContent=(d.getHours()%12||12)+':'+String(d.getMinutes()).padStart(2,'0')}
+tick();setInterval(tick,15000);
+route();
+</script>
+
+</body>
+</html>
