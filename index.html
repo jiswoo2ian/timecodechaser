@@ -1294,7 +1294,7 @@ function siteHeader(){
   gt.append(nm,el('span','m','m'),el('span','cnt','(52,118)'),el('span','sp'),ln,w);
   const ad=el('div','adline');const ab=el('b');ab.append('감각 차단 훈련 전문 학원',el('span','adtag','AD'));
   ad.append(ab,el('p',null,'검진 대비반 · 1:1 게이지 관리 · 발현 전 멘탈 케어 · 주말반 상담'));
-  const gi=el('div','ginfo');const mg=el('span');mg.append('매니저 ',nickEl(MANAGER(),true));gi.append(mg,el('span',null,'부매니저 2'),el('span',null,'개설일 2026.03.02'));
+  const gi=el('div','ginfo');const mg=el('span');mg.append('매니저 ',nickEl(MANAGER(),true));gi.append(mg,el('span',null,'부매니저 1'),el('span',null,'개설일 2016.03.02'));
   wrap.append(s,nav,gt,gi,ad);return wrap;
 }
 function adBar(){
@@ -1493,7 +1493,7 @@ function renderGone(p){
 function renderNotice(){
   app.innerHTML='';app.append(siteHeader(),backBar());
   const t=el('div','ptitle');t.append(el('h1',null,'[📢공지] 갤 이용 수칙 (필독) · 위반 시 아이피 차단'));app.append(t);
-  const who=el('div','pwho');who.append(nickEl(MANAGER(),true),el('i',null,'|'),el('span','dt','2026.03.02 10:00'));app.append(who);
+  const who=el('div','pwho');who.append(nickEl(MANAGER(),true),el('i',null,'|'),el('span','dt','2016.03.02 10:00'));app.append(who);
   const st=el('div','pstat');st.append('조회수 88,410',el('i',null,'|'),'추천 ',el('span','r','0'));app.append(st);
   app.append(el('div','pbody',NOTICE_TXT),el('div','spacer'));setDock(adBar());app.scrollTop=0;
 }
