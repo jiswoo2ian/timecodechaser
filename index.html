@@ -129,6 +129,7 @@ body.full .status,body.full .island,body.full .homebar,body.full .caption,body.f
 .lrow .main{flex:1;min-width:0;padding:9px 6px 8px 12px}
 .lrow .cc{flex:none;width:42px;background:var(--countcol);color:var(--red);display:grid;place-items:center;font-size:13px;font-variant-numeric:tabular-nums}
 .lrow .tl{display:flex;align-items:flex-start;gap:5px;font-size:14.5px;line-height:1.38}
+.lrow .tl .tt.read{color:#7a5cc8}
 .lrow .tl .tt{min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere}
 .lrow .meta{margin-top:4px;font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;font-variant-numeric:tabular-nums}
 .lrow .meta i{font-style:normal;color:#e0e0e6}
@@ -1434,7 +1435,9 @@ function adBar(){
 const BADGE='<svg class="badge" viewBox="0 0 16 16" aria-label="매니저"><rect x="1" y="1" width="14" height="14" rx="3.5" fill="#2f6be0"/><path d="M4.4 8.3l2.4 2.3 4.8-5" stroke="#fff" stroke-width="1.9" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const MANAGER=()=>state.miloShown?'Milo':'미발갤매니저';
 function nickEl(name,badge){const s=el('span','nick');s.append(name);if(badge){const b=el('span');b.innerHTML=BADGE;s.append(b.firstChild)}return s}
-function markOpened(id){state.opened.add(id);if(!state.miloReady&&POSTS.every(p=>state.opened.has(p.id))&&state.opened.has('glossary'))state.miloReady=true}
+function markOpened(id){state.opened.add(id);
+  // 목록에 있는 글을 전부 열면, 마지막 글을 연 그 순간 바로 Milo 공지 알림
+  if(!state.miloReady&&!state.closed&&POSTS.every(p=>state.opened.has(p.id))){state.miloReady=true;if(!state.miloShown){state.miloShown=true;setTimeout(()=>showNoti('[공지] '+MILO.title+' - Milo','milo'),700)}}}
 let notiT;
 function showNoti(msg,target){
   const n=document.getElementById('noti');document.getElementById('notiMsg').textContent=msg;
@@ -1463,7 +1466,7 @@ function postRow(p,q){
   const r=el('button','lrow');
   const main=el('span','main');
   const tl=el('span','tl');const ic=el('span');ic.innerHTML=p.n>=30?SVG.bubHot:SVG.bub;
-  const tt=el('span','tt');tt.append(hl(p.title,q&&(state.qmode==='all'||state.qmode==='title')?q:''));
+  const tt=el('span','tt'+(state.opened.has(p.id)?' read':''));tt.append(hl(p.title,q&&(state.qmode==='all'||state.qmode==='title')?q:'')); // 열어 본 글은 보라색
   tl.append(ic.firstChild,tt);
   const meta=el('span','meta');
   [headLabel(p.head),null,`ㅇㅇ(${p.ip})`,null,listTime(p),null,'조회 '+fmt(p.views),null,'추천 '+p.up].forEach(x=>{if(x===null)meta.append(el('i',null,'|'));else meta.append(typeof x==='string'?el('span',null,x):x)});
@@ -1886,7 +1889,7 @@ function startError(){
    mode: 기본 / cut = 끝에서 하람의 신호가 끼어들어 끊김 / jam = 처음부터 방해받아 겨우 읽힘 */
 const END_MSGS=[ // '§' = 1초 뜸
   ['다시 오셨네요.'],
-  ['그런 행위만으로는 아무것도 돌아오지 않습니다.'],
+  ['그런 행위만으로는 아무것도 돌이킬 수 없습니다.'],
   ['아직 꺼내 주지 못했나 보네요.'],
   ['숨은 잘 쉬어지고 있나요?'],
   ['어제 일은 기억나세요? §아, 기억 안 나시겠구나.'],
@@ -1913,11 +1916,19 @@ function endScreen(fromReload){
 function endNoise(on,level){const nz=document.querySelector('.endv .nz');clearInterval(endNzT);nz.innerHTML='';if(!on)return;
   endNzT=setInterval(()=>{nz.innerHTML='';const n=Math.random()<level?Math.ceil(Math.random()*5*level+1):0;
     for(let i=0;i<n;i++){const b=document.createElement('b');b.style.top=(Math.random()*100)+'%';b.style.height=(1+Math.random()*7)+'px';b.style.opacity=.25+Math.random()*.6;nz.append(b)}},70)}
+/* 진동: 안드로이드는 vibrate, 아이폰(iOS 18+)은 스위치 햅틱으로 시도 */
+let _hsw=null;
+function haptic(pattern){try{if(navigator.vibrate&&navigator.vibrate(pattern))return}catch(e){}
+  try{if(!_hsw){_hsw=document.createElement('label');_hsw.style.cssText='position:fixed;left:-99px;top:0;opacity:0;pointer-events:none';const i=document.createElement('input');i.type='checkbox';i.setAttribute('switch','');_hsw.append(i);document.body.append(_hsw)}
+    const n=Array.isArray(pattern)?Math.ceil(pattern.length/2):1;for(let k=0;k<n;k++)setTimeout(()=>_hsw.click(),k*90)}catch(e){}}
+let endTyping=false;
 const endBit=c=>c===' '?' ':(Math.random()<.5?'0':'1');
 const endEsc=s=>s.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]);
 async function endNext(){
   if(endBusy)return;endBusy=true;const v=document.querySelector('.endv');const say=v.querySelector('.say');
-  endN=Math.max(1,endN+1);endSet('mibal_end_n',String(endN));const my=++endTypeId;const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  if(endGet('mibal_end_done')==='0'&&endN>0){/* 문구가 다 뜨기 전에 브라우저 새로고침 → 같은 문구 다시 */}else endN=Math.max(1,endN+1);
+  endSet('mibal_end_n',String(endN));endSet('mibal_end_done','0');endTyping=true;const my=++endTypeId;
+  const done=()=>{if(my===endTypeId){endTyping=false;endSet('mibal_end_done','1')}};const wait=ms=>new Promise(r=>setTimeout(r,ms));
   const old=v.querySelector('.lost');if(old)old.remove();endNoise(false);say.classList.remove('jam','dim');
   if(say.textContent){say.classList.add('fade');await wait(260)}
   say.classList.remove('fade');say.textContent='';
@@ -1928,20 +1939,22 @@ async function endNext(){
       endNoise(true,.8);say.classList.add('jam','dim');
       for(let i=1;i<=t.length;i++){if(my!==endTypeId)return;
         for(let k=0;k<2;k++){say.innerHTML=t.slice(0,i).map(c=>Math.random()<.42?`<span class="x">${endBit(c)}</span>`:endEsc(c)).join('');await wait(70)}}
+      done();
       // 다 써진 뒤에도 계속 깨졌다 돌아왔다
       const keep=setInterval(()=>{if(my!==endTypeId){clearInterval(keep);return}say.innerHTML=t.map(c=>Math.random()<.3?`<span class="x">${endBit(c)}</span>`:endEsc(c)).join('')},120);
       return}
     for(let i=1;i<=t.length;i++){if(my!==endTypeId)return;if(t[i-1]==='§'){await wait(1000);continue}say.textContent=t.slice(0,i).join('').replace(/§/g,'');say.append(cur());
-      if(mode==='cut'&&i>=t.length-6){endNoise(true,.6);say.classList.add('jam')}
+      if(mode==='cut'&&i>=t.length-6){if(i===t.length-6)haptic([35,40,35,40,60]);endNoise(true,.6);say.classList.add('jam')}
       await wait(t[i-1]===' '?45:95)}
     if(mode==='cut'){ // 문장 끝에서 하람의 신호가 덮쳐 끊김
-      await wait(250);endNoise(true,1);
+      await wait(250);endNoise(true,1);haptic([180,60,90,60,240]);
       for(let s=0;s<14;s++){if(my!==endTypeId)return;const keepN=Math.max(0,t.length-Math.round(t.length*s/10));
         say.innerHTML=t.map((c,i)=>i<keepN&&Math.random()>.25?endEsc(c):`<span class="x">${endBit(c)}</span>`).join('');await wait(60)}
       say.innerHTML=t.slice(0,Math.round(t.length*.45)).map(endEsc).join('')+`<span class="x">${t.slice(Math.round(t.length*.45)).map(endBit).join('')}</span>`;
       say.classList.remove('jam');endNoise(true,.25);await wait(500);endNoise(false)}
+    done();
   }else{
-    const box=document.createElement('div');box.className='lost';v.append(box);endBusy=false;endNoise(true,.35);
+    const box=document.createElement('div');box.className='lost';v.append(box);endBusy=false;endNoise(true,.35);done();
     for(let i=0;i<7;i++){if(my!==endTypeId)return;const d=document.createElement('div');d.textContent=END_LOST;d.style.animationDelay=(-Math.random()*1.8)+'s';box.append(d);d.classList.add('on');await wait(220)}
   }
 }
@@ -1949,7 +1962,7 @@ function bindEndPull(v){
   const pull=v.querySelector('.pull');let y0=null,d=0,busy=false,wheel=0,wt;
   const show=x=>{pull.style.transition='none';pull.style.opacity=Math.min(1,x/70);pull.style.transform=`translateY(${Math.min(x,110)}px) rotate(${x*3}deg)`};
   const hide=()=>{pull.style.transition='opacity .2s,transform .2s';pull.style.opacity=0;pull.style.transform='translateY(0)'};
-  const fire=()=>{if(busy)return;busy=true;pull.style.transition='transform .2s';pull.style.transform='translateY(80px)';pull.style.opacity=1;pull.classList.add('spin');
+  const fire=()=>{if(busy)return;if(endTyping){hide();return}busy=true;pull.style.transition='transform .2s';pull.style.transform='translateY(80px)';pull.style.opacity=1;pull.classList.add('spin');
     setTimeout(()=>{pull.classList.remove('spin');hide();endNext();setTimeout(()=>busy=false,400)},650)};
   v.addEventListener('touchstart',e=>{y0=e.touches[0].clientY;d=0},{passive:true});
   v.addEventListener('touchmove',e=>{if(y0==null)return;d=(e.touches[0].clientY-y0)*.55;if(d>0){show(d);if(e.cancelable)e.preventDefault()}},{passive:false});
